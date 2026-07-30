@@ -545,8 +545,8 @@
 
             const dates = chartData.map(d => d.date);
             const close = chartData.map(d => d.close);
-            const upper = chartData.map(d => d.upper);
             const lower = chartData.map(d => d.lower);
+            const sma = chartData.map(d => d.sma);
             const st_bull = chartData.map(d => (d.st_dir === 1 ? d.st : null));
             const st_bear = chartData.map(d => (d.st_dir === -1 ? d.st : null));
 
