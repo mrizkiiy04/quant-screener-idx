@@ -15,15 +15,17 @@ import pandas as pd
 
 from src.indicators import add_signals
 
-# Tickers yang sudah divalidasi ROBUST / PROFIT di blind test & backtest
+# Daftar 45 Saham Paling Likuid di Indonesia (Indeks LQ45)
 UNIVERSE = [
-    "BBCA.JK",
-    "TLKM.JK",
-    "CPIN.JK",
-    "BBNI.JK",
-    "ICBP.JK",
-    "INDF.JK",
-    "UNTR.JK"
+    "ACES.JK", "ADRO.JK", "AKRA.JK", "AMMN.JK", "AMRT.JK", 
+    "ANTM.JK", "ARTO.JK", "ASII.JK", "BBCA.JK", "BBNI.JK", 
+    "BBRI.JK", "BBTN.JK", "BMRI.JK", "BRIS.JK", "BRPT.JK", 
+    "BUKA.JK", "CPIN.JK", "ESSA.JK", "EXCL.JK", "GGRM.JK", 
+    "GOTO.JK", "HRUM.JK", "ICBP.JK", "INCO.JK", "INDF.JK", 
+    "INKP.JK", "INTP.JK", "ITMG.JK", "KLBF.JK", "MAPI.JK", 
+    "MBMA.JK", "MDKA.JK", "MEDC.JK", "MTEL.JK", "PGAS.JK", 
+    "PGEO.JK", "PTBA.JK", "SIDO.JK", "SMGR.JK", "SRTG.JK", 
+    "TLKM.JK", "TOWR.JK", "TPIA.JK", "UNTR.JK", "UNVR.JK"
 ]
 
 # The Golden Ratio (Locked from TLKM Robust Test)
