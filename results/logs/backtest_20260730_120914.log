@@ -1,0 +1,106 @@
+12:09:14 [INFO] === Backtest Session Start: run_20260730_120914 ===
+12:09:14 [INFO] Log : results\logs\backtest_20260730_120914.log
+12:09:14 [INFO] DB  : results\backtest_results.db
+12:09:14 [INFO] ======================================================================
+12:09:14 [INFO]   WALK-FORWARD BACKTEST — Terminal Edition
+12:09:14 [INFO]   Session ID : run_20260730_120914
+12:09:14 [INFO]   Tickers    : BBCA.JK
+12:09:14 [INFO]   Periode    : 2018-01-01 s/d 2026-07-01
+12:09:14 [INFO]   Modal      : Rp 10,000,000
+12:09:14 [INFO]   WFO Mode   : ROLLING (Train 750 / Test 250)
+12:09:14 [INFO]   Strategi   : BB
+12:09:14 [INFO]   BB version : V2
+12:09:14 [INFO]   Output dir : D:\coding\quantstrategy\results
+12:09:14 [INFO] ======================================================================
+12:09:14 [INFO] 
+######################################################################
+12:09:14 [INFO]   TICKER: BBCA.JK
+12:09:14 [INFO] ######################################################################
+12:09:15 [INFO]   Data    : 2082 hari trading
+12:09:15 [INFO]   IS      : 2018-01-01 → 2023-11-08 (1457 hari)
+12:09:15 [INFO]   OOS     : 2023-11-08 → 2026-06-30 (625 hari)
+12:09:15 [INFO] 
+======================================================================
+12:09:15 [INFO]   ROLLING WFO (Anchored) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [BBCA.JK]
+12:09:15 [INFO]   Total Data: 2082 hari | Train=750 | Test=250
+12:09:15 [INFO] ======================================================================
+12:09:15 [INFO] 
+--- FOLD 1 ---
+12:09:15 [INFO] IS : 2018-01-01 → 2020-12-11 (750 hari)
+12:09:15 [INFO] OOS: 2020-12-14 → 2021-12-20 (250 hari)
+12:09:17 [INFO] Fold 1 Best Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}
+12:09:17 [INFO] Fold 1 IS Sharpe: 1.05 | Trades: 9
+12:09:17 [INFO] Fold 1 OOS Trades: 2
+12:09:17 [INFO] 
+--- FOLD 2 ---
+12:09:17 [INFO] IS : 2018-01-01 → 2021-12-20 (1000 hari)
+12:09:17 [INFO] OOS: 2021-12-21 → 2022-12-26 (250 hari)
+12:09:20 [INFO] Fold 2 Best Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}
+12:09:20 [INFO] Fold 2 IS Sharpe: 0.83 | Trades: 11
+12:09:20 [INFO] Fold 2 OOS Trades: 2
+12:09:20 [INFO] 
+--- FOLD 3 ---
+12:09:20 [INFO] IS : 2018-01-01 → 2022-12-26 (1250 hari)
+12:09:20 [INFO] OOS: 2022-12-27 → 2024-01-10 (250 hari)
+12:09:24 [INFO] Fold 3 Best Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}
+12:09:24 [INFO] Fold 3 IS Sharpe: 0.95 | Trades: 13
+12:09:24 [INFO] Fold 3 OOS Trades: 5
+12:09:24 [INFO] 
+--- FOLD 4 ---
+12:09:24 [INFO] IS : 2018-01-01 → 2024-01-10 (1500 hari)
+12:09:24 [INFO] OOS: 2024-01-11 → 2025-02-03 (250 hari)
+12:09:28 [INFO] Fold 4 Best Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}
+12:09:28 [INFO] Fold 4 IS Sharpe: 0.96 | Trades: 19
+12:09:28 [INFO] Fold 4 OOS Trades: 6
+12:09:28 [INFO] 
+--- FOLD 5 ---
+12:09:28 [INFO] IS : 2018-01-01 → 2025-02-03 (1750 hari)
+12:09:28 [INFO] OOS: 2025-02-04 → 2026-02-23 (250 hari)
+12:09:33 [INFO] Fold 5 Best Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}
+12:09:33 [INFO] Fold 5 IS Sharpe: 0.92 | Trades: 25
+12:09:33 [INFO] Fold 5 OOS Trades: 6
+12:09:33 [INFO] 
+--- FOLD 6 ---
+12:09:33 [INFO] IS : 2018-01-01 → 2026-02-23 (2000 hari)
+12:09:33 [INFO] OOS: 2026-02-24 → 2026-06-30 (82 hari)
+12:09:38 [INFO] Fold 6 Best Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}
+12:09:38 [INFO] Fold 6 IS Sharpe: 0.92 | Trades: 34
+12:09:38 [INFO] Fold 6 OOS Trades: 2
+12:09:38 [INFO] 
+--- PARAMETER STABILITY TABLE [BBCA.JK] ---
+12:09:38 [INFO] 
+ fold  oos_start    oos_end  oos_days  num_std  window  adx_threshold  vol_ratio_min  atr_mult
+    1 2020-12-14 2021-12-20       250      2.0      20             25            1.2       1.5
+    2 2021-12-21 2022-12-26       250      2.0      20             25            1.2       1.5
+    3 2022-12-27 2024-01-10       250      2.0      20             25            1.2       1.5
+    4 2024-01-11 2025-02-03       250      2.0      20             25            1.2       1.5
+    5 2025-02-04 2026-02-23       250      2.0      20             25            1.2       1.5
+    6 2026-02-24 2026-06-30        82      2.0      20             25            1.2       1.5
+12:09:38 [INFO] Parameter cukup stabil (sedikit perubahan ekstrem antar fold).
+12:09:39 [INFO] [CHART ROLLING] → results\charts\walkforward_ROLLING_bollinger_bands_v2_%25b+adx+vol+atr_BBCA_JK_20260730_120914.png
+12:09:39 [INFO] 
+----------------------------------------------------------------------
+12:09:39 [INFO]   HASIL AKHIR ROLLING WFO: Bollinger Bands v2 (%B+ADX+Vol+ATR) [BBCA.JK]
+12:09:39 [INFO] ----------------------------------------------------------------------
+12:09:39 [INFO] Jumlah Total Trade OOS            23
+12:09:39 [INFO] Win rate                          5652.2%
+12:09:39 [INFO] Total return OOS                  53.5%
+12:09:39 [INFO] Sharpe Ratio                      0.97
+12:09:39 [ERROR] [BBCA.JK][BB v2] Error: 'max_drawdown'
+12:09:39 [ERROR] Traceback (most recent call last):
+  File "D:\coding\quantstrategy\run_backtest.py", line 238, in main
+    result = run_rolling_walkforward(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\coding\quantstrategy\src\rolling.py", line 239, in run_rolling_walkforward
+    logger.info(f"Max drawdown                      {total_oos_m['max_drawdown']:.1f}%")
+                                                     ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+KeyError: 'max_drawdown'
+
+12:09:39 [INFO] 
+======================================================================
+  SELESAI
+  Log file : results\logs\backtest_20260730_120914.log
+  Database : D:\coding\quantstrategy\results\backtest_results.db
+  Charts   : D:\coding\quantstrategy\results\charts/
+  CSV      : D:\coding\quantstrategy\results\csv/
+======================================================================

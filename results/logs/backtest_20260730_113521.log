@@ -1,0 +1,262 @@
+11:35:21 [INFO] === Backtest Session Start: run_20260730_113521 ===
+11:35:21 [INFO] Log : results\logs\backtest_20260730_113521.log
+11:35:21 [INFO] DB  : results\backtest_results.db
+11:35:21 [INFO] ======================================================================
+11:35:21 [INFO]   WALK-FORWARD BACKTEST — Terminal Edition
+11:35:21 [INFO]   Session ID : run_20260730_113521
+11:35:21 [INFO]   Tickers    : TLKM.JK, BMRI.JK, BBCA.JK, ASII.JK, BBRI.JK
+11:35:21 [INFO]   Periode    : 2021-01-01 s/d 2026-07-01
+11:35:21 [INFO]   Modal      : Rp 10,000,000
+11:35:21 [INFO]   IS/OOS     : 70% / 30%
+11:35:21 [INFO]   Strategi   : BB
+11:35:21 [INFO]   BB version : V2
+11:35:21 [INFO]   Output dir : D:\coding\quantstrategy\results
+11:35:21 [INFO] ======================================================================
+11:35:21 [INFO] 
+######################################################################
+11:35:21 [INFO]   TICKER: TLKM.JK
+11:35:21 [INFO] ######################################################################
+11:35:22 [INFO]   Data    : 1321 hari trading
+11:35:22 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+11:35:22 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+11:35:22 [INFO] 
+======================================================================
+11:35:22 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [TLKM.JK]
+11:35:22 [INFO] ======================================================================
+11:35:27 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+11:35:27 [INFO]   #1 params={'num_std': 2.0, 'window': 25, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}  Sharpe(IS)=0.65  Return(IS)=15.6%  Trades=9
+11:35:27 [INFO]   #2 params={'num_std': 2.0, 'window': 25, 'adx_threshold': 20, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}  Sharpe(IS)=0.60  Return(IS)=13.1%  Trades=7
+11:35:27 [INFO]   #3 params={'num_std': 2.0, 'window': 25, 'adx_threshold': 20, 'vol_ratio_min': 1.5, 'atr_mult': 1.5}  Sharpe(IS)=0.60  Return(IS)=13.1%  Trades=7
+11:35:27 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 2.0, 'window': 25, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+11:35:27 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+11:35:27 [INFO] 
+----------------------------------------------------------------------
+11:35:27 [INFO]   HASIL: Bollinger Bands v2 (%B+ADX+Vol+ATR) [TLKM.JK]
+11:35:27 [INFO] ----------------------------------------------------------------------
+11:35:27 [INFO] Metrik                    In-Sample     Out-of-Sample
+11:35:27 [INFO] Jumlah trade                      9                 4
+11:35:27 [INFO] Win rate                      66.7%             75.0%
+11:35:27 [INFO] Total return                  15.6%             19.4%
+11:35:27 [INFO] CAGR                           4.0%             11.9%
+11:35:27 [INFO] Sharpe                         0.65              0.89
+11:35:27 [INFO] Max drawdown                  -6.7%             -6.6%
+11:35:27 [INFO] Calmar                         0.60              1.82
+11:35:27 [INFO] Profit Factor                  3.14              4.05
+11:35:27 [INFO] Avg Hold (days)                14.4              10.8
+11:35:27 [INFO] ----------------------------------------------------------------------
+11:35:27 [INFO]   INCONCLUSIVE — OOS cuma 4 trade (min 5). Bukan berarti strategi gagal; sinyal entry memang jarang/tidak muncul di periode OOS ini. Coba perpanjang periode data atau longgarkan parameter.
+11:35:27 [INFO] ======================================================================
+11:35:27 [INFO] [CSV] IS trades → results\csv\trades_IS_bollinger_bands_v2_%b+adx+vol+atr_TLKM_JK_20260730_113521.csv
+11:35:27 [INFO] [CSV] OOS trades → results\csv\trades_OOS_bollinger_bands_v2_%b+adx+vol+atr_TLKM_JK_20260730_113521.csv
+11:35:27 [INFO] [CSV] Equity curve → results\csv\equity_bollinger_bands_v2_%b+adx+vol+atr_TLKM_JK_20260730_113521.csv
+11:35:27 [INFO] [CHART] → results\charts\walkforward_bollinger_bands_v2_%b+adx+vol+atr_TLKM_JK_20260730_113521.png
+11:35:27 [INFO] [BUY&HOLD] IS=+10.6% vs Strategi IS=+15.6% | OOS=+2.3% vs Strategi OOS=+19.4%
+11:35:27 [INFO] [PLATEAU] Menjalankan parameter plateau test untuk TLKM.JK...
+11:35:29 [INFO] [PLATEAU] Score: 72/100  (21/29 variasi di atas threshold)
+11:35:29 [INFO] [PLATEAU] Parameter ROBUST — plateau terdeteksi
+11:35:30 [INFO] [PLATEAU] Chart -> results\charts\plateau_TLKM_JK_20260730_113521.png
+11:35:30 [INFO] [DB] Saved → ticker=TLKM.JK strategy=bb_v2
+11:35:30 [INFO] 
+######################################################################
+11:35:30 [INFO]   TICKER: BMRI.JK
+11:35:30 [INFO] ######################################################################
+11:35:30 [INFO]   Data    : 1321 hari trading
+11:35:30 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+11:35:30 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+11:35:30 [INFO] 
+======================================================================
+11:35:30 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [BMRI.JK]
+11:35:30 [INFO] ======================================================================
+11:35:35 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+11:35:35 [INFO]   #1 params={'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 2.0}  Sharpe(IS)=0.97  Return(IS)=39.1%  Trades=11
+11:35:35 [INFO]   #2 params={'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}  Sharpe(IS)=0.97  Return(IS)=39.1%  Trades=11
+11:35:35 [INFO]   #3 params={'num_std': 1.5, 'window': 15, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 2.0}  Sharpe(IS)=0.97  Return(IS)=39.3%  Trades=15
+11:35:35 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 2.0}
+11:35:35 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+11:35:35 [INFO] 
+----------------------------------------------------------------------
+11:35:35 [INFO]   HASIL: Bollinger Bands v2 (%B+ADX+Vol+ATR) [BMRI.JK]
+11:35:35 [INFO] ----------------------------------------------------------------------
+11:35:35 [INFO] Metrik                    In-Sample     Out-of-Sample
+11:35:35 [INFO] Jumlah trade                     11                 8
+11:35:35 [INFO] Win rate                      90.9%             50.0%
+11:35:35 [INFO] Total return                  39.1%              5.1%
+11:35:35 [INFO] CAGR                           9.3%              3.2%
+11:35:35 [INFO] Sharpe                         0.97              0.31
+11:35:35 [INFO] Max drawdown                  -7.6%            -12.2%
+11:35:35 [INFO] Calmar                         1.22              0.26
+11:35:35 [INFO] Profit Factor                 27.76              1.32
+11:35:35 [INFO] Avg Hold (days)                12.8              11.4
+11:35:35 [INFO] ----------------------------------------------------------------------
+11:35:35 [INFO]   Skor Ketepatan (IS→OOS): 32/100  (degradasi Sharpe: 68%)
+11:35:35 [INFO]   LEMAH TAPI MASIH PROFIT — degradasi besar (kemungkinan winner's curse dari grid search), tapi OOS tidak rugi. Jangan andalkan ukuran return IS, tapi strategi belum tentu tidak berguna
+11:35:35 [INFO] ======================================================================
+11:35:35 [INFO] [CSV] IS trades → results\csv\trades_IS_bollinger_bands_v2_%b+adx+vol+atr_BMRI_JK_20260730_113521.csv
+11:35:35 [INFO] [CSV] OOS trades → results\csv\trades_OOS_bollinger_bands_v2_%b+adx+vol+atr_BMRI_JK_20260730_113521.csv
+11:35:35 [INFO] [CSV] Equity curve → results\csv\equity_bollinger_bands_v2_%b+adx+vol+atr_BMRI_JK_20260730_113521.csv
+11:35:36 [INFO] [CHART] → results\charts\walkforward_bollinger_bands_v2_%b+adx+vol+atr_BMRI_JK_20260730_113521.png
+11:35:36 [INFO] [BUY&HOLD] IS=+160.6% vs Strategi IS=+39.1% | OOS=-21.6% vs Strategi OOS=+5.1%
+11:35:36 [INFO] [PLATEAU] Menjalankan parameter plateau test untuk BMRI.JK...
+11:35:38 [INFO] [PLATEAU] Score: 100/100  (29/29 variasi di atas threshold)
+11:35:38 [INFO] [PLATEAU] Parameter ROBUST — plateau terdeteksi
+11:35:39 [INFO] [PLATEAU] Chart -> results\charts\plateau_BMRI_JK_20260730_113521.png
+11:35:39 [INFO] [DB] Saved → ticker=BMRI.JK strategy=bb_v2
+11:35:39 [INFO] 
+######################################################################
+11:35:39 [INFO]   TICKER: BBCA.JK
+11:35:39 [INFO] ######################################################################
+11:35:39 [INFO]   Data    : 1321 hari trading
+11:35:39 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+11:35:39 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+11:35:39 [INFO] 
+======================================================================
+11:35:39 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [BBCA.JK]
+11:35:39 [INFO] ======================================================================
+11:35:44 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+11:35:44 [INFO]   #1 params={'num_std': 1.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.5, 'atr_mult': 1.5}  Sharpe(IS)=1.15  Return(IS)=34.3%  Trades=12
+11:35:44 [INFO]   #2 params={'num_std': 2.5, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 2.0}  Sharpe(IS)=1.11  Return(IS)=24.3%  Trades=7
+11:35:44 [INFO]   #3 params={'num_std': 2.5, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}  Sharpe(IS)=1.10  Return(IS)=19.2%  Trades=6
+11:35:44 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 1.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.5, 'atr_mult': 1.5}
+11:35:44 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+11:35:44 [INFO] 
+----------------------------------------------------------------------
+11:35:44 [INFO]   HASIL: Bollinger Bands v2 (%B+ADX+Vol+ATR) [BBCA.JK]
+11:35:44 [INFO] ----------------------------------------------------------------------
+11:35:44 [INFO] Metrik                    In-Sample     Out-of-Sample
+11:35:44 [INFO] Jumlah trade                     12                11
+11:35:44 [INFO] Win rate                      75.0%             45.5%
+11:35:44 [INFO] Total return                  34.3%             20.4%
+11:35:44 [INFO] CAGR                           8.3%             12.5%
+11:35:44 [INFO] Sharpe                         1.15              0.90
+11:35:44 [INFO] Max drawdown                  -5.8%            -16.7%
+11:35:44 [INFO] Calmar                         1.43              0.75
+11:35:44 [INFO] Profit Factor                  5.70              2.04
+11:35:44 [INFO] Avg Hold (days)                 8.8              10.5
+11:35:44 [INFO] ----------------------------------------------------------------------
+11:35:44 [INFO]   Skor Ketepatan (IS→OOS): 78/100  (degradasi Sharpe: 22%)
+11:35:44 [INFO]   WASPADA — degradasi cukup besar, tapi masih net profit; perlu data lebih panjang utk yakin
+11:35:44 [INFO] ======================================================================
+11:35:44 [INFO] [CSV] IS trades → results\csv\trades_IS_bollinger_bands_v2_%b+adx+vol+atr_BBCA_JK_20260730_113521.csv
+11:35:44 [INFO] [CSV] OOS trades → results\csv\trades_OOS_bollinger_bands_v2_%b+adx+vol+atr_BBCA_JK_20260730_113521.csv
+11:35:44 [INFO] [CSV] Equity curve → results\csv\equity_bollinger_bands_v2_%b+adx+vol+atr_BBCA_JK_20260730_113521.csv
+11:35:45 [INFO] [CHART] → results\charts\walkforward_bollinger_bands_v2_%b+adx+vol+atr_BBCA_JK_20260730_113521.png
+11:35:45 [INFO] [BUY&HOLD] IS=+65.9% vs Strategi IS=+34.3% | OOS=-38.4% vs Strategi OOS=+20.4%
+11:35:45 [INFO] [PLATEAU] Menjalankan parameter plateau test untuk BBCA.JK...
+11:35:45 [INFO] [PLATEAU] Score: 97/100  (28/29 variasi di atas threshold)
+11:35:45 [INFO] [PLATEAU] Parameter ROBUST — plateau terdeteksi
+11:35:46 [INFO] [PLATEAU] Chart -> results\charts\plateau_BBCA_JK_20260730_113521.png
+11:35:46 [INFO] [DB] Saved → ticker=BBCA.JK strategy=bb_v2
+11:35:46 [INFO] 
+######################################################################
+11:35:46 [INFO]   TICKER: ASII.JK
+11:35:46 [INFO] ######################################################################
+11:35:46 [INFO]   Data    : 1321 hari trading
+11:35:46 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+11:35:46 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+11:35:46 [INFO] 
+======================================================================
+11:35:46 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [ASII.JK]
+11:35:46 [INFO] ======================================================================
+11:35:49 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+11:35:49 [INFO]   #1 params={'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}  Sharpe(IS)=0.69  Return(IS)=17.3%  Trades=5
+11:35:49 [INFO]   #2 params={'num_std': 2.0, 'window': 25, 'adx_threshold': 20, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}  Sharpe(IS)=0.60  Return(IS)=13.3%  Trades=5
+11:35:49 [INFO]   #3 params={'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}  Sharpe(IS)=0.57  Return(IS)=12.8%  Trades=5
+11:35:49 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}
+11:35:49 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+11:35:49 [INFO] 
+----------------------------------------------------------------------
+11:35:49 [INFO]   HASIL: Bollinger Bands v2 (%B+ADX+Vol+ATR) [ASII.JK]
+11:35:49 [INFO] ----------------------------------------------------------------------
+11:35:49 [INFO] Metrik                    In-Sample     Out-of-Sample
+11:35:49 [INFO] Jumlah trade                      5                 3
+11:35:49 [INFO] Win rate                      80.0%             33.3%
+11:35:49 [INFO] Total return                  17.3%             -8.7%
+11:35:49 [INFO] CAGR                           4.4%             -5.6%
+11:35:49 [INFO] Sharpe                         0.69             -0.67
+11:35:49 [INFO] Max drawdown                  -5.3%            -15.8%
+11:35:49 [INFO] Calmar                         0.83             -0.36
+11:35:49 [INFO] Profit Factor                  4.57              0.36
+11:35:49 [INFO] Avg Hold (days)                12.2               7.7
+11:35:49 [INFO] ----------------------------------------------------------------------
+11:35:49 [INFO]   INCONCLUSIVE — OOS cuma 3 trade (min 5). Bukan berarti strategi gagal; sinyal entry memang jarang/tidak muncul di periode OOS ini. Coba perpanjang periode data atau longgarkan parameter.
+11:35:49 [INFO] ======================================================================
+11:35:49 [INFO] [CSV] IS trades → results\csv\trades_IS_bollinger_bands_v2_%b+adx+vol+atr_ASII_JK_20260730_113521.csv
+11:35:49 [INFO] [CSV] OOS trades → results\csv\trades_OOS_bollinger_bands_v2_%b+adx+vol+atr_ASII_JK_20260730_113521.csv
+11:35:49 [INFO] [CSV] Equity curve → results\csv\equity_bollinger_bands_v2_%b+adx+vol+atr_ASII_JK_20260730_113521.csv
+11:35:49 [INFO] [CHART] → results\charts\walkforward_bollinger_bands_v2_%b+adx+vol+atr_ASII_JK_20260730_113521.png
+11:35:49 [INFO] [BUY&HOLD] IS=+19.6% vs Strategi IS=+17.3% | OOS=+4.4% vs Strategi OOS=-8.7%
+11:35:49 [INFO] [PLATEAU] Menjalankan parameter plateau test untuk ASII.JK...
+11:35:50 [INFO] [PLATEAU] Score: 90/100  (26/29 variasi di atas threshold)
+11:35:50 [INFO] [PLATEAU] Parameter ROBUST — plateau terdeteksi
+11:35:50 [INFO] [PLATEAU] Chart -> results\charts\plateau_ASII_JK_20260730_113521.png
+11:35:50 [INFO] [DB] Saved → ticker=ASII.JK strategy=bb_v2
+11:35:50 [INFO] 
+######################################################################
+11:35:50 [INFO]   TICKER: BBRI.JK
+11:35:50 [INFO] ######################################################################
+11:35:53 [INFO]   Data    : 1321 hari trading
+11:35:53 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+11:35:53 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+11:35:53 [INFO] 
+======================================================================
+11:35:53 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [BBRI.JK]
+11:35:53 [INFO] ======================================================================
+11:35:56 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+11:35:56 [INFO]   #1 params={'num_std': 1.5, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}  Sharpe(IS)=0.28  Return(IS)=6.4%  Trades=12
+11:35:56 [INFO]   #2 params={'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}  Sharpe(IS)=0.27  Return(IS)=5.7%  Trades=10
+11:35:56 [INFO]   #3 params={'num_std': 2.5, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}  Sharpe(IS)=0.20  Return(IS)=3.5%  Trades=7
+11:35:56 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 1.5, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+11:35:56 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+11:35:56 [INFO] 
+----------------------------------------------------------------------
+11:35:56 [INFO]   HASIL: Bollinger Bands v2 (%B+ADX+Vol+ATR) [BBRI.JK]
+11:35:56 [INFO] ----------------------------------------------------------------------
+11:35:56 [INFO] Metrik                    In-Sample     Out-of-Sample
+11:35:56 [INFO] Jumlah trade                     12                12
+11:35:56 [INFO] Win rate                      58.3%             50.0%
+11:35:56 [INFO] Total return                   6.4%             19.8%
+11:35:56 [INFO] CAGR                           1.7%             12.1%
+11:35:56 [INFO] Sharpe                         0.28              0.85
+11:35:56 [INFO] Max drawdown                  -8.7%            -10.1%
+11:35:56 [INFO] Calmar                         0.19              1.20
+11:35:56 [INFO] Profit Factor                  1.43              1.73
+11:35:56 [INFO] Avg Hold (days)                10.2               6.7
+11:35:56 [INFO] ----------------------------------------------------------------------
+11:35:56 [INFO]   Skor Ketepatan (IS→OOS): 100/100  (degradasi Sharpe: -204%)
+11:35:56 [INFO]   ROBUST — performa OOS konsisten dgn IS, edge kemungkinan nyata
+11:35:56 [INFO] ======================================================================
+11:35:56 [INFO] [CSV] IS trades → results\csv\trades_IS_bollinger_bands_v2_%b+adx+vol+atr_BBRI_JK_20260730_113521.csv
+11:35:56 [INFO] [CSV] OOS trades → results\csv\trades_OOS_bollinger_bands_v2_%b+adx+vol+atr_BBRI_JK_20260730_113521.csv
+11:35:56 [INFO] [CSV] Equity curve → results\csv\equity_bollinger_bands_v2_%b+adx+vol+atr_BBRI_JK_20260730_113521.csv
+11:35:56 [INFO] [CHART] → results\charts\walkforward_bollinger_bands_v2_%b+adx+vol+atr_BBRI_JK_20260730_113521.png
+11:35:56 [INFO] [BUY&HOLD] IS=+37.9% vs Strategi IS=+6.4% | OOS=-20.9% vs Strategi OOS=+19.8%
+11:35:56 [INFO] [PLATEAU] Menjalankan parameter plateau test untuk BBRI.JK...
+11:35:57 [INFO] [PLATEAU] Score: 62/100  (18/29 variasi di atas threshold)
+11:35:57 [WARNING] [PLATEAU] MODERATE RISK — Plateau score 62/100. Parameter cukup robust tapi perlu lebih banyak data untuk konfirmasi.
+11:35:57 [INFO] [PLATEAU] Chart -> results\charts\plateau_BBRI_JK_20260730_113521.png
+11:35:57 [INFO] [DB] Saved → ticker=BBRI.JK strategy=bb_v2
+11:35:57 [INFO] 
+===============================================================================================
+11:35:57 [INFO]   RINGKASAN PERBANDINGAN MULTI-TICKER WALK-FORWARD
+11:35:57 [INFO] ===============================================================================================
+11:35:57 [INFO] Ticker      Strategi                          Skor   OOS Ret  OOS Shrp   OOS WR  Leakage  Verdict
+11:35:57 [INFO] -----------------------------------------------------------------------------------------------
+11:35:57 [INFO] BBRI.JK     Bollinger Bands v2 (%B+ADX+Vol+ATR)   100     19.8%      0.85    50.0%       ok  ROBUST
+11:35:57 [INFO] BBCA.JK     Bollinger Bands v2 (%B+ADX+Vol+ATR)    78     20.4%      0.90    45.5%       ok  WASPADA
+11:35:57 [INFO] BMRI.JK     Bollinger Bands v2 (%B+ADX+Vol+ATR)    32      5.1%      0.31    50.0%       ok  LEMAH TAPI MASIH PROFIT
+11:35:57 [INFO] TLKM.JK     Bollinger Bands v2 (%B+ADX+Vol+ATR)   N/A     19.4%      0.89    75.0%       ok  INCONCLUSIVE
+11:35:57 [INFO] ASII.JK     Bollinger Bands v2 (%B+ADX+Vol+ATR)   N/A     -8.7%     -0.67    33.3%       ok  INCONCLUSIVE
+11:35:57 [INFO] ===============================================================================================
+11:35:57 [INFO] 
+======================================================================
+  SELESAI
+  Log file : results\logs\backtest_20260730_113521.log
+  Database : D:\coding\quantstrategy\results\backtest_results.db
+  Charts   : D:\coding\quantstrategy\results\charts/
+  CSV      : D:\coding\quantstrategy\results\csv/
+======================================================================

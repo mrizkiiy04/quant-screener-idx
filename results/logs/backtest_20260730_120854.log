@@ -1,0 +1,36 @@
+12:08:54 [INFO] === Backtest Session Start: run_20260730_120854 ===
+12:08:54 [INFO] Log : results\logs\backtest_20260730_120854.log
+12:08:54 [INFO] DB  : results\backtest_results.db
+12:08:54 [INFO] ======================================================================
+12:08:54 [INFO]   WALK-FORWARD BACKTEST — Terminal Edition
+12:08:54 [INFO]   Session ID : run_20260730_120854
+12:08:54 [INFO]   Tickers    : BBCA.JK
+12:08:54 [INFO]   Periode    : 2018-01-01 s/d 2026-07-01
+12:08:54 [INFO]   Modal      : Rp 10,000,000
+12:08:54 [INFO]   WFO Mode   : ROLLING (Train 750 / Test 250)
+12:08:54 [INFO]   Strategi   : BB
+12:08:54 [INFO]   BB version : V2
+12:08:54 [INFO]   Output dir : D:\coding\quantstrategy\results
+12:08:54 [INFO] ======================================================================
+12:08:54 [INFO] 
+######################################################################
+12:08:54 [INFO]   TICKER: BBCA.JK
+12:08:54 [INFO] ######################################################################
+12:08:55 [INFO]   Data    : 2082 hari trading
+12:08:55 [INFO]   IS      : 2018-01-01 → 2023-11-08 (1457 hari)
+12:08:55 [INFO]   OOS     : 2023-11-08 → 2026-06-30 (625 hari)
+12:08:55 [ERROR] [BBCA.JK][BB v2] Error: name 'raw_data' is not defined
+12:08:55 [ERROR] Traceback (most recent call last):
+  File "D:\coding\quantstrategy\run_backtest.py", line 243, in main
+    raw_data=raw_data,
+             ^^^^^^^^
+NameError: name 'raw_data' is not defined
+
+12:08:55 [INFO] 
+======================================================================
+  SELESAI
+  Log file : results\logs\backtest_20260730_120854.log
+  Database : D:\coding\quantstrategy\results\backtest_results.db
+  Charts   : D:\coding\quantstrategy\results\charts/
+  CSV      : D:\coding\quantstrategy\results\csv/
+======================================================================

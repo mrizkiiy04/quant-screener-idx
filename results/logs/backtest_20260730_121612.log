@@ -1,0 +1,332 @@
+12:16:12 [INFO] === Backtest Session Start: run_20260730_121612 ===
+12:16:12 [INFO] Log : results\logs\backtest_20260730_121612.log
+12:16:12 [INFO] DB  : results\backtest_results.db
+12:16:12 [INFO] ======================================================================
+12:16:12 [INFO]   WALK-FORWARD BACKTEST — Terminal Edition
+12:16:12 [INFO]   Session ID : run_20260730_121612
+12:16:12 [INFO]   Tickers    : TLKM.JK, ASII.JK, BMRI.JK, BBRI.JK
+12:16:12 [INFO]   Periode    : 2018-01-01 s/d 2026-07-01
+12:16:12 [INFO]   Modal      : Rp 10,000,000
+12:16:12 [INFO]   WFO Mode   : ROLLING (Train 750 / Test 250)
+12:16:12 [INFO]   Strategi   : BB
+12:16:12 [INFO]   BB version : V2
+12:16:12 [INFO]   Output dir : D:\coding\quantstrategy\results
+12:16:12 [INFO] ======================================================================
+12:16:12 [INFO] 
+######################################################################
+12:16:12 [INFO]   TICKER: TLKM.JK
+12:16:12 [INFO] ######################################################################
+12:16:12 [INFO]   Data    : 2081 hari trading
+12:16:12 [INFO]   IS      : 2018-01-01 → 2023-11-08 (1456 hari)
+12:16:12 [INFO]   OOS     : 2023-11-08 → 2026-06-30 (625 hari)
+12:16:12 [INFO] 
+======================================================================
+12:16:12 [INFO]   ROLLING WFO (Anchored) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [TLKM.JK]
+12:16:12 [INFO]   Total Data: 2081 hari | Train=750 | Test=250
+12:16:12 [INFO] ======================================================================
+12:16:12 [INFO] 
+--- FOLD 1 ---
+12:16:12 [INFO] IS : 2018-01-01 → 2020-12-14 (750 hari)
+12:16:12 [INFO] OOS: 2020-12-15 → 2021-12-21 (250 hari)
+12:16:15 [INFO] Fold 1 Best Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 2.0}
+12:16:15 [INFO] Fold 1 IS Sharpe: 1.25 | Trades: 15
+12:16:15 [INFO] Fold 1 OOS Trades: 3
+12:16:15 [INFO] 
+--- FOLD 2 ---
+12:16:15 [INFO] IS : 2018-01-01 → 2021-12-21 (1000 hari)
+12:16:15 [INFO] OOS: 2021-12-22 → 2022-12-27 (250 hari)
+12:16:18 [INFO] Fold 2 Best Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 2.0}
+12:16:18 [INFO] Fold 2 IS Sharpe: 1.20 | Trades: 18
+12:16:18 [INFO] Fold 2 OOS Trades: 3
+12:16:18 [INFO] 
+--- FOLD 3 ---
+12:16:18 [INFO] IS : 2018-01-01 → 2022-12-27 (1250 hari)
+12:16:18 [INFO] OOS: 2022-12-28 → 2024-01-11 (250 hari)
+12:16:21 [INFO] Fold 3 Best Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 2.0}
+12:16:21 [INFO] Fold 3 IS Sharpe: 0.96 | Trades: 21
+12:16:21 [INFO] Fold 3 OOS Trades: 3
+12:16:21 [INFO] 
+--- FOLD 4 ---
+12:16:21 [INFO] IS : 2018-01-01 → 2024-01-11 (1500 hari)
+12:16:21 [INFO] OOS: 2024-01-12 → 2025-02-04 (250 hari)
+12:16:26 [INFO] Fold 4 Best Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+12:16:26 [INFO] Fold 4 IS Sharpe: 0.95 | Trades: 25
+12:16:26 [INFO] Fold 4 OOS Trades: 2
+12:16:26 [INFO] 
+--- FOLD 5 ---
+12:16:26 [INFO] IS : 2018-01-01 → 2025-02-04 (1750 hari)
+12:16:26 [INFO] OOS: 2025-02-05 → 2026-02-24 (250 hari)
+12:16:31 [INFO] Fold 5 Best Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+12:16:31 [INFO] Fold 5 IS Sharpe: 1.00 | Trades: 27
+12:16:31 [INFO] Fold 5 OOS Trades: 3
+12:16:31 [INFO] 
+--- FOLD 6 ---
+12:16:31 [INFO] IS : 2018-01-01 → 2026-02-24 (2000 hari)
+12:16:31 [INFO] OOS: 2026-02-25 → 2026-06-30 (81 hari)
+12:16:36 [INFO] Fold 6 Best Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+12:16:36 [INFO] Fold 6 IS Sharpe: 1.09 | Trades: 31
+12:16:36 [INFO] Fold 6 OOS Trades: 0
+12:16:36 [INFO] 
+--- PARAMETER STABILITY TABLE [TLKM.JK] ---
+12:16:36 [INFO] 
+ fold  oos_start    oos_end  oos_days  num_std  window  adx_threshold  vol_ratio_min  atr_mult
+    1 2020-12-15 2021-12-21       250      2.0      20             20            1.0       2.0
+    2 2021-12-22 2022-12-27       250      2.0      20             20            1.0       2.0
+    3 2022-12-28 2024-01-11       250      2.0      20             20            1.0       2.0
+    4 2024-01-12 2025-02-04       250      2.0      20             20            1.0       1.5
+    5 2025-02-05 2026-02-24       250      2.0      20             20            1.0       1.5
+    6 2026-02-25 2026-06-30        81      2.0      20             20            1.0       1.5
+12:16:36 [INFO] Parameter cukup stabil (sedikit perubahan ekstrem antar fold).
+12:16:36 [INFO] [CHART ROLLING] → results\charts\walkforward_ROLLING_bollinger_bands_v2_%25b+adx+vol+atr_TLKM_JK_20260730_121612.png
+12:16:36 [INFO] 
+----------------------------------------------------------------------
+12:16:36 [INFO]   HASIL AKHIR ROLLING WFO: Bollinger Bands v2 (%B+ADX+Vol+ATR) [TLKM.JK]
+12:16:36 [INFO] ----------------------------------------------------------------------
+12:16:36 [INFO] Jumlah Total Trade OOS            14
+12:16:36 [INFO] Win rate                          78.6%
+12:16:36 [INFO] Total return OOS                  57.2%
+12:16:36 [INFO] Sharpe Ratio                      1.02
+12:16:36 [INFO] Max drawdown                      -9.2%
+12:16:36 [INFO] ----------------------------------------------------------------------
+12:16:36 [INFO] VERDICT: ROBUST
+12:16:36 [INFO] [DB] Saved → ticker=TLKM.JK strategy=bb_v2_rolling
+12:16:36 [INFO] 
+######################################################################
+12:16:36 [INFO]   TICKER: ASII.JK
+12:16:36 [INFO] ######################################################################
+12:16:37 [INFO]   Data    : 2081 hari trading
+12:16:37 [INFO]   IS      : 2018-01-01 → 2023-11-08 (1456 hari)
+12:16:37 [INFO]   OOS     : 2023-11-08 → 2026-06-30 (625 hari)
+12:16:37 [INFO] 
+======================================================================
+12:16:37 [INFO]   ROLLING WFO (Anchored) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [ASII.JK]
+12:16:37 [INFO]   Total Data: 2081 hari | Train=750 | Test=250
+12:16:37 [INFO] ======================================================================
+12:16:37 [INFO] 
+--- FOLD 1 ---
+12:16:37 [INFO] IS : 2018-01-01 → 2020-12-14 (750 hari)
+12:16:37 [INFO] OOS: 2020-12-15 → 2021-12-21 (250 hari)
+12:16:39 [INFO] Fold 1 Best Params: {'num_std': 2.5, 'window': 25, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+12:16:39 [INFO] Fold 1 IS Sharpe: 0.82 | Trades: 9
+12:16:39 [INFO] Fold 1 OOS Trades: 1
+12:16:39 [INFO] 
+--- FOLD 2 ---
+12:16:39 [INFO] IS : 2018-01-01 → 2021-12-21 (1000 hari)
+12:16:39 [INFO] OOS: 2021-12-22 → 2022-12-27 (250 hari)
+12:16:42 [INFO] Fold 2 Best Params: {'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+12:16:42 [INFO] Fold 2 IS Sharpe: 0.63 | Trades: 12
+12:16:42 [INFO] Fold 2 OOS Trades: 1
+12:16:42 [INFO] 
+--- FOLD 3 ---
+12:16:42 [INFO] IS : 2018-01-01 → 2022-12-27 (1250 hari)
+12:16:42 [INFO] OOS: 2022-12-28 → 2024-01-11 (250 hari)
+12:16:46 [INFO] Fold 3 Best Params: {'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}
+12:16:46 [INFO] Fold 3 IS Sharpe: 0.52 | Trades: 11
+12:16:46 [INFO] Fold 3 OOS Trades: 1
+12:16:46 [INFO] 
+--- FOLD 4 ---
+12:16:46 [INFO] IS : 2018-01-01 → 2024-01-11 (1500 hari)
+12:16:46 [INFO] OOS: 2024-01-12 → 2025-02-04 (250 hari)
+12:16:50 [INFO] Fold 4 Best Params: {'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}
+12:16:50 [INFO] Fold 4 IS Sharpe: 0.52 | Trades: 12
+12:16:50 [INFO] Fold 4 OOS Trades: 2
+12:16:50 [INFO] 
+--- FOLD 5 ---
+12:16:50 [INFO] IS : 2018-01-01 → 2025-02-04 (1750 hari)
+12:16:50 [INFO] OOS: 2025-02-05 → 2026-02-24 (250 hari)
+12:16:55 [INFO] Fold 5 Best Params: {'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}
+12:16:55 [INFO] Fold 5 IS Sharpe: 0.49 | Trades: 15
+12:16:55 [INFO] Fold 5 OOS Trades: 0
+12:16:55 [INFO] 
+--- FOLD 6 ---
+12:16:55 [INFO] IS : 2018-01-01 → 2026-02-24 (2000 hari)
+12:16:55 [INFO] OOS: 2026-02-25 → 2026-06-30 (81 hari)
+12:17:00 [INFO] Fold 6 Best Params: {'num_std': 2.0, 'window': 25, 'adx_threshold': 20, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}
+12:17:00 [INFO] Fold 6 IS Sharpe: 0.57 | Trades: 17
+12:17:01 [INFO] Fold 6 OOS Trades: 0
+12:17:01 [INFO] 
+--- PARAMETER STABILITY TABLE [ASII.JK] ---
+12:17:01 [INFO] 
+ fold  oos_start    oos_end  oos_days  num_std  window  adx_threshold  vol_ratio_min  atr_mult
+    1 2020-12-15 2021-12-21       250      2.5      25             20            1.0       1.5
+    2 2021-12-22 2022-12-27       250      2.5      25             25            1.0       1.5
+    3 2022-12-28 2024-01-11       250      2.5      25             25            1.2       1.5
+    4 2024-01-12 2025-02-04       250      2.5      25             25            1.2       1.5
+    5 2025-02-05 2026-02-24       250      2.5      25             25            1.2       1.5
+    6 2026-02-25 2026-06-30        81      2.0      25             20            1.2       2.0
+12:17:01 [INFO] Parameter cukup stabil (sedikit perubahan ekstrem antar fold).
+12:17:01 [INFO] [CHART ROLLING] → results\charts\walkforward_ROLLING_bollinger_bands_v2_%25b+adx+vol+atr_ASII_JK_20260730_121612.png
+12:17:01 [INFO] 
+----------------------------------------------------------------------
+12:17:01 [INFO]   HASIL AKHIR ROLLING WFO: Bollinger Bands v2 (%B+ADX+Vol+ATR) [ASII.JK]
+12:17:01 [INFO] ----------------------------------------------------------------------
+12:17:01 [INFO] Jumlah Total Trade OOS            5
+12:17:01 [INFO] Win rate                          60.0%
+12:17:01 [INFO] Total return OOS                  2.6%
+12:17:01 [INFO] Sharpe Ratio                      0.13
+12:17:01 [INFO] Max drawdown                      -9.0%
+12:17:01 [INFO] ----------------------------------------------------------------------
+12:17:01 [INFO] VERDICT: LEMAH TAPI MASIH PROFIT
+12:17:01 [INFO] [DB] Saved → ticker=ASII.JK strategy=bb_v2_rolling
+12:17:01 [INFO] 
+######################################################################
+12:17:01 [INFO]   TICKER: BMRI.JK
+12:17:01 [INFO] ######################################################################
+12:17:01 [INFO]   Data    : 2082 hari trading
+12:17:01 [INFO]   IS      : 2018-01-01 → 2023-11-08 (1457 hari)
+12:17:01 [INFO]   OOS     : 2023-11-08 → 2026-06-30 (625 hari)
+12:17:01 [INFO] 
+======================================================================
+12:17:01 [INFO]   ROLLING WFO (Anchored) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [BMRI.JK]
+12:17:01 [INFO]   Total Data: 2082 hari | Train=750 | Test=250
+12:17:01 [INFO] ======================================================================
+12:17:01 [INFO] 
+--- FOLD 1 ---
+12:17:01 [INFO] IS : 2018-01-01 → 2020-12-11 (750 hari)
+12:17:01 [INFO] OOS: 2020-12-14 → 2021-12-20 (250 hari)
+12:17:04 [INFO] Fold 1 Best Params: {'num_std': 1.5, 'window': 25, 'adx_threshold': 20, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}
+12:17:04 [INFO] Fold 1 IS Sharpe: 1.00 | Trades: 10
+12:17:04 [INFO] Fold 1 OOS Trades: 2
+12:17:04 [INFO] 
+--- FOLD 2 ---
+12:17:04 [INFO] IS : 2018-01-01 → 2021-12-20 (1000 hari)
+12:17:04 [INFO] OOS: 2021-12-21 → 2022-12-26 (250 hari)
+12:17:07 [INFO] Fold 2 Best Params: {'num_std': 2.0, 'window': 15, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}
+12:17:07 [INFO] Fold 2 IS Sharpe: 1.09 | Trades: 19
+12:17:07 [INFO] Fold 2 OOS Trades: 1
+12:17:07 [INFO] 
+--- FOLD 3 ---
+12:17:07 [INFO] IS : 2018-01-01 → 2022-12-26 (1250 hari)
+12:17:07 [INFO] OOS: 2022-12-27 → 2024-01-10 (250 hari)
+12:17:11 [INFO] Fold 3 Best Params: {'num_std': 2.0, 'window': 15, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}
+12:17:11 [INFO] Fold 3 IS Sharpe: 0.98 | Trades: 20
+12:17:11 [INFO] Fold 3 OOS Trades: 2
+12:17:11 [INFO] 
+--- FOLD 4 ---
+12:17:11 [INFO] IS : 2018-01-01 → 2024-01-10 (1500 hari)
+12:17:11 [INFO] OOS: 2024-01-11 → 2025-02-03 (250 hari)
+12:17:15 [INFO] Fold 4 Best Params: {'num_std': 2.0, 'window': 15, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}
+12:17:15 [INFO] Fold 4 IS Sharpe: 0.94 | Trades: 23
+12:17:15 [INFO] Fold 4 OOS Trades: 5
+12:17:15 [INFO] 
+--- FOLD 5 ---
+12:17:15 [INFO] IS : 2018-01-01 → 2025-02-03 (1750 hari)
+12:17:15 [INFO] OOS: 2025-02-04 → 2026-02-23 (250 hari)
+12:17:20 [INFO] Fold 5 Best Params: {'num_std': 2.0, 'window': 15, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}
+12:17:20 [INFO] Fold 5 IS Sharpe: 0.71 | Trades: 28
+12:17:20 [INFO] Fold 5 OOS Trades: 4
+12:17:20 [INFO] 
+--- FOLD 6 ---
+12:17:20 [INFO] IS : 2018-01-01 → 2026-02-23 (2000 hari)
+12:17:20 [INFO] OOS: 2026-02-24 → 2026-06-30 (82 hari)
+12:17:25 [INFO] Fold 6 Best Params: {'num_std': 2.0, 'window': 15, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}
+12:17:25 [INFO] Fold 6 IS Sharpe: 0.90 | Trades: 34
+12:17:25 [INFO] Fold 6 OOS Trades: 2
+12:17:25 [INFO] 
+--- PARAMETER STABILITY TABLE [BMRI.JK] ---
+12:17:25 [INFO] 
+ fold  oos_start    oos_end  oos_days  num_std  window  adx_threshold  vol_ratio_min  atr_mult
+    1 2020-12-14 2021-12-20       250      1.5      25             20            1.2       2.0
+    2 2021-12-21 2022-12-26       250      2.0      15             25            1.2       2.0
+    3 2022-12-27 2024-01-10       250      2.0      15             25            1.2       2.0
+    4 2024-01-11 2025-02-03       250      2.0      15             25            1.2       2.0
+    5 2025-02-04 2026-02-23       250      2.0      15             25            1.2       2.0
+    6 2026-02-24 2026-06-30        82      2.0      15             25            1.2       2.0
+12:17:25 [INFO] Parameter cukup stabil (sedikit perubahan ekstrem antar fold).
+12:17:26 [INFO] [CHART ROLLING] → results\charts\walkforward_ROLLING_bollinger_bands_v2_%25b+adx+vol+atr_BMRI_JK_20260730_121612.png
+12:17:26 [INFO] 
+----------------------------------------------------------------------
+12:17:26 [INFO]   HASIL AKHIR ROLLING WFO: Bollinger Bands v2 (%B+ADX+Vol+ATR) [BMRI.JK]
+12:17:26 [INFO] ----------------------------------------------------------------------
+12:17:26 [INFO] Jumlah Total Trade OOS            16
+12:17:26 [INFO] Win rate                          62.5%
+12:17:26 [INFO] Total return OOS                  16.3%
+12:17:26 [INFO] Sharpe Ratio                      0.35
+12:17:26 [INFO] Max drawdown                      -10.4%
+12:17:26 [INFO] ----------------------------------------------------------------------
+12:17:26 [INFO] VERDICT: LEMAH TAPI MASIH PROFIT
+12:17:26 [INFO] [DB] Saved → ticker=BMRI.JK strategy=bb_v2_rolling
+12:17:26 [INFO] 
+######################################################################
+12:17:26 [INFO]   TICKER: BBRI.JK
+12:17:26 [INFO] ######################################################################
+12:17:26 [INFO]   Data    : 2082 hari trading
+12:17:26 [INFO]   IS      : 2018-01-01 → 2023-11-08 (1457 hari)
+12:17:26 [INFO]   OOS     : 2023-11-08 → 2026-06-30 (625 hari)
+12:17:26 [INFO] 
+======================================================================
+12:17:26 [INFO]   ROLLING WFO (Anchored) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [BBRI.JK]
+12:17:26 [INFO]   Total Data: 2082 hari | Train=750 | Test=250
+12:17:26 [INFO] ======================================================================
+12:17:26 [INFO] 
+--- FOLD 1 ---
+12:17:26 [INFO] IS : 2018-01-01 → 2020-12-11 (750 hari)
+12:17:26 [INFO] OOS: 2020-12-14 → 2021-12-20 (250 hari)
+12:17:28 [INFO] Fold 1 Best Params: {'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.5, 'atr_mult': 1.5}
+12:17:28 [INFO] Fold 1 IS Sharpe: 1.21 | Trades: 7
+12:17:28 [INFO] Fold 1 OOS Trades: 1
+12:17:28 [INFO] 
+--- FOLD 2 ---
+12:17:28 [INFO] IS : 2018-01-01 → 2021-12-20 (1000 hari)
+12:17:28 [INFO] OOS: 2021-12-21 → 2022-12-26 (250 hari)
+12:17:31 [INFO] Fold 2 Best Params: {'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.5, 'atr_mult': 1.5}
+12:17:31 [INFO] Fold 2 IS Sharpe: 0.87 | Trades: 8
+12:17:31 [INFO] Fold 2 OOS Trades: 1
+12:17:31 [INFO] 
+--- FOLD 3 ---
+12:17:31 [INFO] IS : 2018-01-01 → 2022-12-26 (1250 hari)
+12:17:31 [INFO] OOS: 2022-12-27 → 2024-01-10 (250 hari)
+12:17:35 [INFO] Fold 3 Best Params: {'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+12:17:35 [INFO] Fold 3 IS Sharpe: 0.83 | Trades: 10
+12:17:35 [INFO] Fold 3 OOS Trades: 1
+12:17:35 [INFO] 
+--- FOLD 4 ---
+12:17:35 [INFO] IS : 2018-01-01 → 2024-01-10 (1500 hari)
+12:17:35 [INFO] OOS: 2024-01-11 → 2025-02-03 (250 hari)
+12:17:40 [INFO] Fold 4 Best Params: {'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.5, 'atr_mult': 1.5}
+12:17:40 [INFO] Fold 4 IS Sharpe: 0.77 | Trades: 11
+12:17:40 [INFO] Fold 4 OOS Trades: 1
+12:17:40 [INFO] 
+--- FOLD 5 ---
+12:17:40 [INFO] IS : 2018-01-01 → 2025-02-03 (1750 hari)
+12:17:40 [INFO] OOS: 2025-02-04 → 2026-02-23 (250 hari)
+12:17:45 [INFO] Fold 5 Best Params: {'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.5, 'atr_mult': 1.5}
+12:17:45 [INFO] Fold 5 IS Sharpe: 0.77 | Trades: 12
+12:17:45 [INFO] Fold 5 OOS Trades: 0
+12:17:45 [INFO] 
+--- FOLD 6 ---
+12:17:45 [INFO] IS : 2018-01-01 → 2026-02-23 (2000 hari)
+12:17:45 [INFO] OOS: 2026-02-24 → 2026-06-30 (82 hari)
+12:17:50 [INFO] Fold 6 Best Params: {'num_std': 1.5, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.5, 'atr_mult': 1.5}
+12:17:50 [INFO] Fold 6 IS Sharpe: 0.93 | Trades: 27
+12:17:50 [INFO] Fold 6 OOS Trades: 2
+12:17:50 [INFO] 
+--- PARAMETER STABILITY TABLE [BBRI.JK] ---
+12:17:50 [INFO] 
+ fold  oos_start    oos_end  oos_days  num_std  window  adx_threshold  vol_ratio_min  atr_mult
+    1 2020-12-14 2021-12-20       250      2.5      25             25            1.5       1.5
+    2 2021-12-21 2022-12-26       250      2.5      25             25            1.5       1.5
+    3 2022-12-27 2024-01-10       250      2.5      25             25            1.0       1.5
+    4 2024-01-11 2025-02-03       250      2.5      25             25            1.5       1.5
+    5 2025-02-04 2026-02-23       250      2.5      25             25            1.5       1.5
+    6 2026-02-24 2026-06-30        82      1.5      20             25            1.5       1.5
+12:17:50 [INFO] Parameter cukup stabil (sedikit perubahan ekstrem antar fold).
+12:17:51 [INFO] [CHART ROLLING] → results\charts\walkforward_ROLLING_bollinger_bands_v2_%25b+adx+vol+atr_BBRI_JK_20260730_121612.png
+12:17:51 [INFO] 
+----------------------------------------------------------------------
+12:17:51 [INFO]   HASIL AKHIR ROLLING WFO: Bollinger Bands v2 (%B+ADX+Vol+ATR) [BBRI.JK]
+12:17:51 [INFO] ----------------------------------------------------------------------
+12:17:51 [INFO] Jumlah Total Trade OOS            6
+12:17:51 [INFO] Win rate                          33.3%
+12:17:51 [INFO] Total return OOS                  -4.9%
+12:17:51 [INFO] Sharpe Ratio                      -0.16
+12:17:51 [INFO] Max drawdown                      -9.0%
+12:17:51 [INFO] ----------------------------------------------------------------------
+12:17:51 [INFO] VERDICT: GAGAL
+12:17:51 [INFO] [DB] Saved → ticker=BBRI.JK strategy=bb_v2_rolling
+12:17:51 [INFO] 
+===============================================================================================
+12:17:51 [INFO]   RINGKASAN PERBANDINGAN MULTI-TICKER WALK-FORWARD
+12:17:51 [INFO] ===============================================================================================
+12:17:51 [INFO] Ticker      Strategi                          Skor   OOS Ret  OOS Shrp   OOS WR  Leakage  Verdict
+12:17:51 [INFO] -----------------------------------------------------------------------------------------------

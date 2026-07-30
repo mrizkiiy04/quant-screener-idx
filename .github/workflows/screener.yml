@@ -1,0 +1,46 @@
+name: Daily Quant Screener
+
+on:
+  schedule:
+    # 08:50 UTC = 15:50 WIB (Senin - Jumat)
+    # Waktu pre-closing BEI
+    - cron: '50 8 * * 1-5'
+  
+  # Memungkinkan kita menjalankan script ini secara manual dari tombol di GitHub
+  workflow_dispatch:
+
+jobs:
+  run-screener:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Screener (Generate signals.json)
+        run: python run_screener.py
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          
+          # Cek apakah ada perubahan di folder public (signals.json)
+          if git diff --quiet public/signals.json; then
+            echo "Tidak ada sinyal baru atau perubahan data hari ini."
+          else
+            git add public/signals.json
+            git commit -m "🤖 Update daily signals [skip ci]"
+            git push
+          fi

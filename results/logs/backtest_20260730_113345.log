@@ -1,0 +1,157 @@
+11:33:45 [INFO] === Backtest Session Start: run_20260730_113345 ===
+11:33:45 [INFO] Log : results\logs\backtest_20260730_113345.log
+11:33:45 [INFO] DB  : results\backtest_results.db
+11:33:45 [INFO] ======================================================================
+11:33:45 [INFO]   WALK-FORWARD BACKTEST — Terminal Edition
+11:33:45 [INFO]   Session ID : run_20260730_113345
+11:33:45 [INFO]   Tickers    : TLKM.JK, BMRI.JK, BBCA.JK, ASII.JK, BBRI.JK
+11:33:45 [INFO]   Periode    : 2021-01-01 s/d 2026-07-01
+11:33:45 [INFO]   Modal      : Rp 10,000,000
+11:33:45 [INFO]   IS/OOS     : 70% / 30%
+11:33:45 [INFO]   Strategi   : BB
+11:33:45 [INFO]   BB version : V2
+11:33:45 [INFO]   Output dir : D:\coding\quantstrategy\results
+11:33:45 [INFO] ======================================================================
+11:33:45 [INFO] 
+######################################################################
+11:33:45 [INFO]   TICKER: TLKM.JK
+11:33:45 [INFO] ######################################################################
+11:33:47 [INFO]   Data    : 1321 hari trading
+11:33:47 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+11:33:47 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+11:33:47 [INFO] 
+======================================================================
+11:33:47 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [TLKM.JK]
+11:33:47 [INFO] ======================================================================
+11:33:50 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+11:33:50 [INFO]   #1 params={'num_std': 2.0, 'window': 25, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}  Sharpe(IS)=0.65  Return(IS)=15.6%  Trades=9
+11:33:50 [INFO]   #2 params={'num_std': 2.0, 'window': 25, 'adx_threshold': 20, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}  Sharpe(IS)=0.60  Return(IS)=13.1%  Trades=7
+11:33:50 [INFO]   #3 params={'num_std': 2.0, 'window': 25, 'adx_threshold': 20, 'vol_ratio_min': 1.5, 'atr_mult': 1.5}  Sharpe(IS)=0.60  Return(IS)=13.1%  Trades=7
+11:33:50 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 2.0, 'window': 25, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+11:33:50 [ERROR] [TLKM.JK][BB v2] Error: add_bb_v2_signals() got an unexpected keyword argument 'atr_mult'
+11:33:50 [ERROR] Traceback (most recent call last):
+  File "D:\coding\quantstrategy\run_backtest.py", line 219, in main
+    result = run_walkforward(
+             ^^^^^^^^^^^^^^^^
+  File "D:\coding\quantstrategy\src\walkforward.py", line 110, in run_walkforward
+    df_is, em_is, xm_is = signal_fn(is_data, **best_params)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: add_bb_v2_signals() got an unexpected keyword argument 'atr_mult'
+
+11:33:50 [INFO] 
+######################################################################
+11:33:50 [INFO]   TICKER: BMRI.JK
+11:33:50 [INFO] ######################################################################
+11:33:50 [INFO]   Data    : 1321 hari trading
+11:33:50 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+11:33:50 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+11:33:50 [INFO] 
+======================================================================
+11:33:50 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [BMRI.JK]
+11:33:50 [INFO] ======================================================================
+11:33:53 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+11:33:53 [INFO]   #1 params={'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 2.0}  Sharpe(IS)=0.97  Return(IS)=39.1%  Trades=11
+11:33:53 [INFO]   #2 params={'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}  Sharpe(IS)=0.97  Return(IS)=39.1%  Trades=11
+11:33:53 [INFO]   #3 params={'num_std': 1.5, 'window': 15, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 2.0}  Sharpe(IS)=0.97  Return(IS)=39.3%  Trades=15
+11:33:53 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 2.0}
+11:33:53 [ERROR] [BMRI.JK][BB v2] Error: add_bb_v2_signals() got an unexpected keyword argument 'atr_mult'
+11:33:53 [ERROR] Traceback (most recent call last):
+  File "D:\coding\quantstrategy\run_backtest.py", line 219, in main
+    result = run_walkforward(
+             ^^^^^^^^^^^^^^^^
+  File "D:\coding\quantstrategy\src\walkforward.py", line 110, in run_walkforward
+    df_is, em_is, xm_is = signal_fn(is_data, **best_params)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: add_bb_v2_signals() got an unexpected keyword argument 'atr_mult'
+
+11:33:53 [INFO] 
+######################################################################
+11:33:53 [INFO]   TICKER: BBCA.JK
+11:33:53 [INFO] ######################################################################
+11:33:54 [INFO]   Data    : 1321 hari trading
+11:33:54 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+11:33:54 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+11:33:54 [INFO] 
+======================================================================
+11:33:54 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [BBCA.JK]
+11:33:54 [INFO] ======================================================================
+11:33:58 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+11:33:58 [INFO]   #1 params={'num_std': 1.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.5, 'atr_mult': 1.5}  Sharpe(IS)=1.00  Return(IS)=27.8%  Trades=11
+11:33:58 [INFO]   #2 params={'num_std': 1.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}  Sharpe(IS)=0.98  Return(IS)=36.5%  Trades=21
+11:33:58 [INFO]   #3 params={'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 1.5}  Sharpe(IS)=0.95  Return(IS)=26.7%  Trades=13
+11:33:58 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 1.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.5, 'atr_mult': 1.5}
+11:33:58 [ERROR] [BBCA.JK][BB v2] Error: add_bb_v2_signals() got an unexpected keyword argument 'atr_mult'
+11:33:58 [ERROR] Traceback (most recent call last):
+  File "D:\coding\quantstrategy\run_backtest.py", line 219, in main
+    result = run_walkforward(
+             ^^^^^^^^^^^^^^^^
+  File "D:\coding\quantstrategy\src\walkforward.py", line 110, in run_walkforward
+    df_is, em_is, xm_is = signal_fn(is_data, **best_params)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: add_bb_v2_signals() got an unexpected keyword argument 'atr_mult'
+
+11:33:58 [INFO] 
+######################################################################
+11:33:58 [INFO]   TICKER: ASII.JK
+11:33:58 [INFO] ######################################################################
+11:33:58 [INFO]   Data    : 1321 hari trading
+11:33:58 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+11:33:58 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+11:33:58 [INFO] 
+======================================================================
+11:33:58 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [ASII.JK]
+11:33:58 [INFO] ======================================================================
+11:34:01 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+11:34:01 [INFO]   #1 params={'num_std': 2.5, 'window': 15, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}  Sharpe(IS)=0.69  Return(IS)=13.8%  Trades=5
+11:34:01 [INFO]   #2 params={'num_std': 2.5, 'window': 25, 'adx_threshold': 25, 'vol_ratio_min': 1.2, 'atr_mult': 2.0}  Sharpe(IS)=0.64  Return(IS)=17.2%  Trades=6
+11:34:01 [INFO]   #3 params={'num_std': 2.5, 'window': 15, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 2.0}  Sharpe(IS)=0.63  Return(IS)=12.6%  Trades=5
+11:34:01 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 2.5, 'window': 15, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+11:34:01 [ERROR] [ASII.JK][BB v2] Error: add_bb_v2_signals() got an unexpected keyword argument 'atr_mult'
+11:34:01 [ERROR] Traceback (most recent call last):
+  File "D:\coding\quantstrategy\run_backtest.py", line 219, in main
+    result = run_walkforward(
+             ^^^^^^^^^^^^^^^^
+  File "D:\coding\quantstrategy\src\walkforward.py", line 110, in run_walkforward
+    df_is, em_is, xm_is = signal_fn(is_data, **best_params)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: add_bb_v2_signals() got an unexpected keyword argument 'atr_mult'
+
+11:34:01 [INFO] 
+######################################################################
+11:34:01 [INFO]   TICKER: BBRI.JK
+11:34:01 [INFO] ######################################################################
+11:34:02 [INFO]   Data    : 1321 hari trading
+11:34:02 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+11:34:02 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+11:34:02 [INFO] 
+======================================================================
+11:34:02 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands v2 (%B+ADX+Vol+ATR) [BBRI.JK]
+11:34:02 [INFO] ======================================================================
+11:34:05 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+11:34:05 [INFO]   #1 params={'num_std': 1.5, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}  Sharpe(IS)=0.28  Return(IS)=6.4%  Trades=12
+11:34:05 [INFO]   #2 params={'num_std': 2.0, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}  Sharpe(IS)=0.27  Return(IS)=5.7%  Trades=10
+11:34:05 [INFO]   #3 params={'num_std': 2.5, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}  Sharpe(IS)=0.20  Return(IS)=3.5%  Trades=7
+11:34:05 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 1.5, 'window': 20, 'adx_threshold': 25, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+11:34:05 [ERROR] [BBRI.JK][BB v2] Error: add_bb_v2_signals() got an unexpected keyword argument 'atr_mult'
+11:34:05 [ERROR] Traceback (most recent call last):
+  File "D:\coding\quantstrategy\run_backtest.py", line 219, in main
+    result = run_walkforward(
+             ^^^^^^^^^^^^^^^^
+  File "D:\coding\quantstrategy\src\walkforward.py", line 110, in run_walkforward
+    df_is, em_is, xm_is = signal_fn(is_data, **best_params)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: add_bb_v2_signals() got an unexpected keyword argument 'atr_mult'
+
+11:34:05 [INFO] 
+======================================================================
+  SELESAI
+  Log file : results\logs\backtest_20260730_113345.log
+  Database : D:\coding\quantstrategy\results\backtest_results.db
+  Charts   : D:\coding\quantstrategy\results\charts/
+  CSV      : D:\coding\quantstrategy\results\csv/
+======================================================================

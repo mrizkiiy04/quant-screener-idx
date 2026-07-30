@@ -1,0 +1,407 @@
+10:58:49 [INFO] === Backtest Session Start: run_20260730_105849 ===
+10:58:49 [INFO] Log : results\logs\backtest_20260730_105849.log
+10:58:49 [INFO] DB  : results\backtest_results.db
+10:58:49 [INFO] ======================================================================
+10:58:49 [INFO]   WALK-FORWARD BACKTEST — Terminal Edition
+10:58:49 [INFO]   Session ID : run_20260730_105849
+10:58:49 [INFO]   Tickers    : BMRI.JK, BBCA.JK, TLKM.JK, ASII.JK, BBRI.JK
+10:58:49 [INFO]   Periode    : 2021-01-01 s/d 2026-07-01
+10:58:49 [INFO]   Modal      : Rp 10,000,000
+10:58:49 [INFO]   IS/OOS     : 70% / 30%
+10:58:49 [INFO]   Strategi   : ALL
+10:58:49 [INFO]   Output dir : D:\coding\quantstrategy\results
+10:58:49 [INFO] ======================================================================
+10:58:49 [INFO] 
+######################################################################
+10:58:49 [INFO]   TICKER: BMRI.JK
+10:58:49 [INFO] ######################################################################
+10:58:53 [INFO]   Data    : 1321 hari trading
+10:58:53 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+10:58:53 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+10:58:53 [INFO] 
+======================================================================
+10:58:53 [INFO]   GRID SEARCH (In-Sample) — RSI(2) Mean Reversion [BMRI.JK]
+10:58:53 [INFO] ======================================================================
+10:58:54 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+10:58:54 [INFO]   #1 params={'rsi_entry': 20, 'rsi_exit': 70, 'sma_exit': 10}  Sharpe(IS)=0.81  Return(IS)=31.4%  Trades=51
+10:58:54 [INFO]   #2 params={'rsi_entry': 15, 'rsi_exit': 70, 'sma_exit': 10}  Sharpe(IS)=0.71  Return(IS)=25.2%  Trades=37
+10:58:54 [INFO]   #3 params={'rsi_entry': 10, 'rsi_exit': 70, 'sma_exit': 10}  Sharpe(IS)=0.71  Return(IS)=22.2%  Trades=25
+10:58:54 [INFO] 
+>>> Parameter terkunci untuk OOS: {'rsi_entry': 20, 'rsi_exit': 70, 'sma_exit': 10}
+10:58:54 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+10:58:54 [INFO] 
+----------------------------------------------------------------------
+10:58:54 [INFO]   HASIL: RSI(2) Mean Reversion [BMRI.JK]
+10:58:54 [INFO] ----------------------------------------------------------------------
+10:58:54 [INFO] Metrik                    In-Sample     Out-of-Sample
+10:58:54 [INFO] Jumlah trade                     51                 5
+10:58:54 [INFO] Win rate                      76.5%             40.0%
+10:58:54 [INFO] Total return                  31.4%            -13.6%
+10:58:54 [INFO] CAGR                           9.6%            -16.3%
+10:58:54 [INFO] Sharpe                         0.81             -1.20
+10:58:54 [INFO] Max drawdown                 -13.1%            -16.6%
+10:58:54 [INFO] Calmar                         0.73             -0.98
+10:58:54 [INFO] Profit Factor                  2.08              0.52
+10:58:54 [INFO] Avg Hold (days)                 5.8               8.8
+10:58:54 [INFO] ----------------------------------------------------------------------
+10:58:54 [INFO]   Skor Ketepatan (IS→OOS): 0/100  (degradasi Sharpe: 249%)
+10:58:54 [INFO]   GAGAL — OOS rugi/flat (Sharpe atau return <= 0), strategi ini kemungkinan besar overfit ke data IS
+10:58:54 [INFO] ======================================================================
+10:58:54 [INFO] [CSV] IS trades → results\csv\trades_IS_rsi2_mean_reversion_BMRI_JK_20260730_105849.csv
+10:58:54 [INFO] [CSV] OOS trades → results\csv\trades_OOS_rsi2_mean_reversion_BMRI_JK_20260730_105849.csv
+10:58:54 [INFO] [CSV] Equity curve → results\csv\equity_rsi2_mean_reversion_BMRI_JK_20260730_105849.csv
+10:58:54 [INFO] [CHART] → results\charts\walkforward_rsi2_mean_reversion_BMRI_JK_20260730_105849.png
+10:58:54 [INFO] [DB] Saved → ticker=BMRI.JK strategy=rsi2
+10:58:54 [INFO] 
+======================================================================
+10:58:54 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands Mean Reversion [BMRI.JK]
+10:58:54 [INFO] ======================================================================
+10:58:54 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+10:58:54 [INFO]   #1 params={'num_std': 1.5, 'window': 20}  Sharpe(IS)=0.98  Return(IS)=53.4%  Trades=20
+10:58:54 [INFO]   #2 params={'num_std': 1.5, 'window': 30}  Sharpe(IS)=0.95  Return(IS)=52.6%  Trades=13
+10:58:54 [INFO]   #3 params={'num_std': 2.5, 'window': 20}  Sharpe(IS)=0.94  Return(IS)=30.6%  Trades=7
+10:58:54 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 1.5, 'window': 20}
+10:58:54 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+10:58:54 [INFO] 
+----------------------------------------------------------------------
+10:58:54 [INFO]   HASIL: Bollinger Bands Mean Reversion [BMRI.JK]
+10:58:54 [INFO] ----------------------------------------------------------------------
+10:58:54 [INFO] Metrik                    In-Sample     Out-of-Sample
+10:58:54 [INFO] Jumlah trade                     20                11
+10:58:54 [INFO] Win rate                      80.0%             54.5%
+10:58:54 [INFO] Total return                  53.4%              5.8%
+10:58:54 [INFO] CAGR                          12.2%              3.6%
+10:58:54 [INFO] Sharpe                         0.98              0.28
+10:58:54 [INFO] Max drawdown                  -9.8%            -20.2%
+10:58:54 [INFO] Calmar                         1.24              0.18
+10:58:54 [INFO] Profit Factor                  8.56              1.25
+10:58:54 [INFO] Avg Hold (days)                11.4              21.3
+10:58:54 [INFO] ----------------------------------------------------------------------
+10:58:54 [INFO]   Skor Ketepatan (IS→OOS): 28/100  (degradasi Sharpe: 72%)
+10:58:54 [INFO]   LEMAH TAPI MASIH PROFIT — degradasi besar (kemungkinan winner's curse dari grid search), tapi OOS tidak rugi. Jangan andalkan ukuran return IS, tapi strategi belum tentu tidak berguna
+10:58:54 [INFO] ======================================================================
+10:58:54 [INFO] [CSV] IS trades → results\csv\trades_IS_bollinger_bands_mean_reversion_BMRI_JK_20260730_105849.csv
+10:58:54 [INFO] [CSV] OOS trades → results\csv\trades_OOS_bollinger_bands_mean_reversion_BMRI_JK_20260730_105849.csv
+10:58:54 [INFO] [CSV] Equity curve → results\csv\equity_bollinger_bands_mean_reversion_BMRI_JK_20260730_105849.csv
+10:58:54 [INFO] [CHART] → results\charts\walkforward_bollinger_bands_mean_reversion_BMRI_JK_20260730_105849.png
+10:58:54 [INFO] [DB] Saved → ticker=BMRI.JK strategy=bb
+10:58:54 [INFO] 
+######################################################################
+10:58:54 [INFO]   TICKER: BBCA.JK
+10:58:54 [INFO] ######################################################################
+10:58:55 [INFO]   Data    : 1321 hari trading
+10:58:55 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+10:58:55 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+10:58:55 [INFO] 
+======================================================================
+10:58:55 [INFO]   GRID SEARCH (In-Sample) — RSI(2) Mean Reversion [BBCA.JK]
+10:58:55 [INFO] ======================================================================
+10:58:56 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+10:58:56 [INFO]   #1 params={'rsi_entry': 15, 'rsi_exit': 70, 'sma_exit': 5}  Sharpe(IS)=1.08  Return(IS)=29.3%  Trades=42
+10:58:56 [INFO]   #2 params={'rsi_entry': 15, 'rsi_exit': 60, 'sma_exit': 10}  Sharpe(IS)=1.07  Return(IS)=29.5%  Trades=40
+10:58:56 [INFO]   #3 params={'rsi_entry': 15, 'rsi_exit': 70, 'sma_exit': 10}  Sharpe(IS)=1.04  Return(IS)=30.7%  Trades=37
+10:58:56 [INFO] 
+>>> Parameter terkunci untuk OOS: {'rsi_entry': 15, 'rsi_exit': 70, 'sma_exit': 5}
+10:58:56 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+10:58:56 [INFO] 
+----------------------------------------------------------------------
+10:58:56 [INFO]   HASIL: RSI(2) Mean Reversion [BBCA.JK]
+10:58:56 [INFO] ----------------------------------------------------------------------
+10:58:56 [INFO] Metrik                    In-Sample     Out-of-Sample
+10:58:56 [INFO] Jumlah trade                     42                 0
+10:58:56 [INFO] Win rate                      66.7%              0.0%
+10:58:56 [INFO] Total return                  29.3%              0.0%
+10:58:56 [INFO] CAGR                           9.0%              0.0%
+10:58:56 [INFO] Sharpe                         1.08              0.00
+10:58:56 [INFO] Max drawdown                  -7.0%              0.0%
+10:58:56 [INFO] Calmar                         1.28              0.00
+10:58:56 [INFO] Profit Factor                  3.55              0.00
+10:58:56 [INFO] Avg Hold (days)                 3.9               0.0
+10:58:56 [INFO] ----------------------------------------------------------------------
+10:58:56 [INFO]   INCONCLUSIVE — OOS cuma 0 trade (min 5). Bukan berarti strategi gagal; sinyal entry memang jarang/tidak muncul di periode OOS ini. Coba perpanjang periode data atau longgarkan parameter.
+10:58:56 [INFO] ======================================================================
+10:58:56 [INFO] [CSV] IS trades → results\csv\trades_IS_rsi2_mean_reversion_BBCA_JK_20260730_105849.csv
+10:58:56 [INFO] [CSV] Equity curve → results\csv\equity_rsi2_mean_reversion_BBCA_JK_20260730_105849.csv
+10:58:56 [INFO] [CHART] → results\charts\walkforward_rsi2_mean_reversion_BBCA_JK_20260730_105849.png
+10:58:56 [INFO] [DB] Saved → ticker=BBCA.JK strategy=rsi2
+10:58:56 [INFO] 
+======================================================================
+10:58:56 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands Mean Reversion [BBCA.JK]
+10:58:56 [INFO] ======================================================================
+10:58:56 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+10:58:56 [INFO]   #1 params={'num_std': 1.5, 'window': 10}  Sharpe(IS)=1.24  Return(IS)=56.7%  Trades=37
+10:58:56 [INFO]   #2 params={'num_std': 1.5, 'window': 20}  Sharpe(IS)=1.09  Return(IS)=51.8%  Trades=25
+10:58:56 [INFO]   #3 params={'num_std': 2.0, 'window': 20}  Sharpe(IS)=1.04  Return(IS)=37.4%  Trades=13
+10:58:56 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 1.5, 'window': 10}
+10:58:56 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+10:58:56 [INFO] 
+----------------------------------------------------------------------
+10:58:56 [INFO]   HASIL: Bollinger Bands Mean Reversion [BBCA.JK]
+10:58:56 [INFO] ----------------------------------------------------------------------
+10:58:56 [INFO] Metrik                    In-Sample     Out-of-Sample
+10:58:56 [INFO] Jumlah trade                     37                22
+10:58:56 [INFO] Win rate                      78.4%             45.5%
+10:58:56 [INFO] Total return                  56.7%              4.2%
+10:58:56 [INFO] CAGR                          12.7%              2.5%
+10:58:56 [INFO] Sharpe                         1.24              0.23
+10:58:56 [INFO] Max drawdown                  -5.5%            -16.9%
+10:58:56 [INFO] Calmar                         2.32              0.15
+10:58:56 [INFO] Profit Factor                  5.25              1.28
+10:58:56 [INFO] Avg Hold (days)                 8.8              11.7
+10:58:56 [INFO] ----------------------------------------------------------------------
+10:58:56 [INFO]   Skor Ketepatan (IS→OOS): 19/100  (degradasi Sharpe: 81%)
+10:58:56 [INFO]   LEMAH TAPI MASIH PROFIT — degradasi besar (kemungkinan winner's curse dari grid search), tapi OOS tidak rugi. Jangan andalkan ukuran return IS, tapi strategi belum tentu tidak berguna
+10:58:56 [INFO] ======================================================================
+10:58:56 [INFO] [CSV] IS trades → results\csv\trades_IS_bollinger_bands_mean_reversion_BBCA_JK_20260730_105849.csv
+10:58:56 [INFO] [CSV] OOS trades → results\csv\trades_OOS_bollinger_bands_mean_reversion_BBCA_JK_20260730_105849.csv
+10:58:56 [INFO] [CSV] Equity curve → results\csv\equity_bollinger_bands_mean_reversion_BBCA_JK_20260730_105849.csv
+10:58:56 [INFO] [CHART] → results\charts\walkforward_bollinger_bands_mean_reversion_BBCA_JK_20260730_105849.png
+10:58:56 [INFO] [DB] Saved → ticker=BBCA.JK strategy=bb
+10:58:56 [INFO] 
+######################################################################
+10:58:56 [INFO]   TICKER: TLKM.JK
+10:58:56 [INFO] ######################################################################
+10:58:57 [INFO]   Data    : 1321 hari trading
+10:58:57 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+10:58:57 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+10:58:57 [INFO] 
+======================================================================
+10:58:57 [INFO]   GRID SEARCH (In-Sample) — RSI(2) Mean Reversion [TLKM.JK]
+10:58:57 [INFO] ======================================================================
+10:58:57 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+10:58:57 [INFO]   #1 params={'rsi_entry': 10, 'rsi_exit': 50, 'sma_exit': 5}  Sharpe(IS)=0.33  Return(IS)=4.2%  Trades=15
+10:58:57 [INFO]   #2 params={'rsi_entry': 10, 'rsi_exit': 50, 'sma_exit': 10}  Sharpe(IS)=0.33  Return(IS)=4.2%  Trades=15
+10:58:57 [INFO]   #3 params={'rsi_entry': 5, 'rsi_exit': 70, 'sma_exit': 10}  Sharpe(IS)=0.32  Return(IS)=4.2%  Trades=7
+10:58:57 [INFO] 
+>>> Parameter terkunci untuk OOS: {'rsi_entry': 10, 'rsi_exit': 50, 'sma_exit': 5}
+10:58:57 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+10:58:57 [INFO] 
+----------------------------------------------------------------------
+10:58:57 [INFO]   HASIL: RSI(2) Mean Reversion [TLKM.JK]
+10:58:57 [INFO] ----------------------------------------------------------------------
+10:58:57 [INFO] Metrik                    In-Sample     Out-of-Sample
+10:58:57 [INFO] Jumlah trade                     15                 6
+10:58:57 [INFO] Win rate                      66.7%             50.0%
+10:58:57 [INFO] Total return                   4.2%             -0.3%
+10:58:57 [INFO] CAGR                           1.4%             -0.4%
+10:58:57 [INFO] Sharpe                         0.33              0.02
+10:58:57 [INFO] Max drawdown                  -4.4%             -9.1%
+10:58:57 [INFO] Calmar                         0.32             -0.05
+10:58:57 [INFO] Profit Factor                  1.67              0.95
+10:58:57 [INFO] Avg Hold (days)                 4.3               5.5
+10:58:57 [INFO] ----------------------------------------------------------------------
+10:58:57 [INFO]   Skor Ketepatan (IS→OOS): 5/100  (degradasi Sharpe: 95%)
+10:58:57 [INFO]   GAGAL — OOS rugi/flat (Sharpe atau return <= 0), strategi ini kemungkinan besar overfit ke data IS
+10:58:57 [INFO] ======================================================================
+10:58:57 [INFO] [CSV] IS trades → results\csv\trades_IS_rsi2_mean_reversion_TLKM_JK_20260730_105849.csv
+10:58:57 [INFO] [CSV] OOS trades → results\csv\trades_OOS_rsi2_mean_reversion_TLKM_JK_20260730_105849.csv
+10:58:57 [INFO] [CSV] Equity curve → results\csv\equity_rsi2_mean_reversion_TLKM_JK_20260730_105849.csv
+10:58:57 [INFO] [CHART] → results\charts\walkforward_rsi2_mean_reversion_TLKM_JK_20260730_105849.png
+10:58:57 [INFO] [DB] Saved → ticker=TLKM.JK strategy=rsi2
+10:58:57 [INFO] 
+======================================================================
+10:58:57 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands Mean Reversion [TLKM.JK]
+10:58:57 [INFO] ======================================================================
+10:58:58 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+10:58:58 [INFO]   #1 params={'num_std': 2.0, 'window': 20}  Sharpe(IS)=0.29  Return(IS)=11.3%  Trades=17
+10:58:58 [INFO]   #2 params={'num_std': 1.5, 'window': 20}  Sharpe(IS)=0.16  Return(IS)=4.5%  Trades=21
+10:58:58 [INFO]   #3 params={'num_std': 2.5, 'window': 20}  Sharpe(IS)=0.13  Return(IS)=2.6%  Trades=8
+10:58:58 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 2.0, 'window': 20}
+10:58:58 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+10:58:58 [INFO] 
+----------------------------------------------------------------------
+10:58:58 [INFO]   HASIL: Bollinger Bands Mean Reversion [TLKM.JK]
+10:58:58 [INFO] ----------------------------------------------------------------------
+10:58:58 [INFO] Metrik                    In-Sample     Out-of-Sample
+10:58:58 [INFO] Jumlah trade                     17                 7
+10:58:58 [INFO] Win rate                      64.7%            100.0%
+10:58:58 [INFO] Total return                  11.3%             47.7%
+10:58:58 [INFO] CAGR                           2.9%             27.5%
+10:58:58 [INFO] Sharpe                         0.29              1.23
+10:58:58 [INFO] Max drawdown                 -27.6%            -15.1%
+10:58:58 [INFO] Calmar                         0.11              1.82
+10:58:58 [INFO] Profit Factor                  1.35               inf
+10:58:58 [INFO] Avg Hold (days)                21.7              10.7
+10:58:58 [INFO] ----------------------------------------------------------------------
+10:58:58 [INFO]   Skor Ketepatan (IS→OOS): 100/100  (degradasi Sharpe: -330%)
+10:58:58 [INFO]   ROBUST — performa OOS konsisten dgn IS, edge kemungkinan nyata
+10:58:58 [INFO] ======================================================================
+10:58:58 [INFO] [CSV] IS trades → results\csv\trades_IS_bollinger_bands_mean_reversion_TLKM_JK_20260730_105849.csv
+10:58:58 [INFO] [CSV] OOS trades → results\csv\trades_OOS_bollinger_bands_mean_reversion_TLKM_JK_20260730_105849.csv
+10:58:58 [INFO] [CSV] Equity curve → results\csv\equity_bollinger_bands_mean_reversion_TLKM_JK_20260730_105849.csv
+10:58:58 [INFO] [CHART] → results\charts\walkforward_bollinger_bands_mean_reversion_TLKM_JK_20260730_105849.png
+10:58:58 [INFO] [DB] Saved → ticker=TLKM.JK strategy=bb
+10:58:58 [INFO] 
+######################################################################
+10:58:58 [INFO]   TICKER: ASII.JK
+10:58:58 [INFO] ######################################################################
+10:58:59 [INFO]   Data    : 1321 hari trading
+10:58:59 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+10:58:59 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+10:58:59 [INFO] 
+======================================================================
+10:58:59 [INFO]   GRID SEARCH (In-Sample) — RSI(2) Mean Reversion [ASII.JK]
+10:58:59 [INFO] ======================================================================
+10:58:59 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+10:58:59 [INFO]   #1 params={'rsi_entry': 5, 'rsi_exit': 50, 'sma_exit': 5}  Sharpe(IS)=0.02  Return(IS)=-0.1%  Trades=9
+10:58:59 [INFO]   #2 params={'rsi_entry': 5, 'rsi_exit': 50, 'sma_exit': 10}  Sharpe(IS)=0.02  Return(IS)=-0.1%  Trades=9
+10:58:59 [INFO]   #3 params={'rsi_entry': 5, 'rsi_exit': 60, 'sma_exit': 10}  Sharpe(IS)=0.01  Return(IS)=-0.4%  Trades=9
+10:58:59 [INFO] 
+>>> Parameter terkunci untuk OOS: {'rsi_entry': 5, 'rsi_exit': 50, 'sma_exit': 5}
+10:58:59 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+10:58:59 [INFO] 
+----------------------------------------------------------------------
+10:58:59 [INFO]   HASIL: RSI(2) Mean Reversion [ASII.JK]
+10:58:59 [INFO] ----------------------------------------------------------------------
+10:58:59 [INFO] Metrik                    In-Sample     Out-of-Sample
+10:58:59 [INFO] Jumlah trade                      9                 1
+10:58:59 [INFO] Win rate                      33.3%            100.0%
+10:58:59 [INFO] Total return                  -0.1%              2.2%
+10:58:59 [INFO] CAGR                          -0.0%              2.7%
+10:58:59 [INFO] Sharpe                         0.02              1.02
+10:58:59 [INFO] Max drawdown                  -5.4%             -0.2%
+10:58:59 [INFO] Calmar                        -0.01             11.47
+10:58:59 [INFO] Profit Factor                  0.98               inf
+10:58:59 [INFO] Avg Hold (days)                 5.0               1.0
+10:58:59 [INFO] ----------------------------------------------------------------------
+10:58:59 [INFO]   INCONCLUSIVE — OOS cuma 1 trade (min 5). Bukan berarti strategi gagal; sinyal entry memang jarang/tidak muncul di periode OOS ini. Coba perpanjang periode data atau longgarkan parameter.
+10:58:59 [INFO] ======================================================================
+10:58:59 [INFO] [CSV] IS trades → results\csv\trades_IS_rsi2_mean_reversion_ASII_JK_20260730_105849.csv
+10:58:59 [INFO] [CSV] OOS trades → results\csv\trades_OOS_rsi2_mean_reversion_ASII_JK_20260730_105849.csv
+10:58:59 [INFO] [CSV] Equity curve → results\csv\equity_rsi2_mean_reversion_ASII_JK_20260730_105849.csv
+10:58:59 [INFO] [CHART] → results\charts\walkforward_rsi2_mean_reversion_ASII_JK_20260730_105849.png
+10:58:59 [INFO] [DB] Saved → ticker=ASII.JK strategy=rsi2
+10:58:59 [INFO] 
+======================================================================
+10:58:59 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands Mean Reversion [ASII.JK]
+10:58:59 [INFO] ======================================================================
+10:58:59 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+10:58:59 [INFO]   #1 params={'num_std': 2.5, 'window': 30}  Sharpe(IS)=0.81  Return(IS)=37.3%  Trades=10
+10:58:59 [INFO]   #2 params={'num_std': 2.0, 'window': 20}  Sharpe(IS)=0.29  Return(IS)=11.8%  Trades=15
+10:58:59 [INFO]   #3 params={'num_std': 2.0, 'window': 30}  Sharpe(IS)=0.24  Return(IS)=8.8%  Trades=14
+10:58:59 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 2.5, 'window': 30}
+10:58:59 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+10:58:59 [INFO] 
+----------------------------------------------------------------------
+10:58:59 [INFO]   HASIL: Bollinger Bands Mean Reversion [ASII.JK]
+10:58:59 [INFO] ----------------------------------------------------------------------
+10:58:59 [INFO] Metrik                    In-Sample     Out-of-Sample
+10:58:59 [INFO] Jumlah trade                     10                 2
+10:58:59 [INFO] Win rate                      80.0%            100.0%
+10:58:59 [INFO] Total return                  37.3%             -1.6%
+10:58:59 [INFO] CAGR                           9.0%             -1.1%
+10:58:59 [INFO] Sharpe                         0.81              0.02
+10:58:59 [INFO] Max drawdown                 -10.0%            -21.5%
+10:58:59 [INFO] Calmar                         0.90             -0.05
+10:58:59 [INFO] Profit Factor                  7.53               inf
+10:58:59 [INFO] Avg Hold (days)                20.9              14.0
+10:58:59 [INFO] ----------------------------------------------------------------------
+10:58:59 [INFO]   INCONCLUSIVE — OOS cuma 2 trade (min 5). Bukan berarti strategi gagal; sinyal entry memang jarang/tidak muncul di periode OOS ini. Coba perpanjang periode data atau longgarkan parameter.
+10:58:59 [INFO] ======================================================================
+10:58:59 [INFO] [CSV] IS trades → results\csv\trades_IS_bollinger_bands_mean_reversion_ASII_JK_20260730_105849.csv
+10:58:59 [INFO] [CSV] OOS trades → results\csv\trades_OOS_bollinger_bands_mean_reversion_ASII_JK_20260730_105849.csv
+10:58:59 [INFO] [CSV] Equity curve → results\csv\equity_bollinger_bands_mean_reversion_ASII_JK_20260730_105849.csv
+10:59:00 [INFO] [CHART] → results\charts\walkforward_bollinger_bands_mean_reversion_ASII_JK_20260730_105849.png
+10:59:00 [INFO] [DB] Saved → ticker=ASII.JK strategy=bb
+10:59:00 [INFO] 
+######################################################################
+10:59:00 [INFO]   TICKER: BBRI.JK
+10:59:00 [INFO] ######################################################################
+10:59:01 [INFO]   Data    : 1321 hari trading
+10:59:01 [INFO]   IS      : 2021-01-04 → 2024-10-24 (924 hari)
+10:59:01 [INFO]   OOS     : 2024-10-24 → 2026-06-30 (397 hari)
+10:59:01 [INFO] 
+======================================================================
+10:59:01 [INFO]   GRID SEARCH (In-Sample) — RSI(2) Mean Reversion [BBRI.JK]
+10:59:01 [INFO] ======================================================================
+10:59:01 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+10:59:01 [INFO]   #1 params={'rsi_entry': 5, 'rsi_exit': 60, 'sma_exit': 5}  Sharpe(IS)=0.12  Return(IS)=1.6%  Trades=11
+10:59:01 [INFO]   #2 params={'rsi_entry': 5, 'rsi_exit': 60, 'sma_exit': 10}  Sharpe(IS)=0.12  Return(IS)=1.6%  Trades=11
+10:59:01 [INFO]   #3 params={'rsi_entry': 20, 'rsi_exit': 60, 'sma_exit': 5}  Sharpe(IS)=0.10  Return(IS)=1.6%  Trades=48
+10:59:01 [INFO] 
+>>> Parameter terkunci untuk OOS: {'rsi_entry': 5, 'rsi_exit': 60, 'sma_exit': 5}
+10:59:01 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+10:59:01 [INFO] 
+----------------------------------------------------------------------
+10:59:01 [INFO]   HASIL: RSI(2) Mean Reversion [BBRI.JK]
+10:59:01 [INFO] ----------------------------------------------------------------------
+10:59:01 [INFO] Metrik                    In-Sample     Out-of-Sample
+10:59:01 [INFO] Jumlah trade                     11                 1
+10:59:01 [INFO] Win rate                      81.8%              0.0%
+10:59:01 [INFO] Total return                   1.6%             -6.9%
+10:59:01 [INFO] CAGR                           0.5%             -8.3%
+10:59:01 [INFO] Sharpe                         0.12             -1.88
+10:59:01 [INFO] Max drawdown                  -6.9%             -8.1%
+10:59:01 [INFO] Calmar                         0.08             -1.03
+10:59:01 [INFO] Profit Factor                  1.24              0.00
+10:59:01 [INFO] Avg Hold (days)                 5.8               9.0
+10:59:01 [INFO] ----------------------------------------------------------------------
+10:59:01 [INFO]   INCONCLUSIVE — OOS cuma 1 trade (min 5). Bukan berarti strategi gagal; sinyal entry memang jarang/tidak muncul di periode OOS ini. Coba perpanjang periode data atau longgarkan parameter.
+10:59:01 [INFO] ======================================================================
+10:59:01 [INFO] [CSV] IS trades → results\csv\trades_IS_rsi2_mean_reversion_BBRI_JK_20260730_105849.csv
+10:59:01 [INFO] [CSV] OOS trades → results\csv\trades_OOS_rsi2_mean_reversion_BBRI_JK_20260730_105849.csv
+10:59:01 [INFO] [CSV] Equity curve → results\csv\equity_rsi2_mean_reversion_BBRI_JK_20260730_105849.csv
+10:59:02 [INFO] [CHART] → results\charts\walkforward_rsi2_mean_reversion_BBRI_JK_20260730_105849.png
+10:59:02 [INFO] [DB] Saved → ticker=BBRI.JK strategy=rsi2
+10:59:02 [INFO] 
+======================================================================
+10:59:02 [INFO]   GRID SEARCH (In-Sample) — Bollinger Bands Mean Reversion [BBRI.JK]
+10:59:02 [INFO] ======================================================================
+10:59:02 [INFO]   Top-3 parameter (ranked by Sharpe IS):
+10:59:02 [INFO]   #1 params={'num_std': 2.5, 'window': 20}  Sharpe(IS)=0.66  Return(IS)=17.1%  Trades=7
+10:59:02 [INFO]   #2 params={'num_std': 1.5, 'window': 20}  Sharpe(IS)=0.46  Return(IS)=24.0%  Trades=25
+10:59:02 [INFO]   #3 params={'num_std': 2.0, 'window': 10}  Sharpe(IS)=0.33  Return(IS)=11.8%  Trades=20
+10:59:02 [INFO] 
+>>> Parameter terkunci untuk OOS: {'num_std': 2.5, 'window': 20}
+10:59:02 [INFO] [LEAKAGE CHECK] OK — tidak ada data leakage terdeteksi
+10:59:02 [INFO] 
+----------------------------------------------------------------------
+10:59:02 [INFO]   HASIL: Bollinger Bands Mean Reversion [BBRI.JK]
+10:59:02 [INFO] ----------------------------------------------------------------------
+10:59:02 [INFO] Metrik                    In-Sample     Out-of-Sample
+10:59:02 [INFO] Jumlah trade                      7                 3
+10:59:02 [INFO] Win rate                      85.7%            100.0%
+10:59:02 [INFO] Total return                  17.1%             36.2%
+10:59:02 [INFO] CAGR                           4.3%             21.2%
+10:59:02 [INFO] Sharpe                         0.66              1.78
+10:59:02 [INFO] Max drawdown                  -6.6%             -2.4%
+10:59:02 [INFO] Calmar                         0.66              8.97
+10:59:02 [INFO] Profit Factor                 12.23               inf
+10:59:02 [INFO] Avg Hold (days)                15.4              10.0
+10:59:02 [INFO] ----------------------------------------------------------------------
+10:59:02 [INFO]   INCONCLUSIVE — OOS cuma 3 trade (min 5). Bukan berarti strategi gagal; sinyal entry memang jarang/tidak muncul di periode OOS ini. Coba perpanjang periode data atau longgarkan parameter.
+10:59:02 [INFO] ======================================================================
+10:59:02 [INFO] [CSV] IS trades → results\csv\trades_IS_bollinger_bands_mean_reversion_BBRI_JK_20260730_105849.csv
+10:59:02 [INFO] [CSV] OOS trades → results\csv\trades_OOS_bollinger_bands_mean_reversion_BBRI_JK_20260730_105849.csv
+10:59:02 [INFO] [CSV] Equity curve → results\csv\equity_bollinger_bands_mean_reversion_BBRI_JK_20260730_105849.csv
+10:59:02 [INFO] [CHART] → results\charts\walkforward_bollinger_bands_mean_reversion_BBRI_JK_20260730_105849.png
+10:59:02 [INFO] [DB] Saved → ticker=BBRI.JK strategy=bb
+10:59:02 [INFO] 
+===============================================================================================
+10:59:02 [INFO]   RINGKASAN PERBANDINGAN MULTI-TICKER WALK-FORWARD
+10:59:02 [INFO] ===============================================================================================
+10:59:02 [INFO] Ticker      Strategi                          Skor   OOS Ret  OOS Shrp   OOS WR  Leakage  Verdict
+10:59:02 [INFO] -----------------------------------------------------------------------------------------------
+10:59:02 [INFO] TLKM.JK     Bollinger Bands Mean Reversion     100     47.7%      1.23   100.0%       ok  ROBUST
+10:59:02 [INFO] BMRI.JK     Bollinger Bands Mean Reversion      28      5.8%      0.28    54.5%       ok  LEMAH TAPI MASIH PROFIT
+10:59:02 [INFO] BBCA.JK     Bollinger Bands Mean Reversion      19      4.2%      0.23    45.5%       ok  LEMAH TAPI MASIH PROFIT
+10:59:02 [INFO] TLKM.JK     RSI(2) Mean Reversion                5     -0.3%      0.02    50.0%       ok  GAGAL
+10:59:02 [INFO] BMRI.JK     RSI(2) Mean Reversion                0    -13.6%     -1.20    40.0%       ok  GAGAL
+10:59:02 [INFO] BBCA.JK     RSI(2) Mean Reversion              N/A      0.0%      0.00     0.0%       ok  INCONCLUSIVE
+10:59:02 [INFO] ASII.JK     RSI(2) Mean Reversion              N/A      2.2%      1.02   100.0%       ok  INCONCLUSIVE
+10:59:02 [INFO] ASII.JK     Bollinger Bands Mean Reversion     N/A     -1.6%      0.02   100.0%       ok  INCONCLUSIVE
+10:59:02 [INFO] BBRI.JK     RSI(2) Mean Reversion              N/A     -6.9%     -1.88     0.0%       ok  INCONCLUSIVE
+10:59:02 [INFO] BBRI.JK     Bollinger Bands Mean Reversion     N/A     36.2%      1.78   100.0%       ok  INCONCLUSIVE
+10:59:02 [INFO] ===============================================================================================
+10:59:02 [INFO] 
+======================================================================
+  SELESAI
+  Log file : results\logs\backtest_20260730_105849.log
+  Database : D:\coding\quantstrategy\results\backtest_results.db
+  Charts   : D:\coding\quantstrategy\results\charts/
+  CSV      : D:\coding\quantstrategy\results\csv/
+======================================================================

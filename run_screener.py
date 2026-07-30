@@ -1,0 +1,121 @@
+#!/usr/bin/env python3
+"""
+run_screener.py — Daily Signal Screener (Golden Strategy)
+
+Skrip ini ditujukan untuk dijalankan setiap pukul 15:50 WIB (via GitHub Actions).
+Ia akan mengunduh data hari ini, menghitung indikator, dan meludahkan sinyal
+dalam format JSON untuk dibaca oleh frontend Netlify.
+"""
+
+import json
+import datetime
+from pathlib import Path
+import yfinance as yf
+import pandas as pd
+
+from src.indicators import add_signals
+
+# Tickers yang sudah divalidasi ROBUST / PROFIT di blind test & backtest
+UNIVERSE = [
+    "BBCA.JK",
+    "TLKM.JK",
+    "CPIN.JK",
+    "BBNI.JK",
+    "ICBP.JK",
+    "INDF.JK",
+    "UNTR.JK"
+]
+
+# The Golden Ratio (Locked from TLKM Robust Test)
+GOLDEN_PARAMS = {
+    "num_std": 2.0,
+    "window": 20,
+    "adx_threshold": 20,
+    "vol_ratio_min": 1.0,
+    "atr_mult": 1.5
+}
+
+
+def fetch_recent_data(ticker: str, days: int = 150) -> pd.DataFrame:
+    """Unduh data 150 hari terakhir agar MA dan ADX cukup ruang pemanasan."""
+    end = datetime.date.today() + datetime.timedelta(days=1)
+    start = end - datetime.timedelta(days=days)
+    df = yf.download(ticker, start=start.strftime("%Y-%m-%d"), end=end.strftime("%Y-%m-%d"), progress=False)
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = df.columns.droplevel(1)
+    return df.dropna()
+
+
+def main():
+    public_dir = Path("public")
+    public_dir.mkdir(exist_ok=True)
+    
+    results = []
+    
+    # Supaya frontend tau kapan terakhir update
+    last_updated = datetime.datetime.now().strftime("%Y-%m-%d %H:%M WIB")
+
+    for ticker in UNIVERSE:
+        try:
+            raw = fetch_recent_data(ticker)
+            if raw.empty or len(raw) < 50:
+                continue
+                
+            # Pisahkan atr_mult karena tidak dipakai di add_signals
+            signal_params = {k: v for k, v in GOLDEN_PARAMS.items() if k != "atr_mult"}
+            atr_mult = GOLDEN_PARAMS["atr_mult"]
+            
+            df, entry_mask, exit_mask = add_signals(raw, **signal_params)
+            
+            if df.empty:
+                continue
+                
+            # Ambil data hari terakhir (hari ini)
+            last_date = df.index[-1]
+            last_row = df.iloc[-1]
+            is_buy = bool(entry_mask.iloc[-1])
+            is_sell = bool(exit_mask.iloc[-1])
+            
+            close_price = float(last_row["Close"])
+            atr = float(last_row["ATR"])
+            
+            # Hitung Trailing Stop jika hari ini kita memegang barang
+            # Stop Level = Close - (ATR * atr_mult)
+            stop_level = close_price - (atr * atr_mult)
+            
+            if is_buy:
+                signal = "BUY"
+            elif is_sell:
+                signal = "SELL"
+            else:
+                signal = "HOLD / WAIT"
+                
+            results.append({
+                "ticker": ticker,
+                "date": last_date.strftime("%Y-%m-%d"),
+                "close": close_price,
+                "signal": signal,
+                "atr": atr,
+                "stop_loss": stop_level,
+                "pct_b": float(last_row["Pct_B"]),
+                "adx": float(last_row["ADX"]),
+                "vol_ratio": float(last_row["Vol_Ratio"])
+            })
+            
+        except Exception as e:
+            print(f"Error processing {ticker}: {e}")
+            
+    output_data = {
+        "last_updated": last_updated,
+        "signals": results
+    }
+    
+    out_file = public_dir / "signals.json"
+    with open(out_file, "w") as f:
+        json.dump(output_data, f, indent=4)
+        
+    print(f"Selesai! Hasil tersimpan di {out_file}")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,155 @@
+12:33:06 [INFO] === Backtest Session Start: run_20260730_123306 ===
+12:33:06 [INFO] Log : results\logs\backtest_20260730_123306.log
+12:33:06 [INFO] DB  : results\backtest_results.db
+12:33:06 [INFO] ======================================================================
+12:33:06 [INFO]   WALK-FORWARD BACKTEST — Terminal Edition
+12:33:06 [INFO]   Session ID : run_20260730_123306
+12:33:06 [INFO]   Tickers    : ICBP.JK, INDF.JK, UNTR.JK, BBNI.JK, CPIN.JK
+12:33:06 [INFO]   Periode    : 2018-01-01 s/d 2026-07-01
+12:33:06 [INFO]   Modal      : Rp 10,000,000
+12:33:06 [INFO]   WFO Mode   : BLIND TEST (Locked Params, Unseen Data)
+12:33:06 [INFO]   Strategi   : BB
+12:33:06 [INFO]   BB version : V2
+12:33:06 [INFO]   Output dir : D:\coding\quantstrategy\results
+12:33:06 [INFO] ======================================================================
+12:33:06 [INFO] 
+######################################################################
+12:33:06 [INFO]   TICKER: ICBP.JK
+12:33:06 [INFO] ######################################################################
+12:33:07 [INFO]   Data    : 2081 hari trading
+12:33:07 [INFO]   IS      : 2018-01-01 → 2023-11-08 (1456 hari)
+12:33:07 [INFO]   OOS     : 2023-11-08 → 2026-06-30 (625 hari)
+12:33:07 [INFO] 
+======================================================================
+12:33:07 [INFO]   BLIND TEST — Bollinger Bands v2 (%B+ADX+Vol+ATR) [ICBP.JK]
+12:33:07 [INFO]   Total Data: 2081 hari
+12:33:07 [INFO]   Locked Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+12:33:07 [INFO] ======================================================================
+12:33:07 [INFO] 
+----------------------------------------------------------------------
+12:33:07 [INFO]   HASIL AKHIR BLIND TEST: Bollinger Bands v2 (%B+ADX+Vol+ATR) [ICBP.JK]
+12:33:07 [INFO] ----------------------------------------------------------------------
+12:33:07 [INFO] Jumlah Total Trade                20
+12:33:07 [INFO] Win rate                          60.0%
+12:33:07 [INFO] Total return                      9.3%
+12:33:07 [INFO] CAGR                              1.1%
+12:33:07 [INFO] Sharpe Ratio                      0.19
+12:33:07 [INFO] Max drawdown                      -11.1%
+12:33:07 [INFO] ----------------------------------------------------------------------
+12:33:07 [INFO] VERDICT: LEMAH TAPI MASIH PROFIT
+12:33:08 [INFO] [CHART BLIND] → results\charts\walkforward_BLIND_bollinger_bands_v2_%25b+adx+vol+atr_ICBP_JK_20260730_123306.png
+12:33:08 [INFO] [DB] Saved → ticker=ICBP.JK strategy=bb_v2_blind
+12:33:08 [INFO] 
+######################################################################
+12:33:08 [INFO]   TICKER: INDF.JK
+12:33:08 [INFO] ######################################################################
+12:33:08 [INFO]   Data    : 2082 hari trading
+12:33:08 [INFO]   IS      : 2018-01-01 → 2023-11-08 (1457 hari)
+12:33:08 [INFO]   OOS     : 2023-11-08 → 2026-06-30 (625 hari)
+12:33:08 [INFO] 
+======================================================================
+12:33:08 [INFO]   BLIND TEST — Bollinger Bands v2 (%B+ADX+Vol+ATR) [INDF.JK]
+12:33:08 [INFO]   Total Data: 2082 hari
+12:33:08 [INFO]   Locked Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+12:33:08 [INFO] ======================================================================
+12:33:08 [INFO] 
+----------------------------------------------------------------------
+12:33:08 [INFO]   HASIL AKHIR BLIND TEST: Bollinger Bands v2 (%B+ADX+Vol+ATR) [INDF.JK]
+12:33:08 [INFO] ----------------------------------------------------------------------
+12:33:08 [INFO] Jumlah Total Trade                21
+12:33:08 [INFO] Win rate                          47.6%
+12:33:08 [INFO] Total return                      5.9%
+12:33:08 [INFO] CAGR                              0.7%
+12:33:08 [INFO] Sharpe Ratio                      0.13
+12:33:08 [INFO] Max drawdown                      -16.2%
+12:33:08 [INFO] ----------------------------------------------------------------------
+12:33:08 [INFO] VERDICT: LEMAH TAPI MASIH PROFIT
+12:33:08 [INFO] [CHART BLIND] → results\charts\walkforward_BLIND_bollinger_bands_v2_%25b+adx+vol+atr_INDF_JK_20260730_123306.png
+12:33:08 [INFO] [DB] Saved → ticker=INDF.JK strategy=bb_v2_blind
+12:33:08 [INFO] 
+######################################################################
+12:33:08 [INFO]   TICKER: UNTR.JK
+12:33:08 [INFO] ######################################################################
+12:33:08 [INFO]   Data    : 2081 hari trading
+12:33:08 [INFO]   IS      : 2018-01-01 → 2023-11-08 (1456 hari)
+12:33:08 [INFO]   OOS     : 2023-11-08 → 2026-06-30 (625 hari)
+12:33:08 [INFO] 
+======================================================================
+12:33:08 [INFO]   BLIND TEST — Bollinger Bands v2 (%B+ADX+Vol+ATR) [UNTR.JK]
+12:33:08 [INFO]   Total Data: 2081 hari
+12:33:08 [INFO]   Locked Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+12:33:08 [INFO] ======================================================================
+12:33:08 [INFO] 
+----------------------------------------------------------------------
+12:33:08 [INFO]   HASIL AKHIR BLIND TEST: Bollinger Bands v2 (%B+ADX+Vol+ATR) [UNTR.JK]
+12:33:08 [INFO] ----------------------------------------------------------------------
+12:33:08 [INFO] Jumlah Total Trade                19
+12:33:08 [INFO] Win rate                          47.4%
+12:33:08 [INFO] Total return                      4.8%
+12:33:08 [INFO] CAGR                              0.6%
+12:33:08 [INFO] Sharpe Ratio                      0.13
+12:33:08 [INFO] Max drawdown                      -15.6%
+12:33:08 [INFO] ----------------------------------------------------------------------
+12:33:08 [INFO] VERDICT: LEMAH TAPI MASIH PROFIT
+12:33:09 [INFO] [CHART BLIND] → results\charts\walkforward_BLIND_bollinger_bands_v2_%25b+adx+vol+atr_UNTR_JK_20260730_123306.png
+12:33:09 [INFO] [DB] Saved → ticker=UNTR.JK strategy=bb_v2_blind
+12:33:09 [INFO] 
+######################################################################
+12:33:09 [INFO]   TICKER: BBNI.JK
+12:33:09 [INFO] ######################################################################
+12:33:09 [INFO]   Data    : 2082 hari trading
+12:33:09 [INFO]   IS      : 2018-01-01 → 2023-11-08 (1457 hari)
+12:33:09 [INFO]   OOS     : 2023-11-08 → 2026-06-30 (625 hari)
+12:33:09 [INFO] 
+======================================================================
+12:33:09 [INFO]   BLIND TEST — Bollinger Bands v2 (%B+ADX+Vol+ATR) [BBNI.JK]
+12:33:09 [INFO]   Total Data: 2082 hari
+12:33:09 [INFO]   Locked Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+12:33:09 [INFO] ======================================================================
+12:33:09 [INFO] 
+----------------------------------------------------------------------
+12:33:09 [INFO]   HASIL AKHIR BLIND TEST: Bollinger Bands v2 (%B+ADX+Vol+ATR) [BBNI.JK]
+12:33:09 [INFO] ----------------------------------------------------------------------
+12:33:09 [INFO] Jumlah Total Trade                24
+12:33:09 [INFO] Win rate                          58.3%
+12:33:09 [INFO] Total return                      28.2%
+12:33:09 [INFO] CAGR                              3.0%
+12:33:09 [INFO] Sharpe Ratio                      0.40
+12:33:09 [INFO] Max drawdown                      -11.3%
+12:33:09 [INFO] ----------------------------------------------------------------------
+12:33:09 [INFO] VERDICT: LEMAH TAPI MASIH PROFIT
+12:33:10 [INFO] [CHART BLIND] → results\charts\walkforward_BLIND_bollinger_bands_v2_%25b+adx+vol+atr_BBNI_JK_20260730_123306.png
+12:33:10 [INFO] [DB] Saved → ticker=BBNI.JK strategy=bb_v2_blind
+12:33:10 [INFO] 
+######################################################################
+12:33:10 [INFO]   TICKER: CPIN.JK
+12:33:10 [INFO] ######################################################################
+12:33:10 [INFO]   Data    : 2081 hari trading
+12:33:10 [INFO]   IS      : 2018-01-01 → 2023-11-08 (1456 hari)
+12:33:10 [INFO]   OOS     : 2023-11-08 → 2026-06-30 (625 hari)
+12:33:10 [INFO] 
+======================================================================
+12:33:10 [INFO]   BLIND TEST — Bollinger Bands v2 (%B+ADX+Vol+ATR) [CPIN.JK]
+12:33:10 [INFO]   Total Data: 2081 hari
+12:33:10 [INFO]   Locked Params: {'num_std': 2.0, 'window': 20, 'adx_threshold': 20, 'vol_ratio_min': 1.0, 'atr_mult': 1.5}
+12:33:10 [INFO] ======================================================================
+12:33:10 [INFO] 
+----------------------------------------------------------------------
+12:33:10 [INFO]   HASIL AKHIR BLIND TEST: Bollinger Bands v2 (%B+ADX+Vol+ATR) [CPIN.JK]
+12:33:10 [INFO] ----------------------------------------------------------------------
+12:33:10 [INFO] Jumlah Total Trade                21
+12:33:10 [INFO] Win rate                          57.1%
+12:33:10 [INFO] Total return                      49.6%
+12:33:10 [INFO] CAGR                              4.9%
+12:33:10 [INFO] Sharpe Ratio                      0.57
+12:33:10 [INFO] Max drawdown                      -11.9%
+12:33:10 [INFO] ----------------------------------------------------------------------
+12:33:10 [INFO] VERDICT: ROBUST
+12:33:10 [INFO] [CHART BLIND] → results\charts\walkforward_BLIND_bollinger_bands_v2_%25b+adx+vol+atr_CPIN_JK_20260730_123306.png
+12:33:10 [INFO] [DB] Saved → ticker=CPIN.JK strategy=bb_v2_blind
+12:33:10 [INFO] 
+===============================================================================================
+12:33:10 [INFO]   RINGKASAN PERBANDINGAN MULTI-TICKER WALK-FORWARD
+12:33:10 [INFO] ===============================================================================================
+12:33:10 [INFO] Ticker      Strategi                          Skor   OOS Ret  OOS Shrp   OOS WR  Leakage  Verdict
+12:33:10 [INFO] -----------------------------------------------------------------------------------------------
