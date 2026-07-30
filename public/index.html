@@ -238,7 +238,7 @@
                 
                 globalSignals = data.signals;
                 globalParams = data.params || {};
-                document.getElementById('last-updated').innerText = \`Sync: \${data.last_updated}\`;
+                document.getElementById('last-updated').innerText = `Sync: ${data.last_updated}`;
                 
                 populateSearch();
                 
@@ -254,11 +254,11 @@
                 }
 
             } catch (error) {
-                document.getElementById('loader').innerHTML = \`
+                document.getElementById('loader').innerHTML = `
                     <div class="text-red-400 text-center font-mono py-12">
-                        [ERR] Connection refused: signals.json<br>\${error.message}
+                        [ERR] Connection refused: signals.json<br>${error.message}
                     </div>
-                \`;
+                `;
             }
         }
         
@@ -298,7 +298,7 @@
         function renderMainContent(stock) {
             // Header
             const titleName = stock.long_name && stock.long_name !== stock.ticker 
-                ? \`\${stock.ticker} — \${stock.long_name}\` 
+                ? `${stock.ticker} — ${stock.long_name}` 
                 : stock.ticker;
             document.getElementById('stock-name').innerText = titleName;
             document.getElementById('stock-price').innerText = formatRp(stock.close);
@@ -308,7 +308,7 @@
             let fairColor = 'text-zinc-500';
             if (margin !== null && margin !== undefined) fairColor = margin > 0 ? 'text-sky-400' : 'text-red-400';
             document.getElementById('stock-fair').innerText = f.fair_value ? formatRp(f.fair_value) : 'N/A';
-            document.getElementById('stock-fair').className = \`text-xl \${fairColor}\`;
+            document.getElementById('stock-fair').className = `text-xl ${fairColor}`;
 
             // AI Sentiment
             const ai = stock.ai_sentiment || {};
@@ -320,31 +320,31 @@
             let scoreLabel = '[ NEUTRAL ]';
             if (ai.score > 60) {
                 theme = 'text-sky-400 border-sky-400/30 bg-sky-400/5';
-                scoreLabel = \`[ BULLISH \${ai.score}% ]\`;
+                scoreLabel = `[ BULLISH ${ai.score}% ]`;
             } else if (ai.score < 40) {
                 theme = 'text-red-400 border-red-400/30 bg-red-400/5';
-                scoreLabel = \`[ BEARISH \${ai.score}% ]\`;
+                scoreLabel = `[ BEARISH ${ai.score}% ]`;
             }
             
-            aiHeader.className = \`p-4 flex items-center justify-between mb-6 border \${theme}\`;
+            aiHeader.className = `p-4 flex items-center justify-between mb-6 border ${theme}`;
             aiScore.innerText = scoreLabel;
             aiAction.innerText = ai.action || stock.signal;
             
-            const bulletsHtml = (ai.bullets || []).map(b => \`
+            const bulletsHtml = (ai.bullets || []).map(b => `
                 <li class="flex items-start gap-2">
                     <span class="text-sky-400 mt-1">•</span>
-                    <span>\${b}</span>
+                    <span>${b}</span>
                 </li>
-            \`).join('');
+            `).join('');
             document.getElementById('ai-bullets').innerHTML = bulletsHtml;
 
             // Diagnostics
             const r = stock.rules || {};
-            document.getElementById('tech-diagnostics').innerHTML = \`
-                <div>├─ Oversold Edge: Pct B < 0.05 \${r.oversold ? '(YES)' : '(NO)'}</div>
-                <div>├─ Regime Check: ADX < 20 \${r.regime ? '(YES)' : '(NO)'}</div>
-                <div>├─ Volume Panic: Vol > 1.0x \${r.volume ? '(YES)' : '(NO)'}</div>
-            \`;
+            document.getElementById('tech-diagnostics').innerHTML = `
+                <div>├─ Oversold Edge: Pct B < 0.05 ${r.oversold ? '(YES)' : '(NO)'}</div>
+                <div>├─ Regime Check: ADX < 20 ${r.regime ? '(YES)' : '(NO)'}</div>
+                <div>├─ Volume Panic: Vol > 1.0x ${r.volume ? '(YES)' : '(NO)'}</div>
+            `;
             document.getElementById('stop-loss').innerText = formatRp(stock.stop_loss);
 
             // Backtest
@@ -356,12 +356,12 @@
             const news = stock.news || [];
             let newsHtml = '<div class="text-zinc-500 font-mono text-sm">No recent news available.</div>';
             if (news.length > 0) {
-                newsHtml = news.map(n => \`
-                    <div class="flex flex-col gap-1 cursor-pointer hover:bg-zinc-800/50 p-2 transition-colors -mx-2 rounded" onclick="window.open('\${n.link}', '_blank')">
-                        <div class="text-zinc-300 font-medium text-sm line-clamp-2">\${n.title}</div>
-                        <div class="text-zinc-600 font-mono text-[10px] uppercase">\${n.published || 'Baru Saja'}</div>
+                newsHtml = news.map(n => `
+                    <div class="flex flex-col gap-1 cursor-pointer hover:bg-zinc-800/50 p-2 transition-colors -mx-2 rounded" onclick="window.open('${n.link}', '_blank')">
+                        <div class="text-zinc-300 font-medium text-sm line-clamp-2">${n.title}</div>
+                        <div class="text-zinc-600 font-mono text-[10px] uppercase">${n.published || 'Baru Saja'}</div>
                     </div>
-                \`).join('');
+                `).join('');
             }
             document.getElementById('news-container').innerHTML = newsHtml;
 
