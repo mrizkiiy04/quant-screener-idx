@@ -546,8 +546,15 @@
 
             // < 20 (Hijau, Sideways/MR), 20-25 (Kuning), >25 (Merah, Trending)
             let color = '#22c55e'; 
-            if (val >= 20) color = '#fbbf24';
-            if (val >= 25) color = '#ef4444';
+            let adxLabel = 'SAFE (SIDEWAYS)';
+            if (val >= 20) {
+                color = '#fbbf24';
+                adxLabel = 'CAUTION (TRENDING)';
+            }
+            if (val >= 25) {
+                color = '#ef4444';
+                adxLabel = 'DANGER (STRONG TREND)';
+            }
 
             const options = {
                 series: [val],
@@ -579,7 +586,7 @@
                     }
                 },
                 colors: [color],
-                labels: ['ADX']
+                labels: [adxLabel]
             };
 
             const el = document.querySelector("#adx-chart");
