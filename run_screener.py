@@ -38,11 +38,9 @@ GOLDEN_PARAMS = {
 }
 
 
-def fetch_recent_data(ticker: str, days: int = 150) -> pd.DataFrame:
-    """Unduh data 150 hari terakhir agar MA dan ADX cukup ruang pemanasan."""
-    end = datetime.date.today() + datetime.timedelta(days=1)
-    start = end - datetime.timedelta(days=days)
-    df = yf.download(ticker, start=start.strftime("%Y-%m-%d"), end=end.strftime("%Y-%m-%d"), progress=False)
+def fetch_recent_data(ticker: str, period: str = "2y") -> pd.DataFrame:
+    """Unduh data 2 tahun agar Echo Forecast punya cukup histori."""
+    df = yf.download(ticker, period=period, progress=False)
     if isinstance(df.columns, pd.MultiIndex):
         df.columns = df.columns.droplevel(1)
     return df.dropna()
