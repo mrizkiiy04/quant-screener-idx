@@ -426,7 +426,10 @@
             let pStBull = [...st_bull];
             let pStBear = [...st_bear];
 
-            let pOhlc = chartData.map(d => [d.open, d.high, d.low, d.close]);
+            let pOhlc = chartData.map(d => ({
+                x: d.date,
+                y: [d.open, d.high, d.low, d.close]
+            }));
 
             if (forecast && forecast.values && forecast.values.length > 0) {
                 allDates = allDates.concat(forecast.dates);
@@ -434,8 +437,9 @@
                 const startPrice = close[close.length - 1];
                 echoData = nullPadding.concat([startPrice]).concat(forecast.values);
                 
+                const endPaddingOhlc = forecast.dates.map(date => ({ x: date, y: null }));
+                pOhlc = pOhlc.concat(endPaddingOhlc);
                 const endPadding = new Array(forecast.dates.length).fill(null);
-                pOhlc = pOhlc.concat(endPadding);
                 pClose = pClose.concat(endPadding);
                 pUpper = pUpper.concat(endPadding);
                 pLower = pLower.concat(endPadding);
