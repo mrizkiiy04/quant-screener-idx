@@ -10,6 +10,7 @@ dalam format JSON untuk dibaca oleh frontend Netlify.
 import os
 import json
 import datetime
+import time
 import yfinance as yf
 import pandas as pd
 import feedparser
@@ -43,12 +44,19 @@ GOLDEN_PARAMS = {
 
 
 def fetch_rss_news(ticker: str) -> list:
-    """Fetch recent news for a ticker from Google News RSS."""
+    """Fetch recent news for a ticker from Google News RSS (Max 3 days old)."""
     try:
-        url = f"https://news.google.com/rss/search?q={ticker}+saham&hl=id&gl=ID&ceid=ID:id"
+        url = f"https://news.google.com/rss/search?q={ticker}+saham+when:3d&hl=id&gl=ID&ceid=ID:id"
         feed = feedparser.parse(url)
         news = []
-        for entry in feed.entries[:3]:
+        for entry in feed.entries:
+            if hasattr(entry, 'published_parsed') and entry.published_parsed:
+                published_time = time.mktime(entry.published_parsed)
+                current_time = time.time()
+                days_old = (current_time - published_time) / (24 * 3600)
+                if days_old > 3:
+                    continue
+            
             title = entry.title
             if " - " in title:
                 title = title.rsplit(" - ", 1)[0]
@@ -57,6 +65,9 @@ def fetch_rss_news(ticker: str) -> list:
                 "link": entry.link,
                 "published": entry.get("published", "")
             })
+            
+            if len(news) >= 3:
+                break
         return news
     except Exception as e:
         print(f"Error fetching RSS for {ticker}: {e}")
