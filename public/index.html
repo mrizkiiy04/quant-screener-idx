@@ -480,13 +480,7 @@
                     custom: function({series, seriesIndex, dataPointIndex, w}) {
                         const ttData = document.getElementById('tooltip-data');
                         ttData.classList.remove('hidden');
-                        // Combine all unique dates for tooltip reference
-                        const allDatesX = Array.from(new Set([
-                            ...chartData.map(d => new Date(d.date).getTime()),
-                            ...(forecast ? forecast.dates.map(d => new Date(d).getTime()) : [])
-                        ])).sort();
-                        
-                        const currentDate = allDatesX[dataPointIndex];
+                        const currentDate = w.globals.seriesX[seriesIndex][dataPointIndex];
                         if (!currentDate) return '<div style="display:none;"></div>';
                         
                         // Format date string
