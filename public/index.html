@@ -173,11 +173,8 @@
                             <!-- Realtime Tooltip Data -->
                             <div id="tooltip-data" class="bg-zinc-950 p-4 border border-zinc-800 hidden">
                                 <div class="text-zinc-500 mb-2" id="tt-date">YYYY-MM-DD</div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <div>Close: <span id="tt-close" class="text-amber-400 font-bold">0</span></div>
-                                    <div>Vol: <span id="tt-vol" class="text-zinc-100">0</span></div>
-                                    <div>Upper: <span id="tt-upper" class="text-red-400">0</span></div>
-                                    <div>Lower: <span id="tt-lower" class="text-sky-400">0</span></div>
+                                <div id="tt-content" class="grid grid-cols-2 gap-2">
+                                    <!-- Injected dynamically -->
                                 </div>
                             </div>
                             
@@ -500,12 +497,26 @@
                         const cVol = pVol.find(d => d.x === currentDate);
                         const cUpper = pUpper.find(d => d.x === currentDate);
                         const cLower = pLower.find(d => d.x === currentDate);
+                        const cEcho = echoData.find(d => d.x === currentDate);
                         
                         document.getElementById('tt-date').innerText = dateStr;
-                        document.getElementById('tt-close').innerText = cOhlc && cOhlc.y ? formatRp(cOhlc.y[3]) : '-';
-                        document.getElementById('tt-vol').innerText = cVol && cVol.y ? (cVol.y/1000000).toFixed(1) + 'M' : '-';
-                        document.getElementById('tt-upper').innerText = cUpper && cUpper.y ? formatRp(cUpper.y) : '-';
-                        document.getElementById('tt-lower').innerText = cLower && cLower.y ? formatRp(cLower.y) : '-';
+                        const ttContent = document.getElementById('tt-content');
+                        
+                        if (cOhlc && cOhlc.y) {
+                            ttContent.innerHTML = `
+                                <div>Close: <span class="text-amber-400 font-bold">${formatRp(cOhlc.y[3])}</span></div>
+                                <div>Vol: <span class="text-zinc-100">${(cVol.y/1000000).toFixed(1)}M</span></div>
+                                <div>Upper: <span class="text-red-400">${formatRp(cUpper.y)}</span></div>
+                                <div>Lower: <span class="text-sky-400">${formatRp(cLower.y)}</span></div>
+                            `;
+                        } else if (cEcho && cEcho.y) {
+                            ttContent.innerHTML = `
+                                <div class="col-span-2">Echo Forecast: <span class="text-purple-400 font-bold">${formatRp(cEcho.y)}</span></div>
+                            `;
+                        } else {
+                            ttContent.innerHTML = ``;
+                        }
+                        
                         return '<div style="display:none;"></div>';
                     }
                 },
