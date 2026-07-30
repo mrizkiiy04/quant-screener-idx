@@ -628,7 +628,18 @@
                     fontFamily: "'JetBrains Mono', monospace"
                 },
                 theme: { mode: 'dark' },
-                colors: ['#52525b'],
+                colors: [
+                    function(opts) {
+                        const idx = opts.dataPointIndex;
+                        if (idx === 0) return '#22c55e';
+                        return close[idx] >= close[idx - 1] ? '#22c55e' : '#ef4444';
+                    }
+                ],
+                plotOptions: {
+                    bar: {
+                        columnWidth: '80%',
+                    }
+                },
                 dataLabels: { enabled: false },
                 xaxis: {
                     categories: dates,
