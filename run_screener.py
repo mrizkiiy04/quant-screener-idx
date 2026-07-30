@@ -9,11 +9,12 @@ dalam format JSON untuk dibaca oleh frontend Netlify.
 
 import json
 import datetime
-from pathlib import Path
 import yfinance as yf
 import pandas as pd
+from pathlib import Path
 
 from src.indicators import add_signals
+from src.engine import run_backtest
 
 # Daftar 45 Saham Paling Likuid di Indonesia (Indeks LQ45)
 UNIVERSE = [
@@ -110,6 +111,21 @@ def main():
                 "volume": bool(last_row["Vol_Ratio"] >= GOLDEN_PARAMS["vol_ratio_min"]),
                 "squeeze": bool(last_row["BW_Squeeze"])
             }
+            
+            # Simulasi riwayat trading 150 hari ke belakang
+            _, trades_df = run_backtest(df, entry_mask, exit_mask, capital=10000000, atr_mult=atr_mult)
+            trade_history = []
+            if not trades_df.empty:
+                for _, tr in trades_df.iterrows():
+                    trade_history.append({
+                        "entry_date": tr["Entry Date"].strftime("%Y-%m-%d"),
+                        "exit_date": tr["Exit Date"].strftime("%Y-%m-%d"),
+                        "entry_price": float(tr["Entry Price"]),
+                        "exit_price": float(tr["Exit Price"]),
+                        "return_pct": float(tr["Return (%)"])
+                    })
+            # Urutkan trades dari terbaru ke terlama
+            trade_history = trade_history[::-1]
                 
             results.append({
                 "ticker": ticker,
@@ -122,7 +138,8 @@ def main():
                 "adx": float(last_row["ADX"]),
                 "vol_ratio": float(last_row["Vol_Ratio"]),
                 "rules": rule_details,
-                "chart": chart_data
+                "chart": chart_data,
+                "history": trade_history
             })
             
         except Exception as e:
