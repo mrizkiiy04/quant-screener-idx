@@ -63,74 +63,76 @@ def fetch_rss_news(ticker: str) -> list:
         return []
 
 
-def generate_ai_sentiment(ticker: str, close: float, signal: str, rule_details: dict, margin: float, history: list) -> dict:
-    """Generate AI Sentiment bullet points using Gemini 2.5 Flash."""
+def generate_ai_sentiment_batch(items: list) -> dict:
+    """Generate AI Sentiment in bulk using one API call."""
     api_key = os.environ.get("GEMINI_API_KEY")
     
-    # Fallback to deterministic rules if no API key
+    # Fallback deterministic generator
+    def fallback_generator():
+        out = {}
+        for item in items:
+            ticker = item["ticker"]
+            rule_details = item["rules"]
+            margin = item.get("fundamentals", {}).get("margin")
+            signal = item["signal"]
+            bullets = []
+            if rule_details.get("oversold"): bullets.append("Harga mendekati area oversold (Pct B < 0.05)")
+            else: bullets.append("Harga berada di area wajar/atas")
+            
+            if rule_details.get("volume"): bullets.append("Terjadi lonjakan volume (Vol Ratio > 1.0x)")
+            else: bullets.append("Volume perdagangan saat ini masih normal")
+            
+            if rule_details.get("regime"): bullets.append("Tren cenderung sideways atau mulai berbalik (ADX < 20)")
+            else: bullets.append("Tren pergerakan harga sedang menguat (Trending)")
+            
+            if margin and margin > 0.1: bullets.append(f"Valuasi diskon {margin*100:.1f}% dari harga wajar")
+            
+            score = 80 if signal == "BUY" else (20 if signal == "SELL" else 50)
+            action = "ACCUMULATE BUY" if signal == "BUY" else ("STRONG SELL" if signal == "SELL" else "HOLD / WAIT")
+            out[ticker] = {"score": score, "action": action, "bullets": bullets[:4]}
+        return out
+
     if not api_key:
-        bullets = []
-        if rule_details.get("oversold"):
-            bullets.append("Harga mendekati area oversold (Pct B < 0.05)")
-        else:
-            bullets.append("Harga berada di area wajar/atas")
-            
-        if rule_details.get("volume"):
-            bullets.append("Terjadi lonjakan volume (Vol Ratio > 1.0x)")
-        else:
-            bullets.append("Volume perdagangan saat ini masih normal")
-            
-        if rule_details.get("regime"):
-            bullets.append("Tren cenderung sideways atau mulai berbalik (ADX < 20)")
-        else:
-            bullets.append("Tren pergerakan harga sedang menguat (Trending)")
-            
-        if margin and margin > 0.1:
-            bullets.append(f"Valuasi diskon {margin*100:.1f}% dari harga wajar")
-            
-        score = 80 if signal == "BUY" else (20 if signal == "SELL" else 50)
-        action = "ACCUMULATE BUY" if signal == "BUY" else ("STRONG SELL" if signal == "SELL" else "HOLD / WAIT")
-        
-        return {
-            "score": score,
-            "action": action,
-            "bullets": bullets[:4]
-        }
+        return fallback_generator()
     
+    if not items:
+        return {}
+
     try:
         client = genai.Client(api_key=api_key)
         
-        win_rate = 0
-        if history:
-            wins = sum(1 for tr in history if tr["return_pct"] > 0)
-            win_rate = (wins / len(history)) * 100
+        prompt = "Anda adalah analis saham kuantitatif. Berikan analisis sentimen singkat untuk SETIAP saham di bawah ini.\n"
+        for item in items:
+            ticker = item['ticker']
+            close = item['close']
+            signal = item['signal']
+            rule_details = item['rules']
+            margin = item.get("fundamentals", {}).get("margin")
+            win_rate = item.get("backtest_summary", {}).get("win_rate", 0)
             
-        prompt = f"""
-        Anda adalah analis saham kuantitatif. Berikan analisis sentimen singkat untuk saham {ticker}.
-        Data Teknis saat ini:
-        - Harga: {close}
-        - Sinyal: {signal}
-        - Oversold (Pct B < 0.05): {rule_details.get('oversold')}
-        - Volume Ratio > 1.0: {rule_details.get('volume')}
-        - ADX < 20 (Sideways/Aman): {rule_details.get('regime')}
-        - Diskon dari Harga Wajar: {f"{margin*100:.1f}%" if margin else "N/A"}
-        - Win Rate Historis: {f"{win_rate:.1f}%" if history else "N/A"}
-        
-        Tugas Anda:
-        Kembalikan JSON dengan format:
-        {{
-            "score": <angka 0-100, representasi keyakinan bullish, misal 75>,
-            "action": <String pendek, misal "ACCUMULATE BUY", "HOLD / WAIT", "STRONG SELL">,
-            "bullets": [
-                <String alasan 1, maksimal 8 kata>,
-                <String alasan 2, maksimal 8 kata>,
-                <String alasan 3, maksimal 8 kata>
-            ]
-        }}
-        Format alasan dengan gaya analis teknikal/fundamental ringkas. Jangan bertele-tele.
-        Hanya kembalikan valid JSON murni.
-        """
-        
+            prompt += f"""
+Saham: {ticker}
+- Harga: {close}
+- Sinyal: {signal}
+- Oversold (Pct B < 0.05): {rule_details.get('oversold')}
+- Volume Ratio > 1.0: {rule_details.get('volume')}
+- ADX < 20 (Sideways): {rule_details.get('regime')}
+- Diskon: {f"{margin*100:.1f}%" if margin else "N/A"}
+- Win Rate Historis: {f"{win_rate:.1f}%"}
+"""
+        prompt += """
+Tugas Anda:
+Kembalikan JSON array dimana setiap elemen adalah object dengan format:
+[
+  {
+      "ticker": "<Kode Saham>",
+      "score": <angka 0-100, representasi keyakinan bullish, misal 75>,
+      "action": "<ACCUMULATE BUY / HOLD / WAIT / STRONG SELL>",
+      "bullets": ["<alasan 1 maksimal 8 kata>", "<alasan 2 maksimal 8 kata>", "<alasan 3 maksimal 8 kata>"]
+  }
+]
+Format alasan dengan gaya analis teknikal/fundamental ringkas. Hanya kembalikan valid JSON array murni.
+"""
         response = client.models.generate_content(
             model='gemini-2.5-flash',
             contents=prompt,
@@ -138,14 +140,27 @@ def generate_ai_sentiment(ticker: str, close: float, signal: str, rule_details: 
                 response_mime_type="application/json",
             ),
         )
-        return json.loads(response.text)
+        ai_data = json.loads(response.text)
+        
+        out = {}
+        for obj in ai_data:
+            if "ticker" in obj:
+                out[obj["ticker"]] = {
+                    "score": obj.get("score", 50),
+                    "action": obj.get("action", "HOLD / WAIT"),
+                    "bullets": obj.get("bullets", [])
+                }
+        
+        # Ensure all tickers have a fallback if Gemini skipped them
+        fallback_data = fallback_generator()
+        for item in items:
+            if item["ticker"] not in out:
+                out[item["ticker"]] = fallback_data[item["ticker"]]
+                
+        return out
     except Exception as e:
-        print(f"Error calling Gemini for {ticker}: {e}")
-        return {
-            "score": 50,
-            "action": "HOLD / WAIT",
-            "bullets": ["Gagal mengambil sentimen AI dari Gemini"]
-        }
+        print(f"Error calling Gemini in batch: {e}")
+        return fallback_generator()
 
 
 def fetch_recent_data(ticker: str, period: str = "2y") -> pd.DataFrame:
@@ -278,9 +293,8 @@ def main():
             
             trade_history = trade_history[::-1]
             
-            # Fetch RSS and AI Sentiment
+            # Fetch RSS
             news = fetch_rss_news(ticker)
-            ai_sentiment = generate_ai_sentiment(ticker, close_price, signal, rule_details, margin, trade_history)
                 
             results.append({
                 "ticker": ticker,
@@ -302,7 +316,6 @@ def main():
                     "trades_count": len(trade_history)
                 },
                 "news": news,
-                "ai_sentiment": ai_sentiment,
                 "forecast": {
                     "dates": forecast_dates,
                     "values": forecast_values
@@ -320,6 +333,17 @@ def main():
             
         except Exception as e:
             print(f"Error processing {ticker}: {e}")
+            
+    # --- BATCH AI SENTIMENT GENERATION ---
+    print("Generating AI Sentiment in batch...")
+    ai_sentiments = generate_ai_sentiment_batch(results)
+    
+    for res in results:
+        res["ai_sentiment"] = ai_sentiments.get(res["ticker"], {
+            "score": 50,
+            "action": "HOLD / WAIT",
+            "bullets": ["Sentimen AI tidak tersedia"]
+        })
             
     output_data = {
         "last_updated": last_updated,

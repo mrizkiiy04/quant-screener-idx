@@ -461,20 +461,7 @@
                 chart: {
                     type: 'line', id: 'price-chart', group: 'screener',
                     height: 450, toolbar: { show: false }, animations: { enabled: false },
-                    background: 'transparent', fontFamily: "'JetBrains Mono', monospace",
-                    events: {
-                        mouseMove: function(event, chartContext, config) {
-                            if(config.dataPointIndex > -1) {
-                                ttData.classList.remove('hidden');
-                                document.getElementById('tt-date').innerText = allDates[config.dataPointIndex];
-                                document.getElementById('tt-close').innerText = pClose[config.dataPointIndex] ? formatRp(pClose[config.dataPointIndex]) : '-';
-                                document.getElementById('tt-vol').innerText = pVol[config.dataPointIndex] ? (pVol[config.dataPointIndex]/1000000).toFixed(1) + 'M' : '-';
-                                document.getElementById('tt-upper').innerText = pUpper[config.dataPointIndex] ? formatRp(pUpper[config.dataPointIndex]) : '-';
-                                document.getElementById('tt-lower').innerText = pLower[config.dataPointIndex] ? formatRp(pLower[config.dataPointIndex]) : '-';
-                            }
-                        },
-                        mouseLeave: function() { ttData.classList.add('hidden'); }
-                    }
+                    background: 'transparent', fontFamily: "'JetBrains Mono', monospace"
                 },
                 theme: { mode: 'dark' },
                 colors: ['#fbbf24', '#f87171', '#38bdf8', '#52525b', '#10b981', '#ef4444', '#c084fc'],
@@ -493,7 +480,19 @@
                 },
                 grid: { borderColor: '#27272a', strokeDashArray: 2, xaxis: { lines: { show: true } }, yaxis: { lines: { show: true } } },
                 dataLabels: { enabled: false },
-                tooltip: { enabled: false }, // Handled custom in mouseMove event
+                tooltip: { 
+                    enabled: true,
+                    custom: function({series, seriesIndex, dataPointIndex, w}) {
+                        const ttData = document.getElementById('tooltip-data');
+                        ttData.classList.remove('hidden');
+                        document.getElementById('tt-date').innerText = allDates[dataPointIndex];
+                        document.getElementById('tt-close').innerText = pClose[dataPointIndex] ? formatRp(pClose[dataPointIndex]) : '-';
+                        document.getElementById('tt-vol').innerText = pVol[dataPointIndex] ? (pVol[dataPointIndex]/1000000).toFixed(1) + 'M' : '-';
+                        document.getElementById('tt-upper').innerText = pUpper[dataPointIndex] ? formatRp(pUpper[dataPointIndex]) : '-';
+                        document.getElementById('tt-lower').innerText = pLower[dataPointIndex] ? formatRp(pLower[dataPointIndex]) : '-';
+                        return '<div style="display:none;"></div>';
+                    }
+                },
                 legend: { show: false } // Hidden per requirement
             };
 
@@ -535,8 +534,15 @@
             if (chartInstance) chartInstance.destroy();
             if (volChartInstance) volChartInstance.destroy();
             
-            chartInstance = new ApexCharts(document.querySelector("#chart"), options);
+            const chartDiv = document.querySelector("#chart");
+            chartInstance = new ApexCharts(chartDiv, options);
             chartInstance.render();
+            
+            // Handle mouseleave cleanly via native event
+            chartDiv.addEventListener('mouseleave', () => {
+                const ttData = document.getElementById('tooltip-data');
+                if (ttData) ttData.classList.add('hidden');
+            });
             
             volChartInstance = new ApexCharts(document.querySelector("#chart-volume"), volOptions);
             volChartInstance.render();
