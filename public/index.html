@@ -254,12 +254,46 @@
             color: var(--text-secondary);
         }
 
+        .hamburger-btn {
+            display: none;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 998;
+            backdrop-filter: blur(2px);
+        }
+
         /* -----------------------
            RESPONSIVE
            ----------------------- */
         @media (max-width: 1024px) {
             body { flex-direction: column; overflow: auto; }
-            .sidebar { width: 100%; height: 250px; border-right: none; border-bottom: 1px solid var(--border); }
+            .hamburger-btn { display: inline-block; }
+            .sidebar { 
+                position: fixed; 
+                top: 0; bottom: 0; left: -320px; 
+                width: 320px; 
+                height: 100vh;
+                z-index: 999;
+                transition: transform 0.3s ease;
+                border-right: 1px solid var(--border);
+                border-bottom: none;
+            }
+            .sidebar.open { transform: translateX(320px); }
+            .sidebar-overlay.active { display: block; }
             .dashboard-grid { grid-template-columns: 1fr; }
             .main-content { overflow: visible; padding: 1.5rem; }
             .stop-loss-box { flex-direction: column; text-align: left; align-items: flex-start; gap: 1rem; }
@@ -270,11 +304,12 @@
             .top-bar > div:last-child { flex-direction: column; width: 100%; align-items: stretch !important; gap: 0.5rem; }
             .signal-pill { text-align: center; }
             .chart-container { height: 350px; }
-            .sidebar { height: 200px; }
+            /* Keep sidebar width same on phone */
         }
     </style>
 </head>
 <body>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <aside class="sidebar">
         <div class="sidebar-header">
@@ -287,10 +322,17 @@
     </aside>
 
     <main class="main-content" id="main-content">
-        <div class="loader">Initializing Engine...</div>
+        <button class="hamburger-btn" onclick="toggleSidebar()">☰ Pilih Saham</button>
+        <div id="dashboard-body">
+            <div class="loader">Initializing Engine...</div>
+        </div>
     </main>
 
     <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
         let globalSignals = [];
         let chartInstance = null;
 
@@ -313,11 +355,11 @@
                 } else if (globalSignals.length > 0) {
                     selectTicker(globalSignals[0].ticker);
                 } else {
-                    document.getElementById('main-content').innerHTML = '<div class="loader">No Universe Data.</div>';
+                    document.getElementById('dashboard-body').innerHTML = '<div class="loader">No Universe Data.</div>';
                 }
 
             } catch (error) {
-                document.getElementById('main-content').innerHTML = `
+                document.getElementById('dashboard-body').innerHTML = `
                     <div style="color:var(--chart-upper); text-align:center; margin-top:2rem; font-family:monospace;">
                         [ERR] Connection refused: signals.json<br>${error.message}
                     </div>
@@ -363,6 +405,12 @@
             const el = document.getElementById(elId);
             if(el) el.classList.add('active');
 
+            // Hide sidebar on mobile after selection
+            if (window.innerWidth <= 1024) {
+                document.querySelector('.sidebar').classList.remove('open');
+                document.querySelector('.sidebar-overlay').classList.remove('active');
+            }
+
             const stock = globalSignals.find(s => s.ticker === tickerStr);
             if (!stock) return;
 
@@ -370,7 +418,7 @@
         }
 
         function renderMainContent(stock) {
-            const main = document.getElementById('main-content');
+            const main = document.getElementById('dashboard-body');
             
             const sigClass = stock.signal === 'BUY' ? 'pill-BUY' : (stock.signal === 'SELL' ? 'pill-SELL' : 'pill-HOLD');
             const sigText = stock.signal === 'HOLD / WAIT' ? 'HOLD' : stock.signal;
