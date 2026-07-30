@@ -417,41 +417,29 @@
             const st_bull = chartData.map(d => (d.st_dir === 1 ? d.st : null));
             const st_bear = chartData.map(d => (d.st_dir === -1 ? d.st : null));
 
-            let allDates = [...dates];
-            let echoData = [];
-            let pClose = [...close];
-            let pUpper = [...upper];
-            let pLower = [...lower];
-            let pSma = [...sma];
-            let pStBull = [...st_bull];
-            let pStBear = [...st_bear];
-
-            let pOhlc = chartData.map(d => ({
-                x: d.date,
+            const pClose = chartData.map(d => ({ x: new Date(d.date).getTime(), y: d.close }));
+            const pUpper = chartData.map(d => ({ x: new Date(d.date).getTime(), y: d.upper }));
+            const pLower = chartData.map(d => ({ x: new Date(d.date).getTime(), y: d.lower }));
+            const pSma = chartData.map(d => ({ x: new Date(d.date).getTime(), y: d.sma }));
+            const pStBull = chartData.map(d => ({ x: new Date(d.date).getTime(), y: d.st_dir === 1 ? d.st : null }));
+            const pStBear = chartData.map(d => ({ x: new Date(d.date).getTime(), y: d.st_dir === -1 ? d.st : null }));
+            
+            const pOhlc = chartData.map(d => ({
+                x: new Date(d.date).getTime(),
                 y: [d.open, d.high, d.low, d.close]
             }));
 
+            const echoData = [];
             if (forecast && forecast.values && forecast.values.length > 0) {
-                allDates = allDates.concat(forecast.dates);
-                const nullPadding = new Array(dates.length - 1).fill(null);
+                const lastDate = new Date(dates[dates.length - 1]).getTime();
                 const startPrice = close[close.length - 1];
-                echoData = nullPadding.concat([startPrice]).concat(forecast.values);
-                
-                const endPaddingOhlc = forecast.dates.map(date => ({ x: date, y: null }));
-                pOhlc = pOhlc.concat(endPaddingOhlc);
-                const endPadding = new Array(forecast.dates.length).fill(null);
-                pClose = pClose.concat(endPadding);
-                pUpper = pUpper.concat(endPadding);
-                pLower = pLower.concat(endPadding);
-                pSma = pSma.concat(endPadding);
-                pStBull = pStBull.concat(endPadding);
-                pStBear = pStBear.concat(endPadding);
+                echoData.push({ x: lastDate, y: startPrice });
+                for (let i = 0; i < forecast.dates.length; i++) {
+                    echoData.push({ x: new Date(forecast.dates[i]).getTime(), y: forecast.values[i] });
+                }
             }
 
-            let pVol = chartData.map(d => d.volume || 0);
-            if (forecast && forecast.values && forecast.values.length > 0) {
-                pVol = pVol.concat(new Array(forecast.dates.length).fill(null));
-            }
+            const pVol = chartData.map(d => ({ x: new Date(d.date).getTime(), y: d.volume || 0 }));
 
             const ttData = document.getElementById('tooltip-data');
             
@@ -481,7 +469,7 @@
                     dashArray: [0, 4, 4, 0, 0, 0, 5]
                 },
                 xaxis: {
-                    categories: allDates, type: 'datetime',
+                    type: 'datetime',
                     labels: { style: { colors: '#71717a' }, format: 'dd MMM' },
                     axisBorder: { show: false }, axisTicks: { show: false }, tooltip: { enabled: false }
                 },
@@ -495,36 +483,50 @@
                     custom: function({series, seriesIndex, dataPointIndex, w}) {
                         const ttData = document.getElementById('tooltip-data');
                         ttData.classList.remove('hidden');
-                        document.getElementById('tt-date').innerText = allDates[dataPointIndex];
-                        document.getElementById('tt-close').innerText = pClose[dataPointIndex] ? formatRp(pClose[dataPointIndex]) : '-';
-                        document.getElementById('tt-vol').innerText = pVol[dataPointIndex] ? (pVol[dataPointIndex]/1000000).toFixed(1) + 'M' : '-';
-                        document.getElementById('tt-upper').innerText = pUpper[dataPointIndex] ? formatRp(pUpper[dataPointIndex]) : '-';
-                        document.getElementById('tt-lower').innerText = pLower[dataPointIndex] ? formatRp(pLower[dataPointIndex]) : '-';
+                        // Combine all unique dates for tooltip reference
+                        const allDatesX = Array.from(new Set([
+                            ...chartData.map(d => new Date(d.date).getTime()),
+                            ...(forecast ? forecast.dates.map(d => new Date(d).getTime()) : [])
+                        ])).sort();
+                        
+                        const currentDate = allDatesX[dataPointIndex];
+                        if (!currentDate) return '<div style="display:none;"></div>';
+                        
+                        // Format date string
+                        const dateStr = new Date(currentDate).toISOString().split('T')[0];
+                        
+                        // Find matching values for this date
+                        const cOhlc = pOhlc.find(d => d.x === currentDate);
+                        const cVol = pVol.find(d => d.x === currentDate);
+                        const cUpper = pUpper.find(d => d.x === currentDate);
+                        const cLower = pLower.find(d => d.x === currentDate);
+                        
+                        document.getElementById('tt-date').innerText = dateStr;
+                        document.getElementById('tt-close').innerText = cOhlc && cOhlc.y ? formatRp(cOhlc.y[3]) : '-';
+                        document.getElementById('tt-vol').innerText = cVol && cVol.y ? (cVol.y/1000000).toFixed(1) + 'M' : '-';
+                        document.getElementById('tt-upper').innerText = cUpper && cUpper.y ? formatRp(cUpper.y) : '-';
+                        document.getElementById('tt-lower').innerText = cLower && cLower.y ? formatRp(cLower.y) : '-';
                         return '<div style="display:none;"></div>';
                     }
                 },
-                legend: { show: false } // Hidden per requirement
+                legend: { show: false } 
             };
 
             const volOptions = {
-                series: [{ name: 'Volume', data: pVol }],
+                series: [{ name: 'Volume', type: 'bar', data: pVol }],
                 chart: {
                     type: 'bar', id: 'volume-chart', group: 'screener',
-                    height: 120, toolbar: { show: false }, animations: { enabled: false },
-                    background: 'transparent', fontFamily: "'JetBrains Mono', monospace"
+                    height: 100, toolbar: { show: false }, animations: { enabled: false },
+                    background: 'transparent'
                 },
                 theme: { mode: 'dark' },
-                colors: [
-                    function(opts) {
-                        const idx = opts.dataPointIndex;
-                        if (idx === 0) return '#10b981';
-                        return close[idx] >= close[idx - 1] ? '#10b981' : '#ef4444';
-                    }
-                ],
-                plotOptions: { bar: { columnWidth: '80%' } },
-                dataLabels: { enabled: false },
+                colors: [({ value, seriesIndex, dataPointIndex, w }) => {
+                    const cOhlc = pOhlc[dataPointIndex];
+                    if (!cOhlc || !cOhlc.y) return '#3f3f46';
+                    return cOhlc.y[3] >= cOhlc.y[0] ? '#10b981' : '#ef4444';
+                }],
                 xaxis: {
-                    categories: allDates, type: 'datetime',
+                    type: 'datetime',
                     labels: { show: false }, axisBorder: { show: false }, axisTicks: { show: false }, tooltip: { enabled: false }
                 },
                 yaxis: {
