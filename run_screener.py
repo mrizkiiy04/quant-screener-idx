@@ -144,31 +144,39 @@ Kembalikan JSON array dimana setiap elemen adalah object dengan format:
 ]
 Format alasan dengan gaya analis teknikal/fundamental ringkas. Hanya kembalikan valid JSON array murni.
 """
-        response = client.models.generate_content(
-            model='gemini-2.5-flash',
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
-            ),
-        )
-        ai_data = json.loads(response.text)
-        
-        out = {}
-        for obj in ai_data:
-            if "ticker" in obj:
-                out[obj["ticker"]] = {
-                    "score": obj.get("score", 50),
-                    "action": obj.get("action", "HOLD / WAIT"),
-                    "bullets": obj.get("bullets", [])
-                }
-        
-        # Ensure all tickers have a fallback if Gemini skipped them
-        fallback_data = fallback_generator()
-        for item in items:
-            if item["ticker"] not in out:
-                out[item["ticker"]] = fallback_data[item["ticker"]]
+        for attempt in range(3):
+            try:
+                response = client.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                    ),
+                )
+                ai_data = json.loads(response.text)
                 
-        return out
+                out = {}
+                for obj in ai_data:
+                    if "ticker" in obj:
+                        out[obj["ticker"]] = {
+                            "score": obj.get("score", 50),
+                            "action": obj.get("action", "HOLD / WAIT"),
+                            "bullets": obj.get("bullets", [])
+                        }
+                
+                # Ensure all tickers have a fallback if Gemini skipped them
+                fallback_data = fallback_generator()
+                for item in items:
+                    if item["ticker"] not in out:
+                        out[item["ticker"]] = fallback_data[item["ticker"]]
+                        
+                return out
+            except Exception as e:
+                print(f"Gemini API attempt {attempt+1} failed: {e}")
+                if attempt == 2:
+                    print("All 3 attempts failed. Using fallback generator.")
+                    return fallback_generator()
+                time.sleep(2)
     except Exception as e:
         print(f"Error calling Gemini in batch: {e}")
         return fallback_generator()
@@ -253,6 +261,9 @@ def main():
             for idx, row in df_chart.iterrows():
                 chart_data.append({
                     "date": idx.strftime("%Y-%m-%d"),
+                    "open": float(row["Open"]),
+                    "high": float(row["High"]),
+                    "low": float(row["Low"]),
                     "close": float(row["Close"]),
                     "upper": float(row["BB_Upper"]),
                     "lower": float(row["BB_Lower"]),

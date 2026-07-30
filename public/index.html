@@ -426,6 +426,8 @@
             let pStBull = [...st_bull];
             let pStBear = [...st_bear];
 
+            let pOhlc = chartData.map(d => [d.open, d.high, d.low, d.close]);
+
             if (forecast && forecast.values && forecast.values.length > 0) {
                 allDates = allDates.concat(forecast.dates);
                 const nullPadding = new Array(dates.length - 1).fill(null);
@@ -433,6 +435,7 @@
                 echoData = nullPadding.concat([startPrice]).concat(forecast.values);
                 
                 const endPadding = new Array(forecast.dates.length).fill(null);
+                pOhlc = pOhlc.concat(endPadding);
                 pClose = pClose.concat(endPadding);
                 pUpper = pUpper.concat(endPadding);
                 pLower = pLower.concat(endPadding);
@@ -450,13 +453,13 @@
             
             const options = {
                 series: [
-                    { name: 'Close', data: pClose },
-                    { name: 'Upper', data: pUpper },
-                    { name: 'Lower', data: pLower },
-                    { name: 'SMA', data: pSma },
-                    { name: 'ST Bull', data: pStBull },
-                    { name: 'ST Bear', data: pStBear },
-                    { name: 'Echo', data: echoData }
+                    { name: 'Candle', type: 'candlestick', data: pOhlc },
+                    { name: 'Upper', type: 'line', data: pUpper },
+                    { name: 'Lower', type: 'line', data: pLower },
+                    { name: 'SMA', type: 'line', data: pSma },
+                    { name: 'ST Bull', type: 'line', data: pStBull },
+                    { name: 'ST Bear', type: 'line', data: pStBear },
+                    { name: 'Echo', type: 'line', data: echoData }
                 ],
                 chart: {
                     type: 'line', id: 'price-chart', group: 'screener',
@@ -464,9 +467,12 @@
                     background: 'transparent', fontFamily: "'JetBrains Mono', monospace"
                 },
                 theme: { mode: 'dark' },
-                colors: ['#fbbf24', '#f87171', '#38bdf8', '#52525b', '#10b981', '#ef4444', '#c084fc'],
+                colors: ['#f87171', '#38bdf8', '#52525b', '#10b981', '#ef4444', '#c084fc'], // colors for the line series (index 1 to 6)
+                plotOptions: {
+                    candlestick: { colors: { upward: '#fbbf24', downward: '#ef4444' } }
+                },
                 stroke: {
-                    width: [2, 1, 1, 1, 2, 2, 2],
+                    width: [1, 1, 1, 1, 2, 2, 2], // candle border is width 1, others follow
                     curve: ['straight', 'straight', 'straight', 'straight', 'stepline', 'stepline', 'smooth'],
                     dashArray: [0, 4, 4, 0, 0, 0, 5]
                 },
