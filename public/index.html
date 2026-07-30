@@ -613,6 +613,13 @@
             let allDates = [...dates];
             let echoData = [];
             
+            let pClose = [...close];
+            let pUpper = [...upper];
+            let pLower = [...lower];
+            let pSma = [...sma];
+            let pStBull = [...st_bull];
+            let pStBear = [...st_bear];
+
             if (forecast && forecast.values && forecast.values.length > 0) {
                 allDates = allDates.concat(forecast.dates);
                 
@@ -620,18 +627,29 @@
                 const startPrice = close[close.length - 1];
                 
                 echoData = nullPadding.concat([startPrice]).concat(forecast.values);
+                
+                const endPadding = new Array(forecast.dates.length).fill(null);
+                pClose = pClose.concat(endPadding);
+                pUpper = pUpper.concat(endPadding);
+                pLower = pLower.concat(endPadding);
+                pSma = pSma.concat(endPadding);
+                pStBull = pStBull.concat(endPadding);
+                pStBear = pStBear.concat(endPadding);
             }
 
-            const volData = chartData.map(d => d.volume || 0);
+            let pVol = chartData.map(d => d.volume || 0);
+            if (forecast && forecast.values && forecast.values.length > 0) {
+                pVol = pVol.concat(new Array(forecast.dates.length).fill(null));
+            }
 
             const options = {
                 series: [
-                    { name: 'Close', data: close },
-                    { name: 'Upper Band', data: upper },
-                    { name: 'Lower Band', data: lower },
-                    { name: 'SMA 20', data: sma },
-                    { name: 'ST Bull', data: st_bull },
-                    { name: 'ST Bear', data: st_bear },
+                    { name: 'Close', data: pClose },
+                    { name: 'Upper Band', data: pUpper },
+                    { name: 'Lower Band', data: pLower },
+                    { name: 'SMA 20', data: pSma },
+                    { name: 'ST Bull', data: pStBull },
+                    { name: 'ST Bear', data: pStBear },
                     { name: 'Echo Forecast', data: echoData }
                 ],
                 chart: {
@@ -675,7 +693,9 @@
                 dataLabels: { enabled: false },
                 tooltip: {
                     theme: 'dark',
-                    y: { formatter: (val) => 'Rp ' + new Intl.NumberFormat('id-ID').format(val) }
+                    shared: true,
+                    intersect: false,
+                    y: { formatter: (val) => val !== null ? 'Rp ' + new Intl.NumberFormat('id-ID').format(val) : 'N/A' }
                 },
                 legend: {
                     position: 'top',
@@ -686,7 +706,7 @@
             };
 
             const volOptions = {
-                series: [{ name: 'Volume', data: volData }],
+                series: [{ name: 'Volume', data: pVol }],
                 chart: {
                     type: 'bar',
                     id: 'volume-chart',
