@@ -534,7 +534,7 @@
                 </div>
             `;
 
-            renderChart(stock.chart);
+            renderChart(stock.chart, stock.forecast);
             renderADX(stock.adx || 0);
         }
 
@@ -596,7 +596,7 @@
             }
         }
 
-        function renderChart(chartData) {
+        function renderChart(chartData, forecast) {
             if (!chartData || chartData.length === 0) {
                 document.getElementById('chart').innerHTML = '<div class="loader">Chart feed disconnected</div>';
                 return;
@@ -610,6 +610,18 @@
             const st_bull = chartData.map(d => (d.st_dir === 1 ? d.st : null));
             const st_bear = chartData.map(d => (d.st_dir === -1 ? d.st : null));
 
+            let allDates = [...dates];
+            let echoData = [];
+            
+            if (forecast && forecast.values && forecast.values.length > 0) {
+                allDates = allDates.concat(forecast.dates);
+                
+                const nullPadding = new Array(dates.length - 1).fill(null);
+                const startPrice = close[close.length - 1];
+                
+                echoData = nullPadding.concat([startPrice]).concat(forecast.values);
+            }
+
             const volData = chartData.map(d => d.volume || 0);
 
             const options = {
@@ -619,7 +631,8 @@
                     { name: 'Lower Band', data: lower },
                     { name: 'SMA 20', data: sma },
                     { name: 'ST Bull', data: st_bull },
-                    { name: 'ST Bear', data: st_bear }
+                    { name: 'ST Bear', data: st_bear },
+                    { name: 'Echo Forecast', data: echoData }
                 ],
                 chart: {
                     type: 'line',
@@ -632,15 +645,15 @@
                     fontFamily: "'JetBrains Mono', monospace"
                 },
                 theme: { mode: 'dark' },
-                // Colors: Close, Upper, Lower, SMA, ST Bull, ST Bear
-                colors: ['#fbbf24', '#f87171', '#38bdf8', '#52525b', '#22c55e', '#ef4444'],
+                // Colors: Close, Upper, Lower, SMA, ST Bull, ST Bear, Echo Forecast
+                colors: ['#fbbf24', '#f87171', '#38bdf8', '#52525b', '#22c55e', '#ef4444', '#c084fc'],
                 stroke: {
-                    width: [2, 1, 1, 1, 2, 2],
-                    curve: ['straight', 'straight', 'straight', 'straight', 'stepline', 'stepline'],
-                    dashArray: [0, 4, 4, 0, 0, 0]
+                    width: [2, 1, 1, 1, 2, 2, 2],
+                    curve: ['straight', 'straight', 'straight', 'straight', 'stepline', 'stepline', 'smooth'],
+                    dashArray: [0, 4, 4, 0, 0, 0, 5]
                 },
                 xaxis: {
-                    categories: dates,
+                    categories: allDates,
                     type: 'datetime',
                     labels: { style: { colors: '#a1a1aa' } },
                     axisBorder: { show: false },
@@ -699,7 +712,7 @@
                 },
                 dataLabels: { enabled: false },
                 xaxis: {
-                    categories: dates,
+                    categories: allDates,
                     type: 'datetime',
                     labels: { show: false }, // Hide labels to keep it clean
                     axisBorder: { show: false },

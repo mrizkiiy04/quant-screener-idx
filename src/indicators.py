@@ -246,3 +246,51 @@ def compute_supertrend(df, period=10, multiplier=3.0):
     df.loc[df.index[:start_idx], 'ST'] = np.nan
     df.loc[df.index[:start_idx], 'ST_DIR'] = 0
     return df
+
+# ------------------------------------------------------------------ #
+# Echo Forecast (Pattern Matching)
+# ------------------------------------------------------------------ #
+def compute_echo_forecast(df, eval_window=60, forecast_window=20):
+    import numpy as np
+    
+    if len(df) < eval_window * 2 + forecast_window:
+        return []
+        
+    prices = df['Close'].values
+    if len(prices.shape) > 1:
+        prices = prices.flatten()
+        
+    current_window = prices[-eval_window:]
+    
+    max_corr = -2
+    best_idx = -1
+    search_end = len(prices) - forecast_window - eval_window
+    
+    for i in range(search_end):
+        hist_window = prices[i : i + eval_window]
+        
+        if np.std(hist_window) == 0 or np.std(current_window) == 0:
+            continue
+            
+        corr = np.corrcoef(current_window, hist_window)[0, 1]
+        
+        if corr > max_corr:
+            max_corr = corr
+            best_idx = i
+            
+    if best_idx == -1:
+        return []
+        
+    hist_future_start = best_idx + eval_window
+    hist_future_prices = prices[hist_future_start : hist_future_start + forecast_window]
+    
+    hist_last_price = prices[hist_future_start - 1]
+    current_last_price = current_window[-1]
+    
+    forecast_prices = []
+    for hp in hist_future_prices:
+        pct_change = (hp - hist_last_price) / hist_last_price
+        proj = current_last_price * (1 + pct_change)
+        forecast_prices.append(float(proj))
+        
+    return forecast_prices

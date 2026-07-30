@@ -12,8 +12,7 @@ import datetime
 import yfinance as yf
 import pandas as pd
 from pathlib import Path
-
-from src.indicators import add_signals, compute_supertrend
+from src.indicators import add_signals, compute_supertrend, compute_echo_forecast
 from src.engine import run_backtest
 
 # Daftar 45 Saham Paling Likuid di Indonesia (Indeks LQ45)
@@ -142,6 +141,14 @@ def main():
                     valuation_status = "Entry Wajar"
                 else:
                     valuation_status = "Overvalued"
+                    
+            # --- Echo Forecast ---
+            forecast_values = compute_echo_forecast(df, eval_window=60, forecast_window=20)
+            forecast_dates = []
+            if forecast_values:
+                last_dt = df.index[-1]
+                future_dts = pd.bdate_range(start=last_dt + pd.Timedelta(days=1), periods=len(forecast_values))
+                forecast_dates = [dt.strftime("%Y-%m-%d") for dt in future_dts]
             
             # Simulasi riwayat trading 150 hari ke belakang
             _, trades_df = run_backtest(df, entry_mask, exit_mask, capital=10000000, atr_mult=atr_mult)
@@ -171,6 +178,10 @@ def main():
                 "rules": rule_details,
                 "chart": chart_data,
                 "history": trade_history,
+                "forecast": {
+                    "dates": forecast_dates,
+                    "values": forecast_values
+                },
                 "fundamentals": {
                     "eps": eps,
                     "bv": bv,
