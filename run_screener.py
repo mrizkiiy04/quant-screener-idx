@@ -118,11 +118,11 @@ def main():
             if not trades_df.empty:
                 for _, tr in trades_df.iterrows():
                     trade_history.append({
-                        "entry_date": tr["Entry Date"].strftime("%Y-%m-%d"),
-                        "exit_date": tr["Exit Date"].strftime("%Y-%m-%d"),
-                        "entry_price": float(tr["Entry Price"]),
-                        "exit_price": float(tr["Exit Price"]),
-                        "return_pct": float(tr["Return (%)"])
+                        "entry_date": tr["entry_date"].strftime("%Y-%m-%d"),
+                        "exit_date": tr["exit_date"].strftime("%Y-%m-%d"),
+                        "entry_price": float(tr["entry_price"]),
+                        "exit_price": float(tr["exit_price"]),
+                        "return_pct": float(tr["return"]) * 100
                     })
             # Urutkan trades dari terbaru ke terlama
             trade_history = trade_history[::-1]
