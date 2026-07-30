@@ -46,7 +46,8 @@ GOLDEN_PARAMS = {
 def fetch_rss_news(ticker: str) -> list:
     """Fetch recent news for a ticker from Google News RSS (Max 3 days old)."""
     try:
-        url = f"https://news.google.com/rss/search?q={ticker}+saham+when:3d&hl=id&gl=ID&ceid=ID:id"
+        ticker_clean = ticker.replace('.JK', '')
+        url = f"https://news.google.com/rss/search?q={ticker_clean}+saham+when:3d&hl=id&gl=ID&ceid=ID:id"
         feed = feedparser.parse(url)
         news = []
         for entry in feed.entries:
