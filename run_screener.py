@@ -60,7 +60,21 @@ def main():
 
     for ticker in UNIVERSE:
         try:
+            ticker_obj = yf.Ticker(ticker)
             raw = fetch_recent_data(ticker)
+            
+            # Fetch fundamentals
+            info = ticker_obj.info
+            eps = info.get("trailingEps")
+            bv = info.get("bookValue")
+            fair_value = None
+            valuation_status = "N/A"
+            margin = None
+            
+            if eps and bv and eps > 0 and bv > 0:
+                # Graham Number
+                fair_value = (22.5 * eps * bv) ** 0.5
+                
             if raw.empty or len(raw) < 50:
                 continue
                 
@@ -112,6 +126,16 @@ def main():
                 "squeeze": bool(last_row["BW_Squeeze"])
             }
             
+            # Tentukan status valuasi
+            if fair_value:
+                margin = (fair_value - close_price) / fair_value
+                if margin > 0.10:
+                    valuation_status = "Harga Murah"
+                elif -0.10 <= margin <= 0.10:
+                    valuation_status = "Entry Wajar"
+                else:
+                    valuation_status = "Overvalued"
+            
             # Simulasi riwayat trading 150 hari ke belakang
             _, trades_df = run_backtest(df, entry_mask, exit_mask, capital=10000000, atr_mult=atr_mult)
             trade_history = []
@@ -139,7 +163,14 @@ def main():
                 "vol_ratio": float(last_row["Vol_Ratio"]),
                 "rules": rule_details,
                 "chart": chart_data,
-                "history": trade_history
+                "history": trade_history,
+                "fundamentals": {
+                    "eps": eps,
+                    "bv": bv,
+                    "fair_value": fair_value,
+                    "margin": margin,
+                    "status": valuation_status
+                }
             })
             
         except Exception as e:
