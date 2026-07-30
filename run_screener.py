@@ -13,7 +13,7 @@ import yfinance as yf
 import pandas as pd
 from pathlib import Path
 
-from src.indicators import add_signals
+from src.indicators import add_signals, compute_supertrend
 from src.engine import run_backtest
 
 # Daftar 45 Saham Paling Likuid di Indonesia (Indeks LQ45)
@@ -82,7 +82,11 @@ def main():
             signal_params = {k: v for k, v in GOLDEN_PARAMS.items() if k != "atr_mult"}
             atr_mult = GOLDEN_PARAMS["atr_mult"]
             
-            df, entry_mask, exit_mask = add_signals(raw, **signal_params)
+            # --- Tambahan Supertrend untuk Chart ---
+            df = compute_supertrend(raw, period=10, multiplier=3.0)
+
+            # 2. Hitung indikator BB & Dapatkan mask
+            df, entry_mask, exit_mask = add_signals(df, **signal_params)
             
             if df.empty:
                 continue
@@ -115,7 +119,9 @@ def main():
                     "close": float(row["Close"]),
                     "upper": float(row["BB_Upper"]),
                     "lower": float(row["BB_Lower"]),
-                    "sma": float(row["BB_SMA"])
+                    "sma": float(row["BB_SMA"]),
+                    "st": float(row["ST"]) if pd.notnull(row["ST"]) else None,
+                    "st_dir": int(row["ST_DIR"]) if pd.notnull(row["ST_DIR"]) else 0
                 })
                 
             # Rincian kondisi rules pada hari terakhir

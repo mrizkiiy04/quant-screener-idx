@@ -170,3 +170,79 @@ def add_signals(
     exit_mask = df["Pct_B"] >= percent_b_exit
 
     return df, entry_mask, exit_mask
+
+# ------------------------------------------------------------------ #
+# Supertrend (Visual Aid)
+# ------------------------------------------------------------------ #
+def compute_supertrend(df, period=10, multiplier=3.0):
+    import numpy as np
+    import pandas as pd
+    df = df.copy()
+    hl2 = (df['High'] + df['Low']) / 2
+    
+    h = df['High']
+    l = df['Low']
+    c = df['Close']
+    prev_c = c.shift(1)
+    
+    tr1 = h - l
+    tr2 = (h - prev_c).abs()
+    tr3 = (l - prev_c).abs()
+    tr = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
+    
+    atr = tr.ewm(alpha=1/period, min_periods=period).mean()
+    
+    basic_ub = hl2 + (multiplier * atr)
+    basic_lb = hl2 - (multiplier * atr)
+    
+    final_ub = np.zeros(len(df))
+    final_lb = np.zeros(len(df))
+    st = np.zeros(len(df))
+    st_dir = np.zeros(len(df))
+    
+    first_valid = atr.first_valid_index()
+    if first_valid is None:
+        df['ST'] = np.nan
+        df['ST_DIR'] = 0
+        return df
+        
+    start_idx = df.index.get_loc(first_valid)
+    
+    final_ub[start_idx] = basic_ub.iloc[start_idx]
+    final_lb[start_idx] = basic_lb.iloc[start_idx]
+    st[start_idx] = final_ub[start_idx]
+    st_dir[start_idx] = -1
+    
+    for i in range(start_idx + 1, len(df)):
+        if basic_ub.iloc[i] < final_ub[i-1] or df['Close'].iloc[i-1] > final_ub[i-1]:
+            final_ub[i] = basic_ub.iloc[i]
+        else:
+            final_ub[i] = final_ub[i-1]
+            
+        if basic_lb.iloc[i] > final_lb[i-1] or df['Close'].iloc[i-1] < final_lb[i-1]:
+            final_lb[i] = basic_lb.iloc[i]
+        else:
+            final_lb[i] = final_lb[i-1]
+            
+        if st[i-1] == final_ub[i-1] and df['Close'].iloc[i] <= final_ub[i]:
+            st[i] = final_ub[i]
+            st_dir[i] = -1
+        elif st[i-1] == final_ub[i-1] and df['Close'].iloc[i] > final_ub[i]:
+            st[i] = final_lb[i]
+            st_dir[i] = 1
+        elif st[i-1] == final_lb[i-1] and df['Close'].iloc[i] >= final_lb[i]:
+            st[i] = final_lb[i]
+            st_dir[i] = 1
+        elif st[i-1] == final_lb[i-1] and df['Close'].iloc[i] < final_lb[i]:
+            st[i] = final_ub[i]
+            st_dir[i] = -1
+        else:
+            st[i] = st[i-1]
+            st_dir[i] = st_dir[i-1]
+            
+    df['ST'] = st
+    df['ST_DIR'] = st_dir
+    
+    df.loc[df.index[:start_idx], 'ST'] = np.nan
+    df.loc[df.index[:start_idx], 'ST_DIR'] = 0
+    return df
