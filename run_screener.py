@@ -71,9 +71,9 @@ def main():
             valuation_status = "N/A"
             margin = None
             
-            if eps and bv and eps > 0 and bv > 0:
-                # Graham Number
-                fair_value = (22.5 * eps * bv) ** 0.5
+            if eps and eps > 0:
+                # Menggunakan standar valuasi P/E 15x untuk mature blue chips (jauh lebih akurat dari Graham Number lama untuk sektor perbankan LQ45)
+                fair_value = eps * 15
                 
             if raw.empty or len(raw) < 50:
                 continue

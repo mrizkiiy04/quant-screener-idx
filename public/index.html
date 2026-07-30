@@ -395,7 +395,7 @@
                     <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--border);">
                         <div class="card-header" style="margin-bottom: 1rem; border:none; padding:0;">Fundamental Valuation</div>
                         <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
-                            <span style="color:var(--text-secondary); font-size:0.85rem;">Graham Number</span>
+                            <span style="color:var(--text-secondary); font-size:0.85rem;">Harga Wajar (P/E 15x)</span>
                             <span style="font-family:'JetBrains Mono', monospace; font-weight:600;">${f.fair_value ? formatRp(f.fair_value) : 'N/A'}</span>
                         </div>
                         <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
@@ -414,8 +414,9 @@
                 <div class="top-bar">
                     <div class="stock-title">
                         <h2>${stock.ticker}</h2>
-                        <div style="color:var(--text-secondary); font-family:'JetBrains Mono', monospace; font-size:1.1rem;">
-                            Close: <span style="color:var(--text-primary)">${formatRp(stock.close)}</span>
+                        <div style="display:flex; gap: 1.5rem; color:var(--text-secondary); font-family:'JetBrains Mono', monospace; font-size:1.1rem;">
+                            <div>Close: <span style="color:var(--text-primary)">${formatRp(stock.close)}</span></div>
+                            <div>Harga Wajar: <span style="color:${f.margin > 0 ? 'var(--chart-lower)' : 'var(--chart-upper)'}">${f.fair_value ? formatRp(f.fair_value) : 'N/A'}</span></div>
                         </div>
                     </div>
                     <div style="display: flex; gap: 0.75rem; align-items: center;">
