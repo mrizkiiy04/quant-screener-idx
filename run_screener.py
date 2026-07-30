@@ -60,10 +60,19 @@ def main():
             ticker_obj = yf.Ticker(ticker)
             raw = fetch_recent_data(ticker)
             
+            if raw.empty or len(raw) < 50:
+                continue
+                
             # Fetch fundamentals
-            info = ticker_obj.info
-            eps = info.get("trailingEps")
-            bv = info.get("bookValue")
+            eps = None
+            bv = None
+            try:
+                info = ticker_obj.info
+                eps = info.get("trailingEps")
+                bv = info.get("bookValue")
+            except Exception as e:
+                print(f"Fundamentals fetch failed for {ticker}: {e}")
+                
             fair_value = None
             valuation_status = "N/A"
             margin = None
@@ -71,9 +80,6 @@ def main():
             if eps and eps > 0:
                 # Menggunakan standar valuasi P/E 15x untuk mature blue chips (jauh lebih akurat dari Graham Number lama untuk sektor perbankan LQ45)
                 fair_value = eps * 15
-                
-            if raw.empty or len(raw) < 50:
-                continue
                 
             # Pisahkan atr_mult karena tidak dipakai di add_signals
             signal_params = {k: v for k, v in GOLDEN_PARAMS.items() if k != "atr_mult"}
@@ -194,6 +200,7 @@ def main():
             
     output_data = {
         "last_updated": last_updated,
+        "params": GOLDEN_PARAMS,
         "signals": results
     }
     

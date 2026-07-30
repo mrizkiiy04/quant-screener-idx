@@ -334,6 +334,7 @@
             document.querySelector('.sidebar-overlay').classList.toggle('active');
         }
         let globalSignals = [];
+        let globalParams = {};
         let chartInstance = null;
         let volChartInstance = null;
         let adxChartInstance = null;
@@ -347,6 +348,7 @@
                 const data = await response.json();
                 
                 globalSignals = data.signals;
+                globalParams = data.params || {};
                 document.getElementById('last-updated').innerText = `Sync: ${data.last_updated}`;
                 
                 renderSidebar();
@@ -455,7 +457,7 @@
                         <div id="adx-chart" style="margin: -20px 0 -30px 0;"></div>
                         <div style="display:flex; justify-content:space-between; margin-bottom: 0.25rem; border-top: 1px solid #27272a; padding-top: 0.75rem;">
                             <span style="color:var(--text-secondary); font-size:0.75rem;">Margin of Safety</span>
-                            <span style="font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:${f.margin > 0 ? 'var(--profit)' : 'var(--loss)'}">${marginPct}</span>
+                            <span style="font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:${f.margin !== null && f.margin !== undefined ? (f.margin > 0 ? 'var(--profit)' : 'var(--loss)') : 'var(--text-secondary)'}">${marginPct}</span>
                         </div>
                         <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
                             <span style="color:var(--text-secondary); font-size:0.75rem;">EPS / BV</span>
@@ -471,7 +473,7 @@
                         <h2>${stock.ticker}</h2>
                         <div style="display:flex; gap: 1.5rem; color:var(--text-secondary); font-family:'JetBrains Mono', monospace; font-size:1.1rem;">
                             <div>Close: <span style="color:var(--text-primary)">${formatRp(stock.close)}</span></div>
-                            <div>Harga Wajar: <span style="color:${f.margin > 0 ? 'var(--chart-lower)' : 'var(--chart-upper)'}">${f.fair_value ? formatRp(f.fair_value) : 'N/A'}</span></div>
+                            <div>Harga Wajar: <span style="color:${f.margin !== null && f.margin !== undefined ? (f.margin > 0 ? 'var(--chart-lower)' : 'var(--chart-upper)') : 'var(--text-secondary)'}">${f.fair_value ? formatRp(f.fair_value) : 'N/A'}</span></div>
                         </div>
                     </div>
                     <div style="display: flex; gap: 0.75rem; align-items: center;">
@@ -496,21 +498,21 @@
                                     <div class="rule-name">Oversold Edge</div>
                                     <div class="status-icon" style="${iconColor(r.oversold)}; margin:0;">${icon(r.oversold)}</div>
                                 </div>
-                                <div class="rule-desc" style="margin-top:0.25rem;">Pct B &lt; 0.05. Harga tembus BB Bawah.</div>
+                                <div class="rule-desc" style="margin-top:0.25rem;">Pct B &lt; ${globalParams.percent_b_entry || 0.05}. Harga tembus BB Bawah.</div>
                             </div>
                             <div class="rule-item" style="padding: 1rem;">
                                 <div style="display:flex; justify-content:space-between; align-items:center;">
                                     <div class="rule-name">Regime Check</div>
                                     <div class="status-icon" style="${iconColor(r.regime)}; margin:0;">${icon(r.regime)}</div>
                                 </div>
-                                <div class="rule-desc" style="margin-top:0.25rem;">ADX &lt; 20. Terhindar downtrend.</div>
+                                <div class="rule-desc" style="margin-top:0.25rem;">ADX &lt; ${globalParams.adx_threshold || 20}. Terhindar downtrend.</div>
                             </div>
                             <div class="rule-item" style="padding: 1rem;">
                                 <div style="display:flex; justify-content:space-between; align-items:center;">
                                     <div class="rule-name">Volume Valid</div>
                                     <div class="status-icon" style="${iconColor(r.volume)}; margin:0;">${icon(r.volume)}</div>
                                 </div>
-                                <div class="rule-desc" style="margin-top:0.25rem;">Vol Ratio &gt; 1.0x. Terjadi panic selling.</div>
+                                <div class="rule-desc" style="margin-top:0.25rem;">Vol Ratio &gt; ${(globalParams.vol_ratio_min || 1.0).toFixed(1)}x. Terjadi panic selling.</div>
                             </div>
                             <div class="rule-item" style="padding: 1rem;">
                                 <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -530,12 +532,44 @@
                         </div>
                         
                         ${fvHtml}
+                        
+                        ${renderHistoryHtml(stock.history)}
                     </div>
                 </div>
             `;
 
             renderChart(stock.chart, stock.forecast);
             renderADX(stock.adx || 0);
+        }
+
+        function renderHistoryHtml(history) {
+            if (!history || history.length === 0) {
+                return `
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--border);">
+                        <div class="card-header" style="margin-bottom: 0.5rem; border:none; padding:0;">Recent Trades (Backtest)</div>
+                        <div style="font-size:0.85rem; color:var(--text-secondary);">No trade history available.</div>
+                    </div>
+                `;
+            }
+            
+            let rows = history.slice(0, 5).map(tr => {
+                const isProfit = tr.return_pct > 0;
+                const color = isProfit ? 'var(--profit)' : 'var(--loss)';
+                const sign = isProfit ? '+' : '';
+                return `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem; font-family:'JetBrains Mono', monospace; font-size:0.75rem;">
+                        <span style="color:var(--text-secondary);">${tr.entry_date} &rarr; ${tr.exit_date}</span>
+                        <span style="color:${color};">${sign}${tr.return_pct.toFixed(2)}%</span>
+                    </div>
+                `;
+            }).join('');
+            
+            return `
+                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--border);">
+                    <div class="card-header" style="margin-bottom: 0.5rem; border:none; padding:0;">Recent Trades (Backtest)</div>
+                    ${rows}
+                </div>
+            `;
         }
 
         function renderADX(val) {
