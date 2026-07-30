@@ -335,6 +335,7 @@
         }
         let globalSignals = [];
         let chartInstance = null;
+        let volChartInstance = null;
 
         const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
 
@@ -485,6 +486,7 @@
                     <div class="card">
                         <div class="card-header">Price Action & Bands (90d)</div>
                         <div id="chart" class="chart-container"></div>
+                        <div id="chart-volume" class="chart-container" style="height: 150px; border-top: 1px dashed var(--border);"></div>
                     </div>
 
                     <div class="card">
@@ -551,6 +553,8 @@
             const st_bull = chartData.map(d => (d.st_dir === 1 ? d.st : null));
             const st_bear = chartData.map(d => (d.st_dir === -1 ? d.st : null));
 
+            const volData = chartData.map(d => d.volume || 0);
+
             const options = {
                 series: [
                     { name: 'Close', data: close },
@@ -562,6 +566,8 @@
                 ],
                 chart: {
                     type: 'line',
+                    id: 'price-chart',
+                    group: 'screener',
                     height: window.innerWidth <= 768 ? 350 : 550,
                     toolbar: { show: false },
                     animations: { enabled: false },
@@ -609,11 +615,61 @@
                 }
             };
 
+            const volOptions = {
+                series: [{ name: 'Volume', data: volData }],
+                chart: {
+                    type: 'bar',
+                    id: 'volume-chart',
+                    group: 'screener',
+                    height: 150,
+                    toolbar: { show: false },
+                    animations: { enabled: false },
+                    background: 'transparent',
+                    fontFamily: "'JetBrains Mono', monospace"
+                },
+                theme: { mode: 'dark' },
+                colors: ['#52525b'],
+                dataLabels: { enabled: false },
+                xaxis: {
+                    categories: dates,
+                    type: 'datetime',
+                    labels: { show: false }, // Hide labels to keep it clean
+                    axisBorder: { show: false },
+                    axisTicks: { show: false },
+                    tooltip: { enabled: false }
+                },
+                yaxis: {
+                    labels: {
+                        formatter: (val) => {
+                            if(val >= 1000000000) return (val/1000000000).toFixed(1) + 'B';
+                            if(val >= 1000000) return (val/1000000).toFixed(1) + 'M';
+                            if(val >= 1000) return (val/1000).toFixed(0) + 'K';
+                            return val;
+                        },
+                        style: { colors: '#a1a1aa', fontSize: '10px' }
+                    }
+                },
+                grid: {
+                    borderColor: '#27272a',
+                    strokeDashArray: 2,
+                },
+                tooltip: { theme: 'dark' }
+            };
+
             if (chartInstance) {
                 chartInstance.destroy();
+                chartInstance = null;
             }
+            if (volChartInstance) {
+                volChartInstance.destroy();
+                volChartInstance = null;
+            }
+            
             chartInstance = new ApexCharts(document.querySelector("#chart"), options);
             chartInstance.render();
+            
+            volChartInstance = new ApexCharts(document.querySelector("#chart-volume"), volOptions);
+            volChartInstance.render();
         }
 
         document.addEventListener('DOMContentLoaded', init);

@@ -121,7 +121,8 @@ def main():
                     "lower": float(row["BB_Lower"]),
                     "sma": float(row["BB_SMA"]),
                     "st": float(row["ST"]) if pd.notnull(row["ST"]) else None,
-                    "st_dir": int(row["ST_DIR"]) if pd.notnull(row["ST_DIR"]) else 0
+                    "st_dir": int(row["ST_DIR"]) if pd.notnull(row["ST_DIR"]) else 0,
+                    "volume": int(row["Volume"])
                 })
                 
             # Rincian kondisi rules pada hari terakhir
