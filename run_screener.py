@@ -72,7 +72,7 @@ def main():
             if df.empty:
                 continue
                 
-            # Ambil data hari terakhir (hari ini)
+            # Ambil data hari terakhir (hari ini) untuk sinyal utama
             last_date = df.index[-1]
             last_row = df.iloc[-1]
             is_buy = bool(entry_mask.iloc[-1])
@@ -82,7 +82,6 @@ def main():
             atr = float(last_row["ATR"])
             
             # Hitung Trailing Stop jika hari ini kita memegang barang
-            # Stop Level = Close - (ATR * atr_mult)
             stop_level = close_price - (atr * atr_mult)
             
             if is_buy:
@@ -91,6 +90,26 @@ def main():
                 signal = "SELL"
             else:
                 signal = "HOLD / WAIT"
+                
+            # Ambil data historis 90 hari terakhir untuk chart
+            df_chart = df.tail(90)
+            chart_data = []
+            for idx, row in df_chart.iterrows():
+                chart_data.append({
+                    "date": idx.strftime("%Y-%m-%d"),
+                    "close": float(row["Close"]),
+                    "upper": float(row["BB_Upper"]),
+                    "lower": float(row["BB_Lower"]),
+                    "sma": float(row["BB_SMA"])
+                })
+                
+            # Rincian kondisi rules pada hari terakhir
+            rule_details = {
+                "oversold": bool(last_row["Pct_B"] < GOLDEN_PARAMS["percent_b_entry"]) if "percent_b_entry" in GOLDEN_PARAMS else bool(last_row["Pct_B"] < 0.05),
+                "regime": bool(last_row["ADX"] < GOLDEN_PARAMS["adx_threshold"]),
+                "volume": bool(last_row["Vol_Ratio"] >= GOLDEN_PARAMS["vol_ratio_min"]),
+                "squeeze": bool(last_row["BW_Squeeze"])
+            }
                 
             results.append({
                 "ticker": ticker,
@@ -101,7 +120,9 @@ def main():
                 "stop_loss": stop_level,
                 "pct_b": float(last_row["Pct_B"]),
                 "adx": float(last_row["ADX"]),
-                "vol_ratio": float(last_row["Vol_Ratio"])
+                "vol_ratio": float(last_row["Vol_Ratio"]),
+                "rules": rule_details,
+                "chart": chart_data
             })
             
         except Exception as e:
