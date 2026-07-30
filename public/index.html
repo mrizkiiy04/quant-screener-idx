@@ -178,12 +178,6 @@
             padding: 1.5rem;
         }
 
-        /* Span Analysis across both columns on bottom */
-        .card-analysis {
-            grid-column: 1 / -1; 
-            margin-top: 1.5rem;
-        }
-
         .card-header {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
@@ -196,60 +190,17 @@
         }
 
         .chart-container {
-            height: 450px;
+            height: 550px;
             width: 100%;
         }
 
         /* -----------------------
-           HISTORY PANEL
-           ----------------------- */
-        .history-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            height: 400px;
-            overflow-y: auto;
-        }
-        
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px dashed var(--border);
-        }
-
-        .history-item:last-child { border-bottom: none; }
-
-        .h-date {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .h-price {
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-top: 0.25rem;
-        }
-
-        .h-return {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-align: right;
-        }
-
-        .text-profit { color: var(--profit); }
-        .text-loss { color: var(--loss); }
-
-        /* -----------------------
-           ANALYSIS PANEL (FULL WIDTH)
+           ANALYSIS PANEL (SIDEBAR)
            ----------------------- */
         .rule-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
+            grid-template-columns: 1fr;
+            gap: 1rem;
         }
 
         .rule-item {
@@ -310,12 +261,8 @@
             body { flex-direction: column; overflow: auto; }
             .sidebar { width: 100%; height: 300px; border-right: none; border-bottom: 1px solid var(--border); }
             .dashboard-grid { grid-template-columns: 1fr; }
-            .rule-grid { grid-template-columns: 1fr 1fr; }
             .main-content { overflow: visible; padding: 1.5rem; }
             .stop-loss-box { flex-direction: column; text-align: left; align-items: flex-start; gap: 1rem; }
-        }
-        @media (max-width: 640px) {
-            .rule-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -424,27 +371,6 @@
             const icon = (val) => val ? '✓' : '✗';
             const iconColor = (val) => val ? 'color: var(--chart-lower)' : 'color: var(--text-secondary)';
 
-            // Build History HTML
-            let historyHtml = '<div style="color:var(--text-secondary);font-size:0.85rem;padding:2rem 0;text-align:center;">Tidak ada riwayat trade (150 hari).</div>';
-            if (stock.history && stock.history.length > 0) {
-                historyHtml = stock.history.map(trade => {
-                    const isProfit = trade.return_pct > 0;
-                    const retColor = isProfit ? 'text-profit' : 'text-loss';
-                    const retSign = isProfit ? '+' : '';
-                    return `
-                        <li class="history-item">
-                            <div>
-                                <div class="h-date">IN: ${trade.entry_date}</div>
-                                <div class="h-date">OUT: ${trade.exit_date}</div>
-                            </div>
-                            <div class="h-return ${retColor}">
-                                ${retSign}${trade.return_pct.toFixed(2)}%
-                            </div>
-                        </li>
-                    `;
-                }).join('');
-            }
-
             main.innerHTML = `
                 <div class="top-bar">
                     <div class="stock-title">
@@ -465,55 +391,46 @@
                     </div>
 
                     <div class="card">
-                        <div class="card-header">Trade History Accuracy (150d)</div>
-                        <ul class="history-list">
-                            ${historyHtml}
-                        </ul>
-                    </div>
-                </div>
+                        <div class="card-header">Strategy Diagnostics</div>
+                        
+                        <div class="rule-grid">
+                            <div class="rule-item" style="padding: 1rem;">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <div class="rule-name">Oversold Edge</div>
+                                    <div class="status-icon" style="${iconColor(r.oversold)}; margin:0;">${icon(r.oversold)}</div>
+                                </div>
+                                <div class="rule-desc" style="margin-top:0.25rem;">Pct B &lt; 0.05. Harga tembus BB Bawah.</div>
+                            </div>
+                            <div class="rule-item" style="padding: 1rem;">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <div class="rule-name">Regime Check</div>
+                                    <div class="status-icon" style="${iconColor(r.regime)}; margin:0;">${icon(r.regime)}</div>
+                                </div>
+                                <div class="rule-desc" style="margin-top:0.25rem;">ADX &lt; 20. Terhindar downtrend.</div>
+                            </div>
+                            <div class="rule-item" style="padding: 1rem;">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <div class="rule-name">Volume Valid</div>
+                                    <div class="status-icon" style="${iconColor(r.volume)}; margin:0;">${icon(r.volume)}</div>
+                                </div>
+                                <div class="rule-desc" style="margin-top:0.25rem;">Vol Ratio &gt; 1.0x. Terjadi panic selling.</div>
+                            </div>
+                            <div class="rule-item" style="padding: 1rem;">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <div class="rule-name">No Squeeze</div>
+                                    <div class="status-icon" style="${iconColor(!r.squeeze)}; margin:0;">${icon(!r.squeeze)}</div>
+                                </div>
+                                <div class="rule-desc" style="margin-top:0.25rem;">Volatilitas lebar memadai.</div>
+                            </div>
+                        </div>
 
-                <div class="card card-analysis">
-                    <div class="card-header">Strategy Diagnostics</div>
-                    
-                    <div class="rule-grid">
-                        <div class="rule-item">
-                            <div class="status-icon" style="${iconColor(r.oversold)}">${icon(r.oversold)}</div>
-                            <div>
-                                <div class="rule-name">Oversold Edge</div>
-                                <div class="rule-desc">Pct B &lt; 0.05. Harga menusuk dinding band bawah.</div>
+                        <div class="stop-loss-box" style="margin-top: 1rem; padding: 1rem; display:block;">
+                            <div class="sl-title" style="margin-bottom:0.5rem;">ATR Trailing Stop Limit</div>
+                            <div class="sl-value" style="font-size:1.5rem;">${formatRp(stock.stop_loss)}</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.5rem;">
+                                Titik invalidasi dinamis. Jual jika harga tutup tembus angka ini.
                             </div>
                         </div>
-                        <div class="rule-item">
-                            <div class="status-icon" style="${iconColor(r.regime)}">${icon(r.regime)}</div>
-                            <div>
-                                <div class="rule-name">Regime Check</div>
-                                <div class="rule-desc">ADX &lt; 20. Terhindar dari tren turun yang mematikan.</div>
-                            </div>
-                        </div>
-                        <div class="rule-item">
-                            <div class="status-icon" style="${iconColor(r.volume)}">${icon(r.volume)}</div>
-                            <div>
-                                <div class="rule-name">Volume Valid</div>
-                                <div class="rule-desc">Vol Ratio &gt; 1.0x. Terjadi panic selling nyata (ikutan bandar).</div>
-                            </div>
-                        </div>
-                        <div class="rule-item">
-                            <div class="status-icon" style="${iconColor(!r.squeeze)}">${icon(!r.squeeze)}</div>
-                            <div>
-                                <div class="rule-name">No Squeeze</div>
-                                <div class="rule-desc">Volatilitas memadai, rentang harga cukup lebar.</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="stop-loss-box">
-                        <div>
-                            <div class="sl-title">ATR Trailing Stop Limit</div>
-                            <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:0.5rem; max-width:400px; line-height:1.5;">
-                                Titik invalidasi dinamis. Segera Cut Loss / Take Profit jika harga penutupan tembus ke bawah angka ini.
-                            </div>
-                        </div>
-                        <div class="sl-value">${formatRp(stock.stop_loss)}</div>
                     </div>
                 </div>
             `;
@@ -542,7 +459,7 @@
                 ],
                 chart: {
                     type: 'line',
-                    height: 450,
+                    height: 550,
                     toolbar: { show: false },
                     animations: { enabled: false },
                     background: 'transparent',
