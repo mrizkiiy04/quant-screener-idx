@@ -9,6 +9,9 @@ on:
   # Memungkinkan kita menjalankan script ini secara manual dari tombol di GitHub
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   run-screener:
     runs-on: ubuntu-latest
