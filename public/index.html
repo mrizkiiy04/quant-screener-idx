@@ -336,6 +336,7 @@
         let globalSignals = [];
         let chartInstance = null;
         let volChartInstance = null;
+        let adxChartInstance = null;
 
         const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
 
@@ -449,19 +450,16 @@
                 const marginPct = f.margin ? (f.margin * 100).toFixed(1) + '%' : 'N/A';
                 
                 fvHtml = `
-                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--border);">
-                        <div class="card-header" style="margin-bottom: 1rem; border:none; padding:0;">Fundamental Valuation</div>
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
-                            <span style="color:var(--text-secondary); font-size:0.85rem;">Harga Wajar (P/E 15x)</span>
-                            <span style="font-family:'JetBrains Mono', monospace; font-weight:600;">${f.fair_value ? formatRp(f.fair_value) : 'N/A'}</span>
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--border); text-align: center;">
+                        <div class="card-header" style="margin-bottom: 0.5rem; border:none; padding:0; text-align:left;">Trend Strength (ADX)</div>
+                        <div id="adx-chart" style="margin: -20px 0 -30px 0;"></div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom: 0.25rem; border-top: 1px solid #27272a; padding-top: 0.75rem;">
+                            <span style="color:var(--text-secondary); font-size:0.75rem;">Margin of Safety</span>
+                            <span style="font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:${f.margin > 0 ? 'var(--profit)' : 'var(--loss)'}">${marginPct}</span>
                         </div>
                         <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
-                            <span style="color:var(--text-secondary); font-size:0.85rem;">Margin of Safety</span>
-                            <span style="font-family:'JetBrains Mono', monospace; font-weight:600; color:${f.margin > 0 ? 'var(--profit)' : 'var(--loss)'}">${marginPct}</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
-                            <span style="color:var(--text-secondary); font-size:0.85rem;">EPS / BV</span>
-                            <span style="font-family:'JetBrains Mono', monospace; font-size:0.85rem;">${f.eps ? f.eps.toFixed(1) : '-'} / ${f.bv ? f.bv.toFixed(1) : '-'}</span>
+                            <span style="color:var(--text-secondary); font-size:0.75rem;">EPS / BV</span>
+                            <span style="font-family:'JetBrains Mono', monospace; font-size:0.75rem;">${f.eps ? f.eps.toFixed(1) : '-'} / ${f.bv ? f.bv.toFixed(1) : '-'}</span>
                         </div>
                     </div>
                 `;
@@ -537,6 +535,58 @@
             `;
 
             renderChart(stock.chart);
+            renderADX(stock.adx || 0);
+        }
+
+        function renderADX(val) {
+            if (adxChartInstance) {
+                adxChartInstance.destroy();
+                adxChartInstance = null;
+            }
+
+            // < 20 (Hijau, Sideways/MR), 20-25 (Kuning), >25 (Merah, Trending)
+            let color = '#22c55e'; 
+            if (val >= 20) color = '#fbbf24';
+            if (val >= 25) color = '#ef4444';
+
+            const options = {
+                series: [val],
+                chart: {
+                    type: 'radialBar',
+                    height: 250,
+                    animations: { enabled: false },
+                    fontFamily: "'JetBrains Mono', monospace"
+                },
+                plotOptions: {
+                    radialBar: {
+                        startAngle: -135,
+                        endAngle: 135,
+                        hollow: { size: '60%' },
+                        track: { background: '#27272a', strokeWidth: '100%' },
+                        dataLabels: {
+                            name: {
+                                fontSize: '12px',
+                                color: '#a1a1aa',
+                                offsetY: 25
+                            },
+                            value: {
+                                fontSize: '28px',
+                                color: '#fafafa',
+                                offsetY: -10,
+                                formatter: function(v) { return v.toFixed(1); }
+                            }
+                        }
+                    }
+                },
+                colors: [color],
+                labels: ['ADX']
+            };
+
+            const el = document.querySelector("#adx-chart");
+            if(el) {
+                adxChartInstance = new ApexCharts(el, options);
+                adxChartInstance.render();
+            }
         }
 
         function renderChart(chartData) {
