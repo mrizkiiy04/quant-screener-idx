@@ -445,36 +445,76 @@
             }
 
             const pVol = chartData.map(d => ({ x: new Date(d.date).getTime(), y: d.volume || 0 }));
+            const pBollinger = chartData.map(d => ({ x: new Date(d.date).getTime(), y: [d.lower, d.upper] }));
+            
+            const annotationsPoints = [];
+            let prevDir = null;
+            chartData.forEach(d => {
+                const ts = new Date(d.date).getTime();
+                if (d.st_dir && d.st_dir !== prevDir) {
+                    if (prevDir !== null) { 
+                        if (d.st_dir === 1) {
+                            annotationsPoints.push({
+                                x: ts,
+                                y: d.low,
+                                marker: { size: 0 },
+                                label: {
+                                    text: 'BELI',
+                                    style: { color: '#fff', background: '#10b981', fontSize: '10px', padding: { left: 4, right: 4, top: 2, bottom: 2 } },
+                                    offsetY: 20
+                                }
+                            });
+                        } else if (d.st_dir === -1) {
+                            annotationsPoints.push({
+                                x: ts,
+                                y: d.high,
+                                marker: { size: 0 },
+                                label: {
+                                    text: 'JUAL',
+                                    style: { color: '#fff', background: '#ef4444', fontSize: '10px', padding: { left: 4, right: 4, top: 2, bottom: 2 } },
+                                    offsetY: -20
+                                }
+                            });
+                        }
+                    }
+                    prevDir = d.st_dir;
+                }
+            });
 
             const ttData = document.getElementById('tooltip-data');
             
             const options = {
                 series: [
                     { name: 'Candle', type: 'candlestick', data: pOhlc },
+                    { name: 'Bollinger', type: 'rangeArea', data: pBollinger },
                     { name: 'Echo', type: 'line', data: echoData }
                 ],
                 // Hidden indicators stored in state
                 _extraSeries: [
-                    { name: 'Upper', type: 'line', data: pUpper },
-                    { name: 'Lower', type: 'line', data: pLower },
                     { name: 'SMA', type: 'line', data: pSma },
                     { name: 'ST Bull', type: 'line', data: pStBull },
                     { name: 'ST Bear', type: 'line', data: pStBear }
                 ],
+                annotations: {
+                    points: annotationsPoints
+                },
                 chart: {
                     type: 'line', id: 'price-chart', group: 'screener',
                     height: 450, toolbar: { show: false }, animations: { enabled: false },
                     background: 'transparent', fontFamily: "'JetBrains Mono', monospace"
                 },
                 theme: { mode: 'dark' },
-                colors: ['#f87171', '#c084fc', '#38bdf8', '#52525b', '#10b981', '#ef4444', '#c084fc'], // expanded for extra series
+                colors: ['#f87171', '#38bdf8', '#c084fc', '#52525b', '#10b981', '#ef4444'], // expanded for extra series
                 plotOptions: {
                     candlestick: { colors: { upward: '#fbbf24', downward: '#ef4444' } }
                 },
+                fill: {
+                    opacity: [1, 0.1, 1, 1, 1, 1]
+                },
                 stroke: {
-                    width: [1, 2, 1, 1, 1, 2, 2], // candle border is width 1, echo 2, others follow
-                    curve: ['straight', 'smooth', 'straight', 'straight', 'straight', 'stepline', 'stepline'],
-                    dashArray: [0, 5, 4, 4, 0, 0, 0]
+                    width: [1, 0, 2, 1, 2, 2], // Candle 1, Bollinger 0, Echo 2, SMA 1, ST Bull 2, ST Bear 2
+                    curve: ['straight', 'straight', 'smooth', 'straight', 'stepline', 'stepline'],
+                    dashArray: [0, 0, 5, 4, 0, 0]
                 },
                 xaxis: {
                     type: 'datetime',
@@ -587,32 +627,36 @@
                     if (indicatorsVisible) {
                         const allSeries = [
                             { name: 'Candle', type: 'candlestick', data: pOhlc },
-                            ...options._extraSeries,
-                            { name: 'Echo', type: 'line', data: echoData }
+                            { name: 'Bollinger', type: 'rangeArea', data: pBollinger },
+                            { name: 'Echo', type: 'line', data: echoData },
+                            ...options._extraSeries
                         ];
                         chartInstance.updateSeries(allSeries);
                         chartInstance.updateOptions({
                             stroke: {
-                                width: [1, 1, 1, 1, 2, 2, 2],
-                                curve: ['straight', 'straight', 'straight', 'straight', 'stepline', 'stepline', 'smooth'],
-                                dashArray: [0, 4, 4, 0, 0, 0, 5]
+                                width: [1, 0, 2, 1, 2, 2],
+                                curve: ['straight', 'straight', 'smooth', 'straight', 'stepline', 'stepline'],
+                                dashArray: [0, 0, 5, 4, 0, 0]
                             },
-                            colors: ['#f87171', '#38bdf8', '#52525b', '#10b981', '#ef4444', '#c084fc']
+                            colors: ['#f87171', '#38bdf8', '#c084fc', '#52525b', '#10b981', '#ef4444'],
+                            fill: { opacity: [1, 0.1, 1, 1, 1, 1] }
                         });
                         newBtn.classList.add('text-sky-400');
                     } else {
                         const baseSeries = [
                             { name: 'Candle', type: 'candlestick', data: pOhlc },
+                            { name: 'Bollinger', type: 'rangeArea', data: pBollinger },
                             { name: 'Echo', type: 'line', data: echoData }
                         ];
                         chartInstance.updateSeries(baseSeries);
                         chartInstance.updateOptions({
                             stroke: {
-                                width: [1, 2],
-                                curve: ['straight', 'smooth'],
-                                dashArray: [0, 5]
+                                width: [1, 0, 2],
+                                curve: ['straight', 'straight', 'smooth'],
+                                dashArray: [0, 0, 5]
                             },
-                            colors: ['#f87171', '#c084fc']
+                            colors: ['#f87171', '#38bdf8', '#c084fc'],
+                            fill: { opacity: [1, 0.1, 1] }
                         });
                         newBtn.classList.remove('text-sky-400');
                     }
