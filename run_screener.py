@@ -43,13 +43,18 @@ GOLDEN_PARAMS = {
 }
 
 
-def fetch_rss_news(ticker: str) -> list:
+def fetch_rss_news(ticker: str, long_name: str = "") -> list:
     """Fetch recent news for a ticker from Google News RSS (Max 3 days old)."""
     try:
         ticker_clean = ticker.replace('.JK', '')
         url = f"https://news.google.com/rss/search?q={ticker_clean}+saham+when:3d&hl=id&gl=ID&ceid=ID:id"
         feed = feedparser.parse(url)
         news = []
+        
+        # Clean long name for keyword matching
+        name_clean = long_name.lower().replace('pt ', '').replace(' tbk', '').replace(' (persero)', '').strip()
+        name_words = [w for w in name_clean.split() if len(w) > 3]
+
         for entry in feed.entries:
             if hasattr(entry, 'published_parsed') and entry.published_parsed:
                 published_time = time.mktime(entry.published_parsed)
@@ -59,6 +64,19 @@ def fetch_rss_news(ticker: str) -> list:
                     continue
             
             title = entry.title
+            
+            # Strict Keyword Filtering
+            text_to_search = (title + " " + entry.get("summary", "")).lower()
+            has_keyword = (ticker_clean.lower() in text_to_search)
+            if not has_keyword and name_words:
+                for w in name_words:
+                    if w in text_to_search:
+                        has_keyword = True
+                        break
+                        
+            if not has_keyword:
+                continue
+
             if " - " in title:
                 title = title.rsplit(" - ", 1)[0]
             news.append({
@@ -124,12 +142,13 @@ def generate_ai_sentiment_batch(items: list) -> dict:
             
             prompt += f"""
 Saham: {ticker}
-- Harga: {close}
-- Sinyal: {signal}
+- Harga Saat Ini: {close}
+- Sinyal Teknikal: {signal}
+- Fair Value (Fundamental): {item.get('fundamentals', {}).get('fair_value', 'N/A')}
 - Oversold (Pct B < 0.05): {rule_details.get('oversold')}
 - Volume Ratio > 1.0: {rule_details.get('volume')}
 - ADX < 20 (Sideways): {rule_details.get('regime')}
-- Diskon: {f"{margin*100:.1f}%" if margin else "N/A"}
+- Diskon Fundamental: {f"{margin*100:.1f}%" if margin else "N/A"}
 - Win Rate Historis: {f"{win_rate:.1f}%"}
 """
         prompt += """
@@ -140,10 +159,12 @@ Kembalikan JSON array dimana setiap elemen adalah object dengan format:
       "ticker": "<Kode Saham>",
       "score": <angka 0-100, representasi keyakinan bullish, misal 75>,
       "action": "<ACCUMULATE BUY / HOLD / WAIT / STRONG SELL>",
-      "bullets": ["<alasan 1 maksimal 8 kata>", "<alasan 2 maksimal 8 kata>", "<alasan 3 maksimal 8 kata>"]
+      "bullets": ["<alasan 1 maksimal 12 kata>", "<alasan 2 maksimal 12 kata>", "<alasan 3 maksimal 12 kata>"]
   }
 ]
-Format alasan dengan gaya analis teknikal/fundamental ringkas. Hanya kembalikan valid JSON array murni.
+PENTING: Pisahkan dan bedakan konteks Fundamental vs Teknikal.
+Contoh: Jika Harga Saat Ini jauh di bawah Fair Value (Diskon) tapi sinyal teknikal SELL, jelaskan secara eksplisit, misal: "Fundamental diskon 41%, tapi tren teknikal masih Bearish". Jangan mencampuradukkan hingga bertentangan.
+Hanya kembalikan valid JSON array murni.
 """
         for attempt in range(3):
             try:
@@ -317,7 +338,7 @@ def main():
             trade_history = trade_history[::-1]
             
             # Fetch RSS
-            news = fetch_rss_news(ticker)
+            news = fetch_rss_news(ticker, long_name)
                 
             results.append({
                 "ticker": ticker,

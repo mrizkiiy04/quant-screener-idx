@@ -121,13 +121,18 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div class="flex flex-col lg:grid lg:grid-cols-12 gap-6 items-start">
                 
-                <!-- Left Column: Chart (Span 8) -->
-                <div class="lg:col-span-8 space-y-6">
+                <!-- Left Column: Chart (Span 8) -> Moved below on mobile via order -->
+                <div class="lg:col-span-8 space-y-6 order-2 lg:order-1 w-full">
                     <div class="border border-zinc-800 bg-zinc-900/30 p-1 relative">
-                        <div class="absolute top-4 left-4 z-10 pointer-events-none">
+                        <div class="absolute top-4 left-4 z-10 pointer-events-none flex justify-between w-[calc(100%-2rem)]">
                             <span class="text-xs font-mono uppercase tracking-widest text-zinc-500">Price & Volume</span>
+                        </div>
+                        <div class="absolute top-3 right-4 z-20">
+                            <button id="toggle-indicators" class="text-[10px] font-mono uppercase tracking-wider text-zinc-400 hover:text-sky-400 border border-zinc-700 bg-zinc-900/80 px-2 py-1 transition-colors">
+                                Toggle Indicators
+                            </button>
                         </div>
                         <div id="chart" class="h-[450px] w-full"></div>
                         <div id="chart-volume" class="h-[120px] w-full border-t border-zinc-800 border-dashed mt-2"></div>
@@ -142,8 +147,8 @@
                     </div>
                 </div>
 
-                <!-- Right Column: AI Sentiment & Diagnostics (Span 4) -->
-                <div class="lg:col-span-4 space-y-6 flex flex-col">
+                <!-- Right Column: AI Sentiment & Diagnostics (Span 4) -> Moved to top on mobile via order -->
+                <div class="lg:col-span-4 space-y-6 flex flex-col order-1 lg:order-2 w-full">
                     
                     <!-- AI Sentiment Engine Card -->
                     <div class="border border-zinc-800 bg-zinc-900/50 p-6 relative overflow-hidden">
@@ -224,6 +229,7 @@
         let chartInstance = null;
         let volChartInstance = null;
         let adxChartInstance = null;
+        let indicatorsVisible = false;
 
         const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
 
@@ -337,10 +343,12 @@
 
             // Diagnostics
             const r = stock.rules || {};
+            const yesIcon = '<span class="text-emerald-400">✓ YES</span>';
+            const noIcon = '<span class="text-red-400">✗ NO</span>';
             document.getElementById('tech-diagnostics').innerHTML = `
-                <div>├─ Oversold Edge: Pct B < 0.05 ${r.oversold ? '(YES)' : '(NO)'}</div>
-                <div>├─ Regime Check: ADX < 20 ${r.regime ? '(YES)' : '(NO)'}</div>
-                <div>├─ Volume Panic: Vol > 1.0x ${r.volume ? '(YES)' : '(NO)'}</div>
+                <div>├─ Oversold Edge: Pct B < 0.05 ${r.oversold ? yesIcon : noIcon}</div>
+                <div>├─ Regime Check: ADX < 20 ${r.regime ? yesIcon : noIcon}</div>
+                <div>├─ Volume Panic: Vol > 1.0x ${r.volume ? yesIcon : noIcon}</div>
             `;
             document.getElementById('stop-loss').innerText = formatRp(stock.stop_loss);
 
@@ -443,12 +451,15 @@
             const options = {
                 series: [
                     { name: 'Candle', type: 'candlestick', data: pOhlc },
+                    { name: 'Echo', type: 'line', data: echoData }
+                ],
+                // Hidden indicators stored in state
+                _extraSeries: [
                     { name: 'Upper', type: 'line', data: pUpper },
                     { name: 'Lower', type: 'line', data: pLower },
                     { name: 'SMA', type: 'line', data: pSma },
                     { name: 'ST Bull', type: 'line', data: pStBull },
-                    { name: 'ST Bear', type: 'line', data: pStBear },
-                    { name: 'Echo', type: 'line', data: echoData }
+                    { name: 'ST Bear', type: 'line', data: pStBear }
                 ],
                 chart: {
                     type: 'line', id: 'price-chart', group: 'screener',
@@ -456,14 +467,14 @@
                     background: 'transparent', fontFamily: "'JetBrains Mono', monospace"
                 },
                 theme: { mode: 'dark' },
-                colors: ['#f87171', '#38bdf8', '#52525b', '#10b981', '#ef4444', '#c084fc'], // colors for the line series (index 1 to 6)
+                colors: ['#f87171', '#c084fc', '#38bdf8', '#52525b', '#10b981', '#ef4444', '#c084fc'], // expanded for extra series
                 plotOptions: {
                     candlestick: { colors: { upward: '#fbbf24', downward: '#ef4444' } }
                 },
                 stroke: {
-                    width: [1, 1, 1, 1, 2, 2, 2], // candle border is width 1, others follow
-                    curve: ['straight', 'straight', 'straight', 'straight', 'stepline', 'stepline', 'smooth'],
-                    dashArray: [0, 4, 4, 0, 0, 0, 5]
+                    width: [1, 2, 1, 1, 1, 2, 2], // candle border is width 1, echo 2, others follow
+                    curve: ['straight', 'smooth', 'straight', 'straight', 'straight', 'stepline', 'stepline'],
+                    dashArray: [0, 5, 4, 4, 0, 0, 0]
                 },
                 xaxis: {
                     type: 'datetime',
@@ -564,6 +575,49 @@
             
             volChartInstance = new ApexCharts(document.querySelector("#chart-volume"), volOptions);
             volChartInstance.render();
+            
+            // Toggle Indicators Event
+            const toggleBtn = document.getElementById('toggle-indicators');
+            if (toggleBtn) {
+                // Remove old listeners by cloning
+                const newBtn = toggleBtn.cloneNode(true);
+                toggleBtn.parentNode.replaceChild(newBtn, toggleBtn);
+                newBtn.addEventListener('click', () => {
+                    indicatorsVisible = !indicatorsVisible;
+                    if (indicatorsVisible) {
+                        const allSeries = [
+                            { name: 'Candle', type: 'candlestick', data: pOhlc },
+                            ...options._extraSeries,
+                            { name: 'Echo', type: 'line', data: echoData }
+                        ];
+                        chartInstance.updateSeries(allSeries);
+                        chartInstance.updateOptions({
+                            stroke: {
+                                width: [1, 1, 1, 1, 2, 2, 2],
+                                curve: ['straight', 'straight', 'straight', 'straight', 'stepline', 'stepline', 'smooth'],
+                                dashArray: [0, 4, 4, 0, 0, 0, 5]
+                            },
+                            colors: ['#f87171', '#38bdf8', '#52525b', '#10b981', '#ef4444', '#c084fc']
+                        });
+                        newBtn.classList.add('text-sky-400');
+                    } else {
+                        const baseSeries = [
+                            { name: 'Candle', type: 'candlestick', data: pOhlc },
+                            { name: 'Echo', type: 'line', data: echoData }
+                        ];
+                        chartInstance.updateSeries(baseSeries);
+                        chartInstance.updateOptions({
+                            stroke: {
+                                width: [1, 2],
+                                curve: ['straight', 'smooth'],
+                                dashArray: [0, 5]
+                            },
+                            colors: ['#f87171', '#c084fc']
+                        });
+                        newBtn.classList.remove('text-sky-400');
+                    }
+                });
+            }
         }
 
         document.addEventListener('DOMContentLoaded', init);
