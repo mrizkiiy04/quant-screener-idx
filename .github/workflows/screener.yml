@@ -46,6 +46,6 @@ jobs:
             echo "Tidak ada sinyal baru atau perubahan data hari ini."
           else
             git add public/signals.json
-            git commit -m "🤖 Update daily signals [skip ci]"
+            git commit -m "🤖 Update daily signals"
             git push
           fi
