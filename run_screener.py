@@ -206,7 +206,7 @@ Hanya kembalikan valid JSON array murni.
 
 def fetch_recent_data(ticker: str, period: str = "2y") -> pd.DataFrame:
     """Unduh data 2 tahun agar Echo Forecast punya cukup histori."""
-    df = yf.download(ticker, period=period, progress=False)
+    df = yf.download(ticker, period=period, progress=False, auto_adjust=True)
     if isinstance(df.columns, pd.MultiIndex):
         df.columns = df.columns.droplevel(1)
     return df.dropna()
